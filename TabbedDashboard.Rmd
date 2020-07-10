@@ -57,7 +57,7 @@ Column {data-width=600}
 ```{r}
 ```
 
-Cumulative Charts {data-orientation=columns}
+Daily Charts {data-orientation=columns}
 =====================================  
     
 
@@ -111,7 +111,7 @@ Column {.tabset}
 ```{r}
 ```
 
-Daily Charts {data-orientation=rows}
+Cumulative Charts {data-orientation=rows}
 =====================================     
    
 Row {data-height=600}
