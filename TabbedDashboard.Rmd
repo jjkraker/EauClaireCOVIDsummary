@@ -1,6 +1,6 @@
 ---
 title: "Eau Claire COVID summaries"
-author:  "by Jessica Kraker, ____"
+#author:  "by Jessica Kraker, ____"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
