@@ -1,38 +1,66 @@
 ---
 title: "Eau Claire COVID summaries"
 #author:  "by Jessica Kraker, ____"
+date:  "as of `r format(Sys.time()-2*86400, '%B %d, %Y')`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
     vertical_layout: fill
     social: menu
-    source_code: https://github.com/walkerke/neighborhood_diversity
+    source_code:  https://github.com/jjkraker/EauClaireCOVIDsummary
     theme: spacelab
 ---
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
 WIdata = read.csv("../WIdata.csv")
+# names(WIdata)  
+library(knitr)
+library(dplyr)
+library(ggplot2)
+library(ggformula)
+library(kableExtra)
+library(tidyverse)
+library(lubridate)
+
+WIdata <- WIdata %>% 
+  mutate(DATE = format(as_date(DATE), format = "%B %d %Y")) #%>%   mutate()
+
+usabledata <- WIdata
 ```
 
-To-dos {data-orientation=rows}
+
+Summary statistics {data-orientation=columns}
 =====================================     
 
-Row {data-height=400}
+Column {data-width=400}
 -------------------------------------
-### Resources To-Do list
+    
+### Total Wisconsin numbers during last week
+    
+```{r}
+usabledata %>% 
+   filter(DATE %in% tail(DATE, 5)) %>%
+   select(DATE, POSITIVE, NEGATIVE, DEATHS, HOSP_YES, HOSP_UNK, IC_YES) %>%
+   rename_at(vars(starts_with("HOSP_")), ~str_to_title(str_replace_all(., "HOSP_","Hospitalization "))) %>%
+   rename_at(vars(starts_with("IC_")), ~str_to_title(str_replace_all(., "IC_","ICU "))) %>%   
+   rename_at(vars(ends_with("Unk")), ~str_to_title(str_replace_all(., "Unk","Unknown "))) %>%   
+  kable(digits = 3,booktabs = T, caption = "Total numbers for last 5 days",align = "c") %>%
+   kable_styling(latex_options = c("hold_position", "scale_down"), font_size = 9) %>% 
+   row_spec(5, color = "darkblue", background = "#00FFFF") 
+```
 
-   * Fix data source
-
-Row {data-height=400}
+### Current Wisconsin numbers during last week
+    
+```{r}
+```
+Column {data-width=600}
 -------------------------------------
-### Aesthetics To-Do list
-
-   * 
-   
-Summary statistics {data-orientation=rows}
-=====================================     
-
+    
+### Chart 1
+    
+```{r}
+```
 Cumulative Charts
 =====================================  
     
@@ -91,12 +119,16 @@ Column {data-width=200}
     
 ### Data Sources
 
-Here are some of the best visual and reliable sources for data that I have found online:
+   * [Wisconsin Department of Health Services](https://data.dhsgis.wi.gov/datasets/covid-19-historical-data-table/data?where=GEO%20%3D%20%27State%27) with [variable definitions](https://www.dhs.wisconsin.gov/publications/p02677.pdf)
+   * [Eau Claire County statistics]( https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
+
+### Reliable Updated Visuals
+
+Here are some of the best visual sources for data that I have found online:
 
    * Johns Hopkins dashboard (world and national levels)
    * National
-   * Wisconsin Department of Health Services with [variable definitions](https://www.dhs.wisconsin.gov/publications/p02677.pdf)
-   * [Eau Claire County statistics]( https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
+
    
    
 ### Scientific Support for Masks.
@@ -131,6 +163,7 @@ Column {.tabset}{data-width=300}
 
 *I devised plots that are similar to those found, for example, at the following locations:*
 
+   * [Github repository by coolbaby0208](https://github.com/coolbaby0208/MN-COVID19)
    * Covid Act Now https://covidactnow.org/?s=58173
    * A regional breakdown of the United States COVID-19 curve https://www.reddit.com/r/dataisbeautiful/comments/heglc5/oc_a_regional_breakdown_of_the_united_states/
    * Minnesota updates from Reddit  https://www.reddit.com/r/minnesota/comments/h9j6pj/covid19_update_up_222_230_by_mdh_active_2780/ and https://www.reddit.com/r/minnesota/comments/hfovhg/625_update_34123_positives_360_1406_deaths_9/
