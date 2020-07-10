@@ -1,7 +1,7 @@
 ---
 title: "Eau Claire COVID summaries"
 #author:  "by Jessica Kraker, ____"
-date:  "as of `r format(Sys.time()-2*86400, '%B %d, %Y')`"
+date:  "as of `r format(Sys.time()-0*86400, '%B %d, %Y')`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -13,8 +13,6 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
-WIdata = read.csv("Data/WIdata.csv")
-# names(WIdata)  
 library(knitr)
 library(dplyr)
 library(ggplot2)
@@ -22,12 +20,15 @@ library(ggformula)
 library(kableExtra)
 library(tidyverse)
 library(lubridate)
+library(scales)
 
-WIdata <- WIdata %>% 
-  mutate(DATE = format(as_date(DATE), format = "%B %d %Y")) #%>%   mutate()
 source("PlottingFunctions.R")
-```
 
+WIdata = read.csv("Data/WIdata.csv")
+# names(WIdata)  
+WIdata <- CaseCheck(WIdata)
+
+```
 
 Summary statistics {data-orientation=columns}
 =====================================     
@@ -38,10 +39,10 @@ Column {.tabset}
 ### Wisconsin {data-width=300}
     
 ```{r}
-FullTotalTable(WIdata)
+FullTotalTable(WIdata, "Wisconsin")
 ```
 
-Daily counts of COVID cases and outcomes
+Daily information about COVID cases and outcomes
 
 ### Eau Claire
 
@@ -64,20 +65,36 @@ Column {data-width=400}
 -------------------------------------
     
 ### Chart 1
+
+Not yet coded
     
 ```{r}
 ```
    
 Column {.tabset}
 -------------------------------------
-   
-### Chart 2
+
+### Wisconsin
 
 ```{r}
+ggplot(WIdata, aes(x=as.Date(DATE,"%B %d %Y"), y=POS_NEW))+
+#  geom_line(aes(color=Month))+ 
+  geom_line()+
+  geom_smooth(method = 'loess',color="red")+
+  scale_x_date(breaks = date_breaks("7 days"))+
+  ggtitle(label = "WI Daily new COVID cases")+
+  theme_minimal()+
+  theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+        axis.text.x = element_text(angle=90))+
+  ylab("Daily New Cases")+
+  xlab("Date")
+
 ```   
  
 ### Chart 3
-    
+
+Not yet coded
+
 ```{r}
 ```
 
@@ -154,31 +171,34 @@ Column {data-height=400}
    * <a href="https://www.reddit.com/r/CoronavirusWI/comments/hftc25/62520_graphs/" target="_blank">Wisconsin updates</a>
    * https://www.reddit.com/r/dataisbeautiful/comments/hjwthw/oc_countylevel_covid19_case_growth_animation_in/
 
-### Scientific References {data-width=500}
+### Scientific References for Common Questions {data-width=500}
 
 [**Asymptomatic Spread**](https://www.pnas.org/content/early/2020/07/02/2008373117)
 
-**Masks** Should I wear a mask in enclosed public spaces?  Unequivocally, **YES**.  References for reasoning:
+**Masks** Should I wear a mask in enclosed public spaces?  Unequivocally, **YES**.  References for reasoning, using a current (as of July 8) [accumulation of over 70 references](https://threader.app/thread/1279144399897866248).  A few of my favorites (modeling-wise) are:
 
-   * Current [accumulation of over 70 references](https://threader.app/thread/1279144399897866248)
-   * Physical distancing, face masks, and eye protection to prevent person-to-person transmission of SARS-CoV-2 and COVID-19: a systematic review and meta-analysis  https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)31142-9/fulltext
-   * Background for modelling: A modelling framework to assess the likely effectiveness of facemasks in combination with ‘lock-down’ in managing the COVID-19 pandemic   https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0376
+   * [Physical distancing, face masks, and eye protection to prevent person-to-person transmission of SARS-CoV-2 and COVID-19: a systematic review and meta-analysis](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)31142-9/fulltext)
+   * [Background for modelling: A modelling framework to assess the likely effectiveness of facemasks in combination with ‘lock-down’ in managing the COVID-19 pandemic](https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0376)
+   * [To mask or not to mask: Modeling the potential for face mask use by the general public to curtail the COVID-19 pandemic](https://www.sciencedirect.com/science/article/pii/S2468042720300117?via%3Dihub)
+   * [Face Masks Considerably Reduce COVID-19 Cases in Germany: A Synthetic Control Method Approach](http://ftp.iza.org/dp13319.pdf?fbclid=IwAR1jlcs2PjDIvg3AjqxMucwVPfexpxRDOt5T3k24MzNYmTCIE0Resziaeto)
+
    
 A couple more in the works:
 
-   * Face mask wearing rate predicts country's COVID-19 death rates https://www.medrxiv.org/content/10.1101/2020.06.22.20137745v1
-   * Association of country-wide coronavirus mortality with demographics, testing, lockdowns, and public wearing of masks (Update June 15, 2020) https://www.researchgate.net/publication/342198360_Association_of_country-wide_coronavirus_mortality_with_demographics_testing_lockdowns_and_public_wearing_of_masks_Update_June_15_2020
-   * open letter:  https://docs.google.com/forms/d/e/1FAIpQLSel_CEtyTqFjyv_XFFyhPwbH-J6gnfX0YWsiEqlBLE4bsOHGg/viewform?fbclid=IwAR2QaUjDigeGZpGDS0mszJVXqiF4OqBCLlW_9hc7pApBv4WjDlIX1ToXlV4
-   * https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)31183-1/fulltext?fbclid=IwAR0TSoh6w_Pl54K5ZmmNU6p_cIBo2EoP9BmSxY5Pu2K0aV95IPwk5T53Q6s
+   * [Face mask wearing rate predicts country's COVID-19 death rates]( https://www.medrxiv.org/content/10.1101/2020.06.22.20137745v1)
+   * [Association of country-wide coronavirus mortality with demographics, testing, lockdowns, and public wearing of masks (Update June 15, 2020)]( https://www.researchgate.net/publication/342198360_Association_of_country-wide_coronavirus_mortality_with_demographics_testing_lockdowns_and_public_wearing_of_masks_Update_June_15_2020)
+   * [Physical distancing, face masks, and eye protection for prevention of COVID-19](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)31183-1/fulltext?fbclid=IwAR0TSoh6w_Pl54K5ZmmNU6p_cIBo2EoP9BmSxY5Pu2K0aV95IPwk5T53Q6s)
 
-https://www.npr.org/sections/health-shots/2020/06/21/880832213/yes-wearing-masks-helps-heres-why
+Media articles / letters summarizing scientific publications:
 
-https://www.sfgate.com/science/article/Study-100-face-mask-use-could-crush-second-15333170.php?
+   * [Petition from Minnesota Healthcare Clinicians](https://docs.google.com/forms/d/e/1FAIpQLSel_CEtyTqFjyv_XFFyhPwbH-J6gnfX0YWsiEqlBLE4bsOHGg/viewform?fbclid=IwAR2QaUjDigeGZpGDS0mszJVXqiF4OqBCLlW_9hc7pApBv4WjDlIX1ToXlV4) to Gov. Walz, submitted July 7 with 1600 signatures
+   * https://www.npr.org/sections/health-shots/2020/06/21/880832213/yes-wearing-masks-helps-heres-why
+   * https://www.sfgate.com/science/article/Study-100-face-mask-use-could-crush-second-15333170.php?
 
-https://www.sciencedirect.com/science/article/pii/S2468042720300117?via%3Dihub
+Modeling (simple visuals in progress) {data-orientation=rows}
+=====================================     
 
-http://ftp.iza.org/dp13319.pdf?fbclid=IwAR1jlcs2PjDIvg3AjqxMucwVPfexpxRDOt5T3k24MzNYmTCIE0Resziaeto
 
-https://www.nbcnews.com/news/us-news/no-new-covid-19-cases-reported-after-infected-hair-stylists-n1230346
+
 
    
