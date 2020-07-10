@@ -13,7 +13,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
-WIdata = read.csv("../WIdata.csv")
+WIdata = read.csv("../Data/WIdata.csv")
 # names(WIdata)  
 library(knitr)
 library(dplyr)
@@ -25,32 +25,26 @@ library(lubridate)
 
 WIdata <- WIdata %>% 
   mutate(DATE = format(as_date(DATE), format = "%B %d %Y")) #%>%   mutate()
-
-usabledata <- WIdata
+source("PlottingFunctions.R")
 ```
 
 
 Summary statistics {data-orientation=columns}
 =====================================     
 
-Column {data-width=400}
+Column {.tabset}
 -------------------------------------
-    
-### Total Wisconsin numbers during last week
+   
+### Wisconsin {data-width=300}
     
 ```{r}
-usabledata %>% 
-   filter(DATE %in% tail(DATE, 5)) %>%
-   select(DATE, POSITIVE, NEGATIVE, DEATHS, HOSP_YES, HOSP_UNK, IC_YES) %>%
-   rename_at(vars(starts_with("HOSP_")), ~str_to_title(str_replace_all(., "HOSP_","Hospitalization "))) %>%
-   rename_at(vars(starts_with("IC_")), ~str_to_title(str_replace_all(., "IC_","ICU "))) %>%   
-   rename_at(vars(ends_with("Unk")), ~str_to_title(str_replace_all(., "Unk","Unknown "))) %>%   
-  kable(digits = 3,booktabs = T, caption = "Total numbers for last 5 days",align = "c") %>%
-   kable_styling(latex_options = c("hold_position", "scale_down"), font_size = 9) %>% 
-   row_spec(5, color = "darkblue", background = "#00FFFF") 
+FullTotalTable(WIdata)
 ```
 
-### Current Wisconsin numbers during last week
+Daily counts of COVID cases and outcomes
+
+### Eau Claire
+
     
 ```{r}
 ```
@@ -61,7 +55,8 @@ Column {data-width=600}
     
 ```{r}
 ```
-Cumulative Charts
+
+Cumulative Charts {data-orientation=columns}
 =====================================  
     
 
@@ -73,7 +68,20 @@ Column {data-width=400}
 ```{r}
 ```
    
-Column {.tabset}{data-width=600}
+Column {.tabset}
+-------------------------------------
+   
+### Chart 2
+
+```{r}
+```   
+ 
+### Chart 3
+    
+```{r}
+```
+
+Column {.tabset}
 -------------------------------------
    
 ### Chart 2
