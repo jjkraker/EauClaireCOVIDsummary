@@ -1,0 +1,140 @@
+---
+title: "Eau Claire COVID summaries"
+author:  "by Jessica Kraker, ____"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    social: menu
+    source_code: https://github.com/walkerke/neighborhood_diversity
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+WIdata = read.csv("../WIdata.csv")
+```
+
+To-dos {data-orientation=rows}
+=====================================     
+
+Row {data-height=400}
+-------------------------------------
+### Resources To-Do list
+
+   * Fix data source
+
+Row {data-height=400}
+-------------------------------------
+### Aesthetics To-Do list
+
+   * 
+   
+Summary statistics {data-orientation=rows}
+=====================================     
+
+Cumulative Charts
+=====================================  
+    
+
+Column {data-width=400}
+-------------------------------------
+    
+### Chart 1
+    
+```{r}
+```
+   
+Column {.tabset}{data-width=600}
+-------------------------------------
+   
+### Chart 2
+
+```{r}
+```   
+ 
+### Chart 3
+    
+```{r}
+```
+
+Daily Charts {data-orientation=rows}
+=====================================     
+   
+Row {data-height=600}
+-------------------------------------
+
+### Chart 1
+
+```{r}
+```
+
+Row {data-height=400}
+-------------------------------------
+   
+### Chart 2
+
+```{r}
+```   
+    
+### Chart 3
+
+```{r}
+```
+
+References {data-orientation=rows}
+=====================================     
+
+
+Column {data-width=200}
+-------------------------------------
+    
+### Data Sources
+
+Here are some of the best visual and reliable sources for data that I have found online:
+
+   * Johns Hopkins dashboard (world and national levels)
+   * National
+   * Wisconsin Department of Health Services with [variable definitions](https://www.dhs.wisconsin.gov/publications/p02677.pdf)
+   * [Eau Claire County statistics]( https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
+   
+   
+### Scientific Support for Masks.
+
+Should I wear a mask in enclosed public spaces?  Unequivocally, **YES**.  References for reasoning:
+
+   * Current [accumulation of over 70 references](https://threader.app/thread/1279144399897866248)
+   * Physical distancing, face masks, and eye protection to prevent person-to-person transmission of SARS-CoV-2 and COVID-19: a systematic review and meta-analysis  https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)31142-9/fulltext
+   * Background for modelling: A modelling framework to assess the likely effectiveness of facemasks in combination with ‘lock-down’ in managing the COVID-19 pandemic   https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0376
+   
+A couple more in the works:
+
+   * Face mask wearing rate predicts country's COVID-19 death rates https://www.medrxiv.org/content/10.1101/2020.06.22.20137745v1
+   * Association of country-wide coronavirus mortality with demographics, testing, lockdowns, and public wearing of masks (Update June 15, 2020) https://www.researchgate.net/publication/342198360_Association_of_country-wide_coronavirus_mortality_with_demographics_testing_lockdowns_and_public_wearing_of_masks_Update_June_15_2020
+   * open letter:  https://docs.google.com/forms/d/e/1FAIpQLSel_CEtyTqFjyv_XFFyhPwbH-J6gnfX0YWsiEqlBLE4bsOHGg/viewform?fbclid=IwAR2QaUjDigeGZpGDS0mszJVXqiF4OqBCLlW_9hc7pApBv4WjDlIX1ToXlV4
+   * https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)31183-1/fulltext?fbclid=IwAR0TSoh6w_Pl54K5ZmmNU6p_cIBo2EoP9BmSxY5Pu2K0aV95IPwk5T53Q6s
+
+https://www.npr.org/sections/health-shots/2020/06/21/880832213/yes-wearing-masks-helps-heres-why
+
+https://www.sfgate.com/science/article/Study-100-face-mask-use-could-crush-second-15333170.php?
+
+https://www.sciencedirect.com/science/article/pii/S2468042720300117?via%3Dihub
+
+http://ftp.iza.org/dp13319.pdf?fbclid=IwAR1jlcs2PjDIvg3AjqxMucwVPfexpxRDOt5T3k24MzNYmTCIE0Resziaeto
+
+https://www.nbcnews.com/news/us-news/no-new-covid-19-cases-reported-after-infected-hair-stylists-n1230346
+
+Column {.tabset}{data-width=300}
+-------------------------------------
+
+###  References for selected plots
+
+*I devised plots that are similar to those found, for example, at the following locations:*
+
+   * Covid Act Now https://covidactnow.org/?s=58173
+   * A regional breakdown of the United States COVID-19 curve https://www.reddit.com/r/dataisbeautiful/comments/heglc5/oc_a_regional_breakdown_of_the_united_states/
+   * Minnesota updates from Reddit  https://www.reddit.com/r/minnesota/comments/h9j6pj/covid19_update_up_222_230_by_mdh_active_2780/ and https://www.reddit.com/r/minnesota/comments/hfovhg/625_update_34123_positives_360_1406_deaths_9/
+   * [Wisconsin updates](https://www.reddit.com/r/CoronavirusWI/comments/hftc25/62520_graphs/) (from Redditor [unknown-and-alone](https://www.reddit.com/user/unknown-and-alone)) 
+   * <a href="https://www.reddit.com/r/CoronavirusWI/comments/hftc25/62520_graphs/" target="_blank">Wisconsin updates</a>
+   * https://www.reddit.com/r/dataisbeautiful/comments/hjwthw/oc_countylevel_covid19_case_growth_animation_in/
+   
