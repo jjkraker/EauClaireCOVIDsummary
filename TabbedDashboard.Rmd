@@ -1,5 +1,5 @@
 ---
-title: "Eau Claire COVID summaries"
+title: "Eau Claire COVID Information"
 #author:  "by Jessica Kraker, ____"
 date:  "as of `r format(Sys.time()-0*86400, '%B %d, %Y')`"
 output: 
@@ -21,6 +21,7 @@ library(kableExtra)
 library(tidyverse)
 library(lubridate)
 library(scales)
+library(zoo)
 
 source("PlottingFunctions.R")
 
@@ -30,7 +31,7 @@ WIdata <- CaseCheck(WIdata)
 
 ```
 
-Summary statistics {data-orientation=columns}
+Numeric Summaries {data-orientation=columns}
 =====================================     
 
 Column {.tabset}
@@ -57,7 +58,7 @@ Column {data-width=600}
 ```{r}
 ```
 
-Daily Charts {data-orientation=columns}
+Daily Plots {data-orientation=columns}
 =====================================  
     
 
@@ -79,15 +80,17 @@ Column {.tabset}
 ```{r}
 ggplot(WIdata, aes(x=as.Date(DATE,"%B %d %Y"), y=POS_NEW))+
 #  geom_line(aes(color=Month))+ 
-  geom_line()+
-  geom_smooth(method = 'loess',color="red")+
+  geom_line(aes(color="Daily"))+
+  geom_line(aes(y=rollmean(POS_NEW, 7, na.pad=TRUE), color="7-day moving avg")) +
+  geom_smooth(method = 'loess',aes(color="Loess smooth"))+
   scale_x_date(breaks = date_breaks("7 days"))+
   ggtitle(label = "WI Daily new COVID cases")+
   theme_minimal()+
   theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
         axis.text.x = element_text(angle=90))+
   ylab("Daily New Cases")+
-  xlab("Date")
+  xlab("Date") +
+  scale_colour_manual(name='', values=c('Daily'='navy','Loess smooth'='grey','7-day moving avg'='red'))
 
 ```   
  
@@ -111,7 +114,7 @@ Column {.tabset}
 ```{r}
 ```
 
-Cumulative Charts {data-orientation=rows}
+Cumulative Plots {data-orientation=rows}
 =====================================     
    
 Row {data-height=600}
@@ -195,10 +198,10 @@ Media articles / letters summarizing scientific publications:
    * https://www.npr.org/sections/health-shots/2020/06/21/880832213/yes-wearing-masks-helps-heres-why
    * https://www.sfgate.com/science/article/Study-100-face-mask-use-could-crush-second-15333170.php?
 
-Modeling (simple visuals in progress) {data-orientation=rows}
+Modeling  {data-orientation=rows}
 =====================================     
 
-
+(simple visuals in progress)
 
 
    
