@@ -38,23 +38,38 @@ Column {.tabset}
 -------------------------------------
    
 ### Wisconsin {data-width=300}
-    
+
 ```{r}
 FullTotalTable(WIdata, "Wisconsin")
 ```
 
-Daily information about COVID cases and outcomes
 
 ### Eau Claire
 
-    
+
+
 ```{r}
 ```
-Column {data-width=600}
+
+Column {.tabset}
 -------------------------------------
-    
-### Chart 1
-    
+   
+### Wisconsin {data-width=300}
+
+Other information:
+
+   * [Wisconsin Health Department's comprehensive website on COVID and planning](https://www.dhs.wisconsin.gov/outbreaks/index.htm)
+   * [Visual summary of Wisconsin Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
+
+```{r}
+```
+
+
+### Eau Claire
+
+   * [Eau Claire County Health Department's comprehensive website on COVID and planning](https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
+   * [Visual summary Eau Claire County Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
+
 ```{r}
 ```
 
@@ -90,13 +105,18 @@ ggplot(WIdata, aes(x=as.Date(DATE,"%B %d %Y"), y=POS_NEW))+
         axis.text.x = element_text(angle=90))+
   ylab("Daily New Cases")+
   xlab("Date") +
-  scale_colour_manual(name='', values=c('Daily'='navy','Loess smooth'='grey','7-day moving avg'='red'))
+  scale_colour_manual(name='', values=c('Daily'='navy','Loess smooth'='grey','7-day moving avg'='red')) 
+#  geom_vline(xintercept = c("2020-06-29","2020-06-22","2020-06-15") %>% as.Date(), lty = 2, col= "green")
 
 ```   
- 
+
+**Comment:** Why a 7-day moving average?  Wisconsin tends to have cyclical patterns in testing results, with low spots typically on Mondays (this may be due to lower testing on weekends)
+
+
 ### Chart 3
 
 Not yet coded
+
 
 ```{r}
 ```
