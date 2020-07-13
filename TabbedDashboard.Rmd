@@ -35,53 +35,6 @@ ECdata <- CaseCheck(ECdata)
 
 ```
 
-Numeric Summaries {data-orientation=columns}
-=====================================     
-
-Column {.tabset}
--------------------------------------
-   
-### Eau Claire
-```{r}
-PartialTotalTable(ECdata, "Eau Claire")
-```
-
-### Wisconsin {data-width=300}
-
-```{r}
-FullTotalTable(WIdata, "Wisconsin")
-```
-
-
-
-
-```{r}
-```
-
-Column {.tabset}
--------------------------------------
-   
-### Wisconsin {data-width=300}
-
-Other information:
-
-   * [Reopening guidelines](https://www.dhs.wisconsin.gov/covid-19/prepare.htm#:~:text=Back%20Section%20Menu-,COVID-19:%20Badger%20Bounce%20Back,safest%20way%20to%20open%20Wisconsin.)
-   * [Wisconsin Health Department's comprehensive website on COVID and planning](https://www.dhs.wisconsin.gov/outbreaks/index.htm)
-   * [Visual summary of Wisconsin Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
-
-```{r}
-```
-
-
-### Eau Claire
-
-   * [Eau Claire Reopening guidelines "Respond Together"](https://www.eauclairewi.gov/Home/ShowDocument?id=32685)
-   * [Eau Claire County Health Department's comprehensive website on COVID and planning](https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
-   * [Visual summary Eau Claire County Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
-
-```{r}
-```
-
 Daily Plots {data-orientation=columns}
 =====================================  
     
@@ -135,6 +88,54 @@ Column {.tabset}
  
 ### Chart 3
     
+```{r}
+```
+
+
+Numeric Summaries {data-orientation=columns}
+=====================================     
+
+Column {.tabset}
+-------------------------------------
+   
+### Eau Claire
+```{r}
+PartialTotalTable(ECdata, "Eau Claire")
+```
+
+### Wisconsin {data-width=300}
+
+```{r}
+FullTotalTable(WIdata, "Wisconsin")
+```
+
+
+
+
+```{r}
+```
+
+Column {.tabset}
+-------------------------------------
+   
+### Wisconsin {data-width=300}
+
+Other information:
+
+   * [Reopening guidelines](https://www.dhs.wisconsin.gov/covid-19/prepare.htm#:~:text=Back%20Section%20Menu-,COVID-19:%20Badger%20Bounce%20Back,safest%20way%20to%20open%20Wisconsin.)
+   * [Wisconsin Health Department's comprehensive website on COVID and planning](https://www.dhs.wisconsin.gov/outbreaks/index.htm)
+   * [Visual summary of Wisconsin Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
+
+```{r}
+```
+
+
+### Eau Claire
+
+   * [Eau Claire Reopening guidelines "Respond Together"](https://www.eauclairewi.gov/Home/ShowDocument?id=32685)
+   * [Eau Claire County Health Department's comprehensive website on COVID and planning](https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
+   * [Visual summary Eau Claire County Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
+
 ```{r}
 ```
 
