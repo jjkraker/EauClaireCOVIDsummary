@@ -29,6 +29,10 @@ WIdata = read.csv("Data/WIdata.csv")
 # names(WIdata)  
 WIdata <- CaseCheck(WIdata)
 
+ECdata = read.csv("Data/ECdata.csv")
+# names(ECdata)  
+ECdata <- CaseCheck(ECdata)
+
 ```
 
 Numeric Summaries {data-orientation=columns}
@@ -37,14 +41,17 @@ Numeric Summaries {data-orientation=columns}
 Column {.tabset}
 -------------------------------------
    
+### Eau Claire
+```{r}
+PartialTotalTable(ECdata, "Eau Claire")
+```
+
 ### Wisconsin {data-width=300}
 
 ```{r}
 FullTotalTable(WIdata, "Wisconsin")
 ```
 
-
-### Eau Claire
 
 
 
@@ -58,6 +65,7 @@ Column {.tabset}
 
 Other information:
 
+   * [Reopening guidelines](https://www.dhs.wisconsin.gov/covid-19/prepare.htm#:~:text=Back%20Section%20Menu-,COVID-19:%20Badger%20Bounce%20Back,safest%20way%20to%20open%20Wisconsin.)
    * [Wisconsin Health Department's comprehensive website on COVID and planning](https://www.dhs.wisconsin.gov/outbreaks/index.htm)
    * [Visual summary of Wisconsin Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
 
@@ -67,6 +75,7 @@ Other information:
 
 ### Eau Claire
 
+   * [Eau Claire Reopening guidelines "Respond Together"](https://www.eauclairewi.gov/Home/ShowDocument?id=32685)
    * [Eau Claire County Health Department's comprehensive website on COVID and planning](https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
    * [Visual summary Eau Claire County Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
 
@@ -76,6 +85,34 @@ Other information:
 Daily Plots {data-orientation=columns}
 =====================================  
     
+Column {.tabset}
+-------------------------------------
+
+### Eau Claire
+
+Important dates (green dashed lines):
+
+   * May 14:  First day after Stay-at-Home order reversed by state Supreme Court
+   * May 25:  Memorial Day (typical celebrations and/or vacations)
+   * July 4:  Independence Day (typical celebrations and/or vacations)
+   
+**Note**:  due to lag time between exposure and final positive test, effects of changes are typically observed about two weeks after event.
+
+```{r,fig.height=3}
+DailyCases(ECdata, "Eau Claire") 
+
+```   
+
+### Wisconsin
+
+```{r,fig.height=3}
+DailyCases(WIdata, "Wisconsin") 
+
+```   
+
+**Comment:** Why a 7-day moving average?  Wisconsin tends to have cyclical patterns in testing results, with low spots typically on Mondays (this may be due to lower testing on weekends)
+
+
 
 Column {data-width=400}
 -------------------------------------
@@ -87,39 +124,6 @@ Not yet coded
 ```{r}
 ```
    
-Column {.tabset}
--------------------------------------
-
-### Wisconsin
-
-```{r}
-ggplot(WIdata, aes(x=as.Date(DATE,"%B %d %Y"), y=POS_NEW))+
-#  geom_line(aes(color=Month))+ 
-  geom_line(aes(color="Daily"))+
-  geom_line(aes(y=rollmean(POS_NEW, 7, na.pad=TRUE), color="7-day moving avg")) +
-  geom_smooth(method = 'loess',aes(color="Loess smooth"))+
-  scale_x_date(breaks = date_breaks("7 days"))+
-  ggtitle(label = "WI Daily new COVID cases")+
-  theme_minimal()+
-  theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
-        axis.text.x = element_text(angle=90))+
-  ylab("Daily New Cases")+
-  xlab("Date") +
-  scale_colour_manual(name='', values=c('Daily'='navy','Loess smooth'='grey','7-day moving avg'='red')) 
-#  geom_vline(xintercept = c("2020-06-29","2020-06-22","2020-06-15") %>% as.Date(), lty = 2, col= "green")
-
-```   
-
-**Comment:** Why a 7-day moving average?  Wisconsin tends to have cyclical patterns in testing results, with low spots typically on Mondays (this may be due to lower testing on weekends)
-
-
-### Chart 3
-
-Not yet coded
-
-
-```{r}
-```
 
 Column {.tabset}
 -------------------------------------
@@ -174,6 +178,8 @@ Column {data-height=100}
 
    * Johns Hopkins dashboard (world, national, and county levels)
    * National
+   * https://topic.newsbreak.com/covid-19.html?zip=19934&s=dmg_local_briefing.web2
+
    * [Wisconsin DHS website](https://www.dhs.wisconsin.gov/covid-19/county.htm), with interactive graphs; subsettable by county
    * [Re-opening Trends](https://www.nytimes.com/interactive/2020/07/09/us/coronavirus-cases-reopening-trends.html):  that is, why didn't the first wave end?
 
