@@ -228,7 +228,16 @@ Media articles / letters summarizing scientific publications:
 Modeling  {data-orientation=rows}
 =====================================     
 
-(simple visuals in progress)
 
+```{r}
+k=19; n=dim(WIdata)[1]
+plot(log(WIdata$POSITIVE[11:(n-k)]),log(WIdata$DEATHS[(k+11):n]), 
+     col="#00CED1", type="l", lwd=2,
+     xlab="log Cumulative Cases",
+     ylab="log Deaths at lag 19")
 
-   
+coef = lm(log(WIdata$DEATHS[(k+11):n])~log(WIdata$POSITIVE[11:(n-k)]))$coef
+abline(coef)
+print(paste("The log cumulative deaths, at a lag of 19 days, are approximately", round(as.numeric(exp(coef[1])),1), "times log of cumulative cases to the", round(as.numeric(coef[2]),2), "power."))
+print(paste("We thus predict that on", today()+19, "the cumulative number of deaths in WI will be", round(exp(coef[1])*(max(WIdata$POSITIVE))^coef[2])))
+```
