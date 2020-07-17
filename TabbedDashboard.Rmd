@@ -43,12 +43,17 @@ Column {.tabset}
 
 ### Eau Claire
 
-Important dates (green dashed lines):
+Important dates (purple dashed lines):
 
    * May 14:  First day after Stay-at-Home order reversed by state Supreme Court
    * May 25:  Memorial Day (typical celebrations and/or vacations)
    * July 4:  Independence Day (typical celebrations and/or vacations)
-   
+
+(green dashed lines):
+
+   * March 25:  Stay-at-Home order put in place
+   * July 20:  Large national stores putting mask mandates in place
+
 **Note**:  due to lag time between exposure and final positive test, effects of changes are typically observed about two weeks after event.
 
 ```{r,fig.height=3}
@@ -238,6 +243,6 @@ plot(log(WIdata$POSITIVE[11:(n-k)]),log(WIdata$DEATHS[(k+11):n]),
 
 coef = lm(log(WIdata$DEATHS[(k+11):n])~log(WIdata$POSITIVE[11:(n-k)]))$coef
 abline(coef)
-print(paste("The log cumulative deaths, at a lag of 19 days, are approximately", round(as.numeric(exp(coef[1])),1), "times log of cumulative cases to the", round(as.numeric(coef[2]),2), "power."))
+print(paste("The number of  cumulative deaths, at a lag of 19 days, are approximately", round(as.numeric(exp(coef[1])),1), "times number of cumulative cases to the", round(as.numeric(coef[2]),2), "power."))
 print(paste("We thus predict that on", today()+19, "the cumulative number of deaths in WI will be", round(exp(coef[1])*(max(WIdata$POSITIVE))^coef[2])))
 ```

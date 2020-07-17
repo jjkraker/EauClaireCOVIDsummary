@@ -1,3 +1,33 @@
+k=8; n=dim(WIdata)[1]
+plot(WIdata$POSITIVE[1:(n-k)],WIdata$DEATHS[(k+1):n], 
+     col="#EEEEEE", type="l", lwd=2)
+
+colused = c("#AFEEEE","#40E0D0","#48D1CC","#00CED1")
+for (i in 1:4) {
+  k = (c(10, 12, 14, 16))[i]
+  points(WIdata$POSITIVE[1:(n-k)],WIdata$DEATHS[(k+1):n], 
+       col=colused[i], type="l", lwd=2)
+}
+
+k=8; n=dim(WIdata)[1]
+plot(log(WIdata$POSITIVE[1:(n-k)]),log(WIdata$DEATHS[(k+1):n]), 
+     col="#EEEEEE", type="l", lwd=2)
+
+colused = c("#AFEEEE","#40E0D0","#48D1CC","#00CED1")
+for (i in 1:4) {
+  k = (c(16, 17, 18, 19))[i]
+  points(log(WIdata$POSITIVE[1:(n-k)]),log(WIdata$DEATHS[(k+1):n]), 
+         col=colused[i], type="l", lwd=2)
+}
+
+k=19; n=dim(WIdata)[1]
+plot(log(WIdata$POSITIVE[11:(n-k)]),log(WIdata$DEATHS[(k+11):n]), 
+     col="#00CED1", type="l", lwd=2)
+
+coef = lm(log(WIdata$DEATHS[(k+11):n])~log(WIdata$POSITIVE[11:(n-k)]))$coef
+abline(coef); coef
+#log(y) = 2.2+.45*log(x)
+#DTHS ~ exp(coef[1])*(CASES at lag 19)^coef[2]
 # Area plot
 ggplot(WIdata, aes(x=DATE, y=value, fill=group)) + 
   geom_area()
