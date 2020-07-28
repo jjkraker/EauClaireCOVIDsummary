@@ -168,6 +168,12 @@ Row {data-height=400}
 ```{r}
 ```
 
+Active {data-orientation=rows}
+=====================================     
+
+Estimated recovery time from health experts varies between 10-20 days, with rare cases being long-term / on-going.  A reasonable approximation is to use the total number of positive (diagnosed) cases across the last 14-16 days.  We will go with this standard, and adjust as more precise information becomes available.
+
+
 References {data-orientation=rows}
 =====================================     
 
@@ -205,6 +211,7 @@ Column {data-height=400}
    * [Wisconsin updates](https://www.reddit.com/r/CoronavirusWI/comments/hftc25/62520_graphs/) (from Redditor [unknown-and-alone](https://www.reddit.com/user/unknown-and-alone)) 
    * <a href="https://www.reddit.com/r/CoronavirusWI/comments/hftc25/62520_graphs/" target="_blank">Wisconsin updates</a>
    * https://www.reddit.com/r/dataisbeautiful/comments/hjwthw/oc_countylevel_covid19_case_growth_animation_in/
+   * https://www.cpp.edu/~clange/covid19/Covid19ReportCaliforniaComp.html
 
 ### Scientific References for Common Questions {data-width=500}
 
@@ -235,13 +242,51 @@ Modeling  {data-orientation=rows}
 
 
 ```{r}
-k=24; n=dim(WIdata)[1]
-plot(log(WIdata$POSITIVE[11:(n-k)]),log(WIdata$DEATHS[(k+11):n]), 
+n=dim(WIdata)[1]; start = 18 # error on neg cases at 17
+allcorPOS = c()
+for (k in 1:24) {
+  allcorPOS = c(allcorPOS,
+                (cor(log(WIdata$POSITIVE[start:(n-k)]),
+                     log(WIdata$DEATHS[(k+start):n])
+                     )
+                 )
+                )
+#  plot(log(WIdata$POSITIVE[start:(n-k)]),log(WIdata$DEATHS[(k+start):n]))
+}
+#plot(1:24,allcorPOS)
+
+kLogPOS = order(allcorPOS)[24]
+
+allcorRateNEW = c()
+for (k in 1:25) {
+  TestsNEW = WIdata$POS_NEW[start:(n-k)]+WIdata$NEG_NEW[start:(n-k)]
+  RateNEW = WIdata$POS_NEW[start:(n-k)]/TestsNEW
+  allcorRateNEW = c(allcorRateNEW,
+                (cor(RateNEW,
+                     log(WIdata$DEATHS[(k+start):n])
+                     )
+                 )
+                )
+#  plot(RateNEW,log(WIdata$DEATHS[(k+start):n]))
+}
+#plot(1:25,allcorRateNEW)
+kRatePOS = order(allcorRateNEW)[1]
+        
+k=20; 
+plot(log(WIdata$POSITIVE[start:(n-k)]),log(WIdata$DEATHS[(k+start):n]), 
      col="#00CED1", type="l", lwd=2,
      xlab="log Cumulative Cases",
-     ylab="log Deaths at lag 19")
+     ylab=paste("log Deaths at lag",k)
+)
 
-coef = lm(log(WIdata$DEATHS[(k+11):n])~log(WIdata$POSITIVE[11:(n-k)]))$coef
+TestsNEW = WIdata$POS_NEW[start:(n-k)]+WIdata$NEG_NEW[start:(n-k)]
+RateNEW = WIdata$POS_NEW[start:(n-k)]/TestsNEW
+#plot(RateNEW,log(WIdata$DEATHS[(k+start):n]),
+#     col="#00CED1", lwd=2,
+#     xlab="New Positives (daily) rate",
+#     ylab=paste("log Deaths at lag",k)
+#)
+coef = lm(log(WIdata$DEATHS[(k+start):n])~log(WIdata$POSITIVE[start:(n-k)]))$coef
 abline(coef)
 print(paste("The number of  cumulative deaths, at a lag of", k, "days, are approximately", round(as.numeric(exp(coef[1])),1), "times number of cumulative cases to the", round(as.numeric(coef[2]),2), "power."))
 print(paste("We thus predict that on", today()+k, "the cumulative number of deaths in WI will be", round(exp(coef[1])*(max(WIdata$POSITIVE))^coef[2])))
