@@ -61,7 +61,7 @@ DailyCases = function(usabledata, location) {
         axis.text.x = element_text(angle=90))+
   ylab("Daily New Cases")+
   xlab("Date") +
-  geom_vline(xintercept = c("2020-03-25","2020-07-20") %>% as.Date(), lty = 2, col= "green") +
+  geom_vline(xintercept = c("2020-03-25","2020-07-20","2020-08-01") %>% as.Date(), lty = 2, col= "green") +
   geom_vline(xintercept = c("2020-05-14","2020-05-25","2020-07-04") %>% as.Date(), lty = 2, col= "purple") +
   scale_colour_manual(name='', values=c('Daily'='navy','Loess smooth'='grey','7-day moving avg'='red')) 
   
