@@ -1,5 +1,5 @@
 ---
-title: "Eau Claire COVID Information"
+title: "Eau Claire COVID"
 #author:  "by Jessica Kraker, ____"
 date:  "as of `r format(Sys.time()-0*86400, '%B %d, %Y')`"
 output: 
@@ -35,14 +35,11 @@ ECdata <- CaseCheck(ECdata)
 
 ```
 
-Daily Plots {data-orientation=columns}
+Daily  {data-orientation=columns}
 =====================================  
     
 Column {.tabset}
 -------------------------------------
-
-### Eau Claire
-
 Important dates (purple dashed lines):
 
    * May 14:  First day after Stay-at-Home order reversed by state Supreme Court
@@ -54,6 +51,9 @@ Important dates (purple dashed lines):
    * March 25:  Stay-at-Home order put in place
    * July 20:  Large national stores putting mask mandates in place
    * Aug 1:  WI mask mandate in effect
+
+### Eau Claire
+
    
 **Note**:  due to lag time between exposure and final positive test, effects of changes are typically observed about two weeks after event.
 
@@ -73,32 +73,29 @@ DailyCases(WIdata, "Wisconsin")
 
 
 
-Column {data-width=400}
+
+
+Active {.tabset}
 -------------------------------------
-    
-### Chart 1
-
-Not yet coded
-    
-```{r}
-```
+**Active cases**:  Estimated recovery time from health experts varies between 10-20 days, with rare cases being long-term / on-going.  Even given the testing lag, a conservative approximation is to use the total number of positive (diagnosed) cases across the last 10 days.  We will go with this standard, along with a range from 8-12 days of active accumulation, and adjust as more precise information becomes available.
    
+### Eau Claire
 
-Column {.tabset}
--------------------------------------
-   
-### Chart 2
+```{r,fig.height=3}
+ActiveCases(ECdata, "Eau Claire") 
 
-```{r}
 ```   
- 
-### Chart 3
-    
-```{r}
+
+### Wisconsin
+
+```{r,fig.height=3}
+ActiveCases(WIdata, "Wisconsin") 
+
+
 ```
 
 
-Numeric Summaries {data-orientation=columns}
+Cumulative {data-orientation=columns}
 =====================================     
 
 Column {.tabset}
@@ -112,7 +109,7 @@ PartialTotalTable(ECdata, "Eau Claire")
 ### Wisconsin {data-width=300}
 
 ```{r}
-FullTotalTable(WIdata, "Wisconsin")
+PartialTotalTable(WIdata, "Wisconsin")
 ```
 
 
@@ -123,7 +120,11 @@ FullTotalTable(WIdata, "Wisconsin")
 
 Column {.tabset}
 -------------------------------------
-   
+
+**Definitions**
+
+*Case fatality rate*:
+
 ### Wisconsin {data-width=300}
 
 Other information:
@@ -145,34 +146,7 @@ Other information:
 ```{r}
 ```
 
-Cumulative Plots {data-orientation=rows}
-=====================================     
-   
-Row {data-height=600}
--------------------------------------
 
-### Chart 1
-
-```{r}
-```
-
-Row {data-height=400}
--------------------------------------
-   
-### Chart 2
-
-```{r}
-```   
-    
-### Chart 3
-
-```{r}
-```
-
-Active {data-orientation=rows}
-=====================================     
-
-Estimated recovery time from health experts varies between 10-20 days, with rare cases being long-term / on-going.  A reasonable approximation is to use the total number of positive (diagnosed) cases across the last 14-16 days.  We will go with this standard, and adjust as more precise information becomes available.
 
 
 References {data-orientation=rows}

@@ -14,7 +14,16 @@ CaseCheck = function(usabledata) {
                              c(POS_NEW[-1],0) < 0 ~ +1,
                              TRUE ~ POS_NEW
                              )
+  ) %>%
+  mutate(TOTAL_10Days= rollsum(POS_NEW, 10, fill=NA,align="right")
+  ) %>%
+  mutate(TOTAL_15Days = rollsum(POS_NEW, 15, fill=NA,align="right")
+  ) %>%
+    mutate(TOTAL_12Days= rollsum(POS_NEW, 12, fill=NA,align="right")
+  ) %>%
+    mutate(TOTAL_8Days= rollsum(POS_NEW, 8, fill=NA,align="right")
   )
+  
 }
 
 
@@ -35,17 +44,18 @@ FullTotalTable = function(usabledata, location) {
 
 
 PartialTotalTable = function(usabledata, location) {
-  partialtable <-
+  fulltable <-
     usabledata %>% 
-    filter(DATE %in% tail(DATE, 7)) %>%
-    select(DATE, POSITIVE, NEGATIVE, DEATHS) %>%
+    filter(DATE %in% tail(DATE, 10)) %>%
+    select(DATE, POSITIVE, NEGATIVE, DEATHS, TOTAL_10Days, TOTAL_15Days) %>%
+    rename_at(vars(starts_with("TOTAL_")), ~str_to_title(str_replace_all(., "TOTAL_","New in Last "))) %>%
+    rename_at(vars(starts_with("HOSP_")), ~str_to_title(str_replace_all(., "HOSP_","Hospitalization "))) %>%
     kable(digits = 3,booktabs = T, caption = paste(location, "cumulative counts of COVID cases and outcomes"),align = "c") %>%
     kable_styling(latex_options = c("hold_position", "scale_down"), font_size = 11) %>% 
-    row_spec(7, color = "darkblue", background = "#00FFFF") 
+    row_spec(10, color = "darkblue", background = "#00FFFF") 
   
-  partialtable
+  fulltable
 }
-
 
 
 DailyCases = function(usabledata, location) {
@@ -70,6 +80,29 @@ DailyCases = function(usabledata, location) {
   DCplot
 }
 
+
+
+ActiveCases = function(usabledata, location) {
+  DCplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TOTAL_12Days))+
+    geom_line(aes(color="12days total"))+
+    geom_line(aes(y=TOTAL_10Days, color="10days total")) +
+    geom_line(aes(y=TOTAL_8Days, color="8days total"))+
+    geom_line(aes(y=POS_NEW, color="Daily Cases")) +
+    scale_x_date(breaks = date_breaks("7 days"))+
+    ggtitle(label = paste(location, "Estimated Active COVID cases"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("Estimated Active Cases")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('10days total'='navy',
+                                          '8days total'='grey','12days total'='grey40','15days total'='grey',
+                                          'Daily Cases'='red')) 
+  
+  #  DCplot <- DCplot %>%
+  #    
+  DCplot
+}
 
 
 
