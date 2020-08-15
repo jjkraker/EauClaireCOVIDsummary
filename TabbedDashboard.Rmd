@@ -291,7 +291,7 @@ for (k in 1:25) {
 #plot(1:25,allcorRateNEW)
 kRatePOS = order(allcorRateNEW)[1]
         
-k=26; 
+k=28; 
 plot(log(WIdata$POSITIVE[start:(n-k)]),log(WIdata$DEATHS[(k+start):n]), 
      col="#00CED1", type="l", lwd=2,
      xlab="log Cumulative Cases",
