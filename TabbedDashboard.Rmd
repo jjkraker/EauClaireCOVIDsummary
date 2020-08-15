@@ -261,7 +261,7 @@ Modeling  {data-orientation=rows}
 
 
 ```{r}
-n=dim(WIdata)[1]; start = 18 # error on neg cases at 17
+n=dim(WIdata)[1]; start = 30 # error on neg cases at 17
 allcorPOS = c()
 for (k in 1:24) {
   allcorPOS = c(allcorPOS,
@@ -291,7 +291,7 @@ for (k in 1:25) {
 #plot(1:25,allcorRateNEW)
 kRatePOS = order(allcorRateNEW)[1]
         
-k=20; 
+k=26; 
 plot(log(WIdata$POSITIVE[start:(n-k)]),log(WIdata$DEATHS[(k+start):n]), 
      col="#00CED1", type="l", lwd=2,
      xlab="log Cumulative Cases",
