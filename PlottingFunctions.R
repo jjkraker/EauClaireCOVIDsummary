@@ -64,7 +64,7 @@ DailyCases = function(usabledata, location) {
   geom_line(aes(color="Daily"))+
   geom_line(aes(y=rollmean(POS_NEW, 7, na.pad=TRUE), color="7-day moving avg")) +
   geom_smooth(method = 'loess',aes(color="Loess smooth"))+
-  scale_x_date(breaks = date_breaks("7 days"))+
+  scale_x_date(breaks = date_breaks("14 days"))+
   ggtitle(label = paste(location, "Daily new COVID cases"))+
   theme_minimal()+
   theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
@@ -88,7 +88,8 @@ ActiveCases = function(usabledata, location) {
     geom_line(aes(y=TOTAL_10Days, color="10days total")) +
     geom_line(aes(y=TOTAL_8Days, color="8days total"))+
     geom_line(aes(y=POS_NEW, color="Daily Cases")) +
-    scale_x_date(breaks = date_breaks("7 days"))+
+    scale_x_date(date_minor_breaks = "1 week") +
+    scale_x_date(breaks = date_breaks("14 days"))+
     ggtitle(label = paste(location, "Estimated Active COVID cases"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
@@ -118,3 +119,4 @@ DailyInfoPlot = function(usabledata) {
   
   p1
 }
+

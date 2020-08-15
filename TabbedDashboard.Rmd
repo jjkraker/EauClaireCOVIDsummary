@@ -33,6 +33,15 @@ ECdata = read.csv("Data/ECdata.csv")
 # names(ECdata)  
 ECdata <- CaseCheck(ECdata)
 
+BAdata = read.csv("Data/BAdata.csv")
+# names(BAdata)  
+BAdata <- CaseCheck(BAdata)
+
+CFdata = read.csv("Data/CFdata.csv")
+# names(CFdata)  
+CFdata <- CaseCheck(CFdata)
+
+
 ```
 
 Daily  {data-orientation=columns}
@@ -40,24 +49,36 @@ Daily  {data-orientation=columns}
     
 Column {.tabset}
 -------------------------------------
-Important dates (purple dashed lines):
+**Important dates**:
 
-   * May 14:  First day after Stay-at-Home order reversed by state Supreme Court
-   * May 25:  Memorial Day (typical celebrations and/or vacations)
-   * July 4:  Independence Day (typical celebrations and/or vacations)
+   * (purple dashed lines)  **May 14**:  Stay-at-Home *reversed*;  **May 25**:  Memorial Day; **July 4**:  Independence Day 
 
-(green dashed lines):
-
-   * March 25:  Stay-at-Home order put in place
-   * Aug 1:  WI mask mandate in effect
-
-### Eau Claire
+   * (green dashed lines)  **March 25**:  Stay-at-Home order; **Aug 1**:  WI mask mandate
 
    
 **Note**:  due to lag time between exposure and final positive test, effects of changes are typically observed about two weeks after event.
 
+**Comment:** Why a 7-day moving average?  Wisconsin tends to have cyclical patterns in testing results, with low spots typically on Mondays (this may be due to lower testing on weekends)
+
+
+### Eau Claire
+
 ```{r,fig.height=3}
 DailyCases(ECdata, "Eau Claire") 
+
+```   
+
+### Chippewa
+
+```{r,fig.height=3}
+DailyCases(CFdata, "Chippewa") 
+
+```   
+
+### Barron
+
+```{r,fig.height=3}
+DailyCases(BAdata, "Barron") 
 
 ```   
 
@@ -67,10 +88,6 @@ DailyCases(ECdata, "Eau Claire")
 DailyCases(WIdata, "Wisconsin") 
 
 ```   
-
-**Comment:** Why a 7-day moving average?  Wisconsin tends to have cyclical patterns in testing results, with low spots typically on Mondays (this may be due to lower testing on weekends)
-
-
 
 
 
@@ -82,6 +99,20 @@ Active {.tabset}
 
 ```{r,fig.height=3}
 ActiveCases(ECdata, "Eau Claire") 
+
+```   
+
+### Chippewa
+
+```{r,fig.height=3}
+ActiveCases(CFdata, "Chippewa") 
+
+```   
+
+### Barron
+
+```{r,fig.height=3}
+ActiveCases(BAdata, "Barron") 
 
 ```   
 
@@ -104,6 +135,20 @@ Column {.tabset}
 ```{r}
 PartialTotalTable(ECdata, "Eau Claire")
 ```
+
+### Chippewa
+
+```{r,fig.height=3}
+PartialTotalTable(CFdata, "Chippewa") 
+
+```   
+
+### Barron
+
+```{r,fig.height=3}
+PartialTotalTable(BAdata, "Barron") 
+
+```   
 
 ### Wisconsin {data-width=300}
 
