@@ -21,6 +21,8 @@ CaseCheck = function(usabledata) {
   ) %>%
     mutate(TOTAL_12Days= rollsum(POS_NEW, 12, fill=NA,align="right")
   ) %>%
+    mutate(TOTAL_14Days= rollsum(POS_NEW, 14, fill=NA,align="right")
+    ) %>%
     mutate(TOTAL_8Days= rollsum(POS_NEW, 8, fill=NA,align="right")
   )
   
@@ -47,7 +49,7 @@ PartialTotalTable = function(usabledata, location) {
   fulltable <-
     usabledata %>% 
     filter(DATE %in% tail(DATE, 10)) %>%
-    select(DATE, POSITIVE, NEGATIVE, DEATHS, TOTAL_10Days, TOTAL_15Days) %>%
+    select(DATE, POSITIVE, NEGATIVE, DEATHS, TOTAL_10Days, TOTAL_14Days) %>%
     rename_at(vars(starts_with("TOTAL_")), ~str_to_title(str_replace_all(., "TOTAL_","New in Last "))) %>%
     rename_at(vars(starts_with("HOSP_")), ~str_to_title(str_replace_all(., "HOSP_","Hospitalization "))) %>%
     kable(digits = 3,booktabs = T, caption = paste(location, "cumulative counts of COVID cases and outcomes"),align = "c") %>%
@@ -73,7 +75,7 @@ DailyCases = function(usabledata, location) {
   xlab("Date") +
   geom_vline(xintercept = c("2020-03-25","2020-08-01") %>% as.Date(), lty = 2, col= "green") +
   geom_vline(xintercept = c("2020-05-14","2020-05-25","2020-07-04") %>% as.Date(), lty = 2, col= "purple") +
-  scale_colour_manual(name='', values=c('Daily'='navy','Loess smooth'='grey','7-day moving avg'='red')) 
+  scale_colour_manual(name='', values=c('Daily'='green','Loess smooth'='grey','7-day moving avg'='navy')) 
   
 #  DCplot <- DCplot %>%
 #    
@@ -86,7 +88,7 @@ ActiveCases = function(usabledata, location) {
   DCplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TOTAL_12Days))+
     geom_line(aes(color="12days total"))+
     geom_line(aes(y=TOTAL_10Days, color="10days total")) +
-    geom_line(aes(y=TOTAL_8Days, color="8days total"))+
+    geom_line(aes(y=TOTAL_14Days, color="14days total"))+
     geom_line(aes(y=POS_NEW, color="Daily Cases")) +
     scale_x_date(date_minor_breaks = "1 week") +
     scale_x_date(breaks = date_breaks("14 days"))+
@@ -97,8 +99,8 @@ ActiveCases = function(usabledata, location) {
     ylab("Estimated Active Cases")+
     xlab("Date") +
     scale_colour_manual(name='', values=c('10days total'='navy',
-                                          '8days total'='grey','12days total'='grey40','15days total'='grey',
-                                          'Daily Cases'='red')) 
+                                          '12days total'='grey','14days total'='red4','15days total'='grey',
+                                          'Daily Cases'='green')) 
   
   #  DCplot <- DCplot %>%
   #    

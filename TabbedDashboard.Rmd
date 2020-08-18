@@ -125,15 +125,34 @@ ActiveCases(WIdata, "Wisconsin")
 ```
 
 
-Cumulative {data-orientation=columns}
+By the Numbers {data-orientation=columns}
 =====================================     
 
 Column {.tabset}
 -------------------------------------
    
+**Definitions** (corresponding / similar to MN plan)
+
+   * **2wk**: Two-week average case per 10K
+   * **daily7**: Daily running average (7day)
+
+Since over 50% of students on campus are in early 20s, I will also be estimating:
+
+   * **2wk20s**:  Two-week average cases per 10K twenties (uses age distribution from EC health)
+
+*Case fatality rate*, etc:
+
+**Need to add to table**
+
 ### Eau Claire
 ```{r}
 PartialTotalTable(ECdata, "Eau Claire")
+
+
+#Cumulative – 4plot?
+#Testing: Add bar chart, split between pos and neg, with response rate.
+#Cumulative: line plot of logs (like Minnesota reference).  Line plot regular scale.
+
 ```
 
 ### Chippewa
@@ -165,13 +184,34 @@ PartialTotalTable(WIdata, "Wisconsin")
 Column {.tabset}
 -------------------------------------
 
-**Definitions**
+**Source**:  [Minnesota’s safe learning plan](https://education.mn.gov/MDE/dse/health/covid19/) is very direct, very precise, with scientific basis.  Determined on a local level. 
 
-*Case fatality rate*:
+
+*DRAFT GUIDELINES for Dr. Kraker's classes*
+
+   * If **2wk** > 25 OR **2wk20s** > 30, urge extreme caution.
+   * If **2wk** > 28 (OR **2wk20s** > 40), consider staying home and watching class recordings (rather than attending in-person) and visit online OH.
+   * If **2wk** > 28 (OR **2wd20s** > 40) AND **daily7** increasing, strongly encouraged to stay home and watch class recordings (attend in-person only as absolutely needed) and visit online OH.  I will  communicate with administration.
+   * If **2wk** > 30 (OR **2wd20s** > 50) AND **daily7** steady to increasing, I will not have in-person classes without strong evidence of campus protection.
+
+
+### Eau Claire {data-width=100}
+
+**Important Resources**:
+
+   * [Eau Claire Reopening guidelines "Respond Together"](https://www.eauclairewi.gov/Home/ShowDocument?id=32685)
+   * [Eau Claire County Health Department's comprehensive website on COVID and planning](https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
+   * [Visual summary Eau Claire County Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
+
+```{r}
+```
+
 
 ### Wisconsin {data-width=300}
 
-Other information:
+
+**Important Resources**:
+
 
    * [Reopening guidelines](https://www.dhs.wisconsin.gov/covid-19/prepare.htm#:~:text=Back%20Section%20Menu-,COVID-19:%20Badger%20Bounce%20Back,safest%20way%20to%20open%20Wisconsin.)
    * [Wisconsin Health Department's comprehensive website on COVID and planning](https://www.dhs.wisconsin.gov/outbreaks/index.htm)
@@ -181,14 +221,60 @@ Other information:
 ```
 
 
-### Eau Claire
+Cumulative {data-orientation=columns}
+=====================================     
 
-   * [Eau Claire Reopening guidelines "Respond Together"](https://www.eauclairewi.gov/Home/ShowDocument?id=32685)
-   * [Eau Claire County Health Department's comprehensive website on COVID and planning](https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
-   * [Visual summary Eau Claire County Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
+
+
+Column {data-width=600}{.tabset}
+-------------------------------------
+   
+### Eau Claire
+```{r}
+#PartialTotalTable(ECdata, "Eau Claire")
+
+
+#Cumulative – 4plot?
+#Testing: Add bar chart, split between pos and neg, with response rate.
+#Cumulative: line plot of logs (like Minnesota reference).  Line plot regular scale.
+
+```
+
+### Chippewa
+
+```{r}
+#PartialTotalTable(CFdata, "Chippewa") 
+
+```   
+
+### Barron
+
+```{r}
+#PartialTotalTable(BAdata, "Barron") 
+
+```   
+
+### Wisconsin 
+
+```{r}
+#PartialTotalTable(WIdata, "Wisconsin")
+```
+
+
+
 
 ```{r}
 ```
+
+
+Column {data-width=200}{.tabset}
+-------------------------------------
+
+### Eau Claire 
+
+
+### Wisconsin 
+
 
 
 
@@ -292,11 +378,6 @@ for (k in 1:25) {
 kRatePOS = order(allcorRateNEW)[1]
         
 k=28; 
-plot(log(WIdata$POSITIVE[start:(n-k)]),log(WIdata$DEATHS[(k+start):n]), 
-     col="#00CED1", type="l", lwd=2,
-     xlab="log Cumulative Cases",
-     ylab=paste("log Deaths at lag",k)
-)
 
 TestsNEW = WIdata$POS_NEW[start:(n-k)]+WIdata$NEG_NEW[start:(n-k)]
 RateNEW = WIdata$POS_NEW[start:(n-k)]/TestsNEW
@@ -306,7 +387,31 @@ RateNEW = WIdata$POS_NEW[start:(n-k)]/TestsNEW
 #     ylab=paste("log Deaths at lag",k)
 #)
 coef = lm(log(WIdata$DEATHS[(k+start):n])~log(WIdata$POSITIVE[start:(n-k)]))$coef
-abline(coef)
 print(paste("The number of  cumulative deaths, at a lag of", k, "days, are approximately", round(as.numeric(exp(coef[1])),1), "times number of cumulative cases to the", round(as.numeric(coef[2]),2), "power."))
 print(paste("We thus predict that on", today()+k, "the cumulative number of deaths in WI will be", round(exp(coef[1])*(max(WIdata$POSITIVE))^coef[2])))
+
+
+plot(log(WIdata$POSITIVE[start:(n-k)]),log(WIdata$DEATHS[(k+start):n]), 
+     col="#00CED1", type="l", lwd=2,
+     xlab="log Cumulative Cases",
+     ylab=paste("log Deaths at lag",k)
+)
+Lagdata <- data.frame(logPOStok=log(WIdata$POSITIVE[start:(n-k)]),
+                     logDTHlag=log(WIdata$DEATHS[(k+start):n]))
+
+Model1plot <- ggplot(Lagdata, aes(x=logPOStok, y=logDTHlag))+
+    geom_line(aes(color="correspondence"))+
+    scale_colour_manual(name=F, values=c('correspondence'='purple','Loess smooth'='grey','7-day moving avg'='navy')) + 
+    ggtitle(label = paste("WI correpondence between Cumulative cases and deaths"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab(paste("Log Deaths at lag", k))+
+    xlab("Log Cases") 
+
+#Model1plot
+
+
+#Modeling – log deaths (blue) and transformed-log cases (red or green).
+
 ```

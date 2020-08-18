@@ -1,3 +1,25 @@
+plot(log(WIdata$POSITIVE),col="blue",type="l");
+points(log(WIdata$DEATHS),col="red4",type="l");
+points(1:length(WIdata$DEATHS) - 20,log(WIdata$DEATHS),col="red3",type="l")
+
+points(21:length(WIdata$DEATHS) - 20,(log(WIdata$DEATHS[21:length(WIdata$DEATHS)])-2.28)/.4381,col="red",type="l")
+
+
+plot(log(WIdata$DEATHS),col="red4",type="l");
+points(log(WIdata$POSITIVE),col="blue4",type="l");
+points(1:length(WIdata$POSITIVE) + 20,log(WIdata$POSITIVE),col="blue3",type="l")
+
+points(21:length(WIdata$DEATHS) - 20,(log(WIdata$DEATHS[21:length(WIdata$DEATHS)])-2.28)/.4381,col="red",type="l")
+
+#####################
+
+plot(log(WIdata$POSITIVE),col="blue",type="l");
+points(log(WIdata$DEATHS),col="red4",type="l");
+points(1:length(WIdata$DEATHS) - 24,log(WIdata$DEATHS),col="red3",type="l")
+
+points(1:length(WIdata$DEATHS) - 24,log(WIdata$DEATHS)/.46-4.5,col="red",type="l")
+
+
 k=8; n=dim(WIdata)[1]
 plot(WIdata$POSITIVE[1:(n-k)],WIdata$DEATHS[(k+1):n], 
      col="#EEEEEE", type="l", lwd=2)
@@ -124,3 +146,15 @@ p1 <- ggplot(usabledata %>% mutate(Value = ifelse(Variable == "New.deaths", Valu
 
 p1
 }
+
+############
+checkdata=BAdata
+n = dim(checkdata)[1]
+diff = checkdata$POSITIVE[2:n]-checkdata$POSITIVE[1:(n-1)]
+plot(diff,checkdata$POS_NEW[2:n])
+whichmiss <- checkdata$DATE[diff != checkdata$POS_NEW[2:n]]
+diff[whichmiss]; checkdata$POS_NEW[whichmiss]
+diffn = checkdata$NEGATIVE[2:n]-checkdata$NEGATIVE[1:(n-1)]
+plot(diffn,checkdata$NEG_NEW[2:n])
+whichmissn <- checkdata$DATE[diffn != checkdata$NEG_NEW[2:n]]
+diffn[whichmissn]; checkdata$NEG_NEW[whichmissn]
