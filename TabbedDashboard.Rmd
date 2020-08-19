@@ -53,7 +53,7 @@ Column {.tabset}
 
    * (purple dashed lines)  **May 14**:  Stay-at-Home *reversed*;  **May 25**:  Memorial Day; **July 4**:  Independence Day 
 
-   * (green dashed lines)  **March 25**:  Stay-at-Home order; **Aug 1**:  WI mask mandate
+   * (blue dashed lines)  **March 25**:  Stay-at-Home order; **Aug 1**:  WI mask mandate
 
    
 **Note**:  due to lag time between exposure and final positive test, effects of changes are typically observed about two weeks after event.
@@ -93,7 +93,7 @@ DailyCases(WIdata, "Wisconsin")
 
 Active {.tabset}
 -------------------------------------
-**Active cases**:  Estimated recovery time from health experts varies between 10-20 days, with rare cases being long-term / on-going.  Even given the testing lag, a conservative approximation is to use the total number of positive (diagnosed) cases across the last 10 days.  We will go with this standard, along with a range from 8-12 days of active accumulation, and adjust as more precise information becomes available.
+**Active cases**:  Estimated recovery time from health experts varies between 10-20 days, with rare cases being long-term / on-going.  Even given the testing lag, a conservative approximation is to use the total number of positive (diagnosed) cases across the last 10 days.  We will go with this standard, along with a range from 10-14 days of active accumulation, and adjust as more precise information becomes available. *14 days corresponds with two-week standard in place in MN school decisions.*
    
 ### Eau Claire
 
@@ -142,7 +142,7 @@ Since over 50% of students on campus are in early 20s, I will also be estimating
 
 *Case fatality rate*, etc:
 
-**Need to add to table**
+**Need to add to table** - Statistics computed directly from the raw data (sourced from WI DHS), stated without interpretation nor fuzziness.  
 
 ### Eau Claire
 ```{r}
@@ -191,8 +191,8 @@ Column {.tabset}
 
    * If **2wk** > 25 OR **2wk20s** > 30, urge extreme caution.
    * If **2wk** > 28 (OR **2wk20s** > 40), consider staying home and watching class recordings (rather than attending in-person) and visit online OH.
-   * If **2wk** > 28 (OR **2wd20s** > 40) AND **daily7** increasing, strongly encouraged to stay home and watch class recordings (attend in-person only as absolutely needed) and visit online OH.  I will  communicate with administration.
-   * If **2wk** > 30 (OR **2wd20s** > 50) AND **daily7** steady to increasing, I will not have in-person classes without strong evidence of campus protection.
+   * If **2wk** > 28 (OR **2wd20s** > 40) AND **daily7** increasing, strongly encouraged to stay home and watch class recordings (attend in-person only as absolutely needed) and visit online OH.  Dr. Kraker will  communicate with administration.
+   * If **2wk** > 30 (OR **2wd20s** > 50) AND **daily7** steady to increasing, based on the cited criteria from Minnesota, safety of in-person classes no longer seems supportable.
 
 
 ### Eau Claire {data-width=100}
