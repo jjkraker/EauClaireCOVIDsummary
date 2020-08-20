@@ -41,6 +41,11 @@ CFdata = read.csv("Data/CFdata.csv")
 # names(CFdata)  
 CFdata <- CaseCheck(CFdata)
 
+ECpop = 102388 # https://datausa.io/profile/geo/eau-claire-county-wi
+ECstudentpop = 18430 # about 18% of 102,388 = 18,430 as number in 20s, with students
+CFpop = 63445 # https://datausa.io/profile/geo/chippewa-county-wi
+BApop = 45358 # https://datausa.io/profile/geo/barron-county-wi
+WIpop = 5810000 # https://datausa.io/profile/geo/wisconsin 
 
 ```
 
@@ -93,7 +98,7 @@ DailyCases(WIdata, "Wisconsin")
 
 Active {.tabset}
 -------------------------------------
-**Active cases**:  Estimated recovery time from health experts varies between 10-20 days, with rare cases being long-term / on-going.  Even given the testing lag, a conservative approximation is to use the total number of positive (diagnosed) cases across the last 10 days.  We will go with this standard, along with a range from 10-14 days of active accumulation, and adjust as more precise information becomes available. *14 days corresponds with two-week standard in place in MN school decisions.*
+**Active cases**:  Estimated recovery time from health experts varies between 10-20 days, with a nontrivial proportion of cases being [long-term / on-going](https://www.theatlantic.com/health/archive/2020/08/long-haulers-covid-19-recognition-support-groups-symptoms/615382/).  Even given the testing lag, a conservative approximation is to use the total number of positive (diagnosed) cases across the last 10 days.  We will go with this standard, along with a range from 10-14 days of active accumulation, and adjust as more precise information becomes available. *14 days corresponds with two-week standard in place in MN school decisions.*
    
 ### Eau Claire
 
@@ -187,7 +192,7 @@ Column {.tabset}
 **Source**:  [Minnesota’s safe learning plan](https://education.mn.gov/MDE/dse/health/covid19/) is very direct, very precise, with scientific basis.  Determined on a local level. 
 
 
-*DRAFT GUIDELINES for Dr. Kraker's classes*
+*DRAFT GUIDELINES based off of reference*
 
    * If **2wk** > 25 OR **2wk20s** > 30, urge extreme caution.
    * If **2wk** > 28 (OR **2wk20s** > 40), consider staying home and watching class recordings (rather than attending in-person) and visit online OH.
@@ -200,10 +205,12 @@ Column {.tabset}
 **Important Resources**:
 
    * [Eau Claire Reopening guidelines "Respond Together"](https://www.eauclairewi.gov/Home/ShowDocument?id=32685)
-   * [Eau Claire County Health Department's comprehensive website on COVID and planning](https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
+   * [Eau Claire County Health Department's comprehensive website on COVID and planning](https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/), with [August 20 current info](https://www.eauclairewi.gov/Home/ShowDocument?id=32975)
    * [Visual summary Eau Claire County Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
+   * [Eau Claire County Demographics](https://datausa.io/profile/geo/eau-claire-county-wi#demographics)
 
 ```{r}
+
 ```
 
 
