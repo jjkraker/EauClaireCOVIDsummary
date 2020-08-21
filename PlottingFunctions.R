@@ -139,12 +139,19 @@ SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s) {
   
   Current = tibble(val2wk,usableval2wk20s,valdaily7current,valdaily7past,.name_repair = ~locnames) 
   
-  backcurrent = "slateblue"; colcurrent = "black"
+  backcurrent = "white"; colcurrent = "black"
+  if ((val2wk > 20)) {backcurrent = "#778899"; colcurrent = "white"}
+  if (valdaily7current > valdaily7past-1) {backcurrent = "#778899"; colcurrent = "white"}
   if ((val2wk > 25) | (usableval2wk20s > 30)) {backcurrent = "darkslateblue"; colcurrent = "white"}
-  if ((val2wk > 28) | (usableval2wk20s > 40)) {backcurrent = "purple"}
-  if (valdaily7current > valdaily7past-.5) {backcurrent = "d100d1"}
-  if ((val2wk > 30) | (usableval2wk20s > 50)) {backcurrent = "d100d1"}
-  if (valdaily7current > valdaily7past-.5) {backcurrent = "ff0055"}
+  if ((val2wk > 28) | (usableval2wk20s > 40)) {
+    backcurrent = "purple"
+    if (valdaily7current > valdaily7past-.5) {backcurrent = "#d100d1"}
+  }
+  if ((val2wk > 30) | (usableval2wk20s > 50)) {
+    backcurrent = "#d100d1"
+    if (valdaily7current > valdaily7past-.5) {backcurrent = "#ff0055"}
+  }
+  
   
   safetytable <-  Current %>%
     kable(escape = F) %>%
@@ -156,6 +163,52 @@ SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s) {
     row_spec(1,background=backcurrent,color=colcurrent) %>%
     row_spec(0, color="black",background="#D3D3D3") 
 
+  safetytable
+}
+
+
+
+SafetyCheckTable = function(usabledata, loc, usablepop) {
+  ##
+  n = dim(usabledata)[1]
+  ###
+  TodayTotal = usabledata$POSITIVE[n]
+  Lag14Total = usabledata$POSITIVE[n-14]
+  val2wk = round((TodayTotal - Lag14Total) / (usablepop/10000),1)
+  ###
+  valdaily7current = round(mean(usabledata$POS_NEW[(n-6):n]) ,1)
+  ###
+  valdaily7past = round(rollmean(usabledata$POS_NEW, 7, na.pad=T)[n-14],1)
+  ###
+  
+  locnames = paste(loc,c("2wk","current daily7","past daily7"),sep=" ")
+  
+  Current = tibble(val2wk,valdaily7current,valdaily7past,.name_repair = ~locnames) 
+  
+
+  backcurrent = "white"; colcurrent = "black"
+  if ((val2wk > 20)) {backcurrent = "#778899"; colcurrent = "white"}
+  if (valdaily7current > valdaily7past-1) {backcurrent = "#778899"; colcurrent = "white"}
+  if ((val2wk > 25) ) {backcurrent = "darkslateblue"; colcurrent = "white"}
+  if ((val2wk > 28)) {
+    backcurrent = "purple"
+    if (valdaily7current > valdaily7past-.5) {backcurrent = "#d100d1"}
+  }
+  if ((val2wk > 30) ) {
+    backcurrent = "#d100d1"
+    if (valdaily7current > valdaily7past-.5) {backcurrent = "#ff0055"}
+  }
+  
+  
+  safetytable <-  Current %>%
+    kable(escape = F) %>%
+    column_spec(1, bold = T, border_left = T, border_right = T,include_thead = T) %>%
+    column_spec(2, bold = T, border_right = T,include_thead = T) %>%
+    column_spec(3, bold = T, border_right = T,include_thead = T) %>%
+    kable_styling(full_width = F, position = "center") %>%
+    row_spec(1,background=backcurrent,color=colcurrent) %>%
+    row_spec(0, color="black",background="#D3D3D3") 
+  
   safetytable
 }
 

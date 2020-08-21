@@ -47,7 +47,7 @@ EC20pop = 18430 # about 18% of 102,388 = 18,430 as number in 20s, with students
 CFpop = 63445 # https://datausa.io/profile/geo/chippewa-county-wi
 BApop = 45358 # https://datausa.io/profile/geo/barron-county-wi
 WIpop = 5810000 # https://datausa.io/profile/geo/wisconsin 
-
+WI20pop = 760400
 ```
 
 Daily  {data-orientation=columns}
@@ -244,11 +244,24 @@ SafetyCheckTable20s(ECdata, "Eau Claire", ECpop,EC20pop)
    * [Visual summary Eau Claire County Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
    * [Eau Claire County Demographics](https://datausa.io/profile/geo/eau-claire-county-wi#demographics)
 
+### Chippewa
+
+```{r,fig.height=3}
+SafetyCheckTable(CFdata, "Chippewa", CFpop)
+```   
+
+### Barron
+
+```{r,fig.height=3}
+SafetyCheckTable(BAdata, "Barron", BApop)
+
+```   
 
 ### Wisconsin {data-width=300}
 
 
 ```{r}
+SafetyCheckTable20s(WIdata, "Wisconsin", WIpop,WI20pop)
 ```
 
 **Important Resources**:
