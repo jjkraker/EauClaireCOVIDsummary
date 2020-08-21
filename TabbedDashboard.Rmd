@@ -183,17 +183,17 @@ Column {.tabset}
 **Source**:  [Minnesota’s safe learning plan](https://education.mn.gov/MDE/dse/health/covid19/) is very direct, very precise, with scientific basis.  Determined on a local level. **Definitions** (corresponding / similar to MN plan) and 
 *SUGGESTED GUIDELINES* based off of reference:
 
-   * **2wk**: Two-week case total
-(most recent 14 days), rate per 10K of county population
-   * **daily7**: Daily running average (7day)
+   * **2wk**: Two-week case _total_
+(most recent 14 days), **rate per** 10K of county population
    * **2wk20s**:  Approximate two-week case total, rate per 10K of 20-29 population; since over 50% of students on campus are in early 20s
+   * **daily7**: Daily new-case running average (_average_ over 7 days)
  
 
 
 ```{r}
 criteria2wk = c("> 25",  "> 28", "> 28", "> 30", "> 30")
 criteria2wk20s = c("> 30",  "> 40", "> 40", "> 50", "> 50")
-criteriadaily7 = c("--",  "--", "steady to increasing","decreasing", "steady to increasing")
+criteriadaily7 = c("--",  "decreasing", "steady to increasing","decreasing", "steady to increasing")
 
 action = c("urge extra caution",
            "consider staying home and watching class recordings (rather than attending in-person) and visit online OH",
