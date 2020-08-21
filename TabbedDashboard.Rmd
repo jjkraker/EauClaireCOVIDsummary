@@ -22,6 +22,7 @@ library(tidyverse)
 library(lubridate)
 library(scales)
 library(zoo)
+library(formattable)
 
 source("PlottingFunctions.R")
 
@@ -42,7 +43,7 @@ CFdata = read.csv("Data/CFdata.csv")
 CFdata <- CaseCheck(CFdata)
 
 ECpop = 102388 # https://datausa.io/profile/geo/eau-claire-county-wi
-ECstudentpop = 18430 # about 18% of 102,388 = 18,430 as number in 20s, with students
+EC20pop = 18430 # about 18% of 102,388 = 18,430 as number in 20s, with students
 CFpop = 63445 # https://datausa.io/profile/geo/chippewa-county-wi
 BApop = 45358 # https://datausa.io/profile/geo/barron-county-wi
 WIpop = 5810000 # https://datausa.io/profile/geo/wisconsin 
@@ -136,27 +137,17 @@ By the Numbers {data-orientation=columns}
 Column {.tabset}
 -------------------------------------
    
-**Definitions** (corresponding / similar to MN plan)
+**Definitions** 
 
-   * **2wk**: Two-week average case per 10K
-   * **daily7**: Daily running average (7day)
+*Case fatality rate*, etc:  **Need to add to table** 
 
-Since over 50% of students on campus are in early 20s, I will also be estimating:
-
-   * **2wk20s**:  Two-week average cases per 10K twenties (uses age distribution from EC health)
-
-*Case fatality rate*, etc:
-
-**Need to add to table** - Statistics computed directly from the raw data (sourced from WI DHS), stated without interpretation nor fuzziness.  
+**Need to add to table** - Statistics computed directly from the raw data (sourced from WI DHS), stated without interpretation nor fuzziness. 
 
 ### Eau Claire
 ```{r}
 PartialTotalTable(ECdata, "Eau Claire")
 
 
-#Cumulative – 4plot?
-#Testing: Add bar chart, split between pos and neg, with response rate.
-#Cumulative: line plot of logs (like Minnesota reference).  Line plot regular scale.
 
 ```
 
@@ -189,18 +180,62 @@ PartialTotalTable(WIdata, "Wisconsin")
 Column {.tabset}
 -------------------------------------
 
-**Source**:  [Minnesota’s safe learning plan](https://education.mn.gov/MDE/dse/health/covid19/) is very direct, very precise, with scientific basis.  Determined on a local level. 
+**Source**:  [Minnesota’s safe learning plan](https://education.mn.gov/MDE/dse/health/covid19/) is very direct, very precise, with scientific basis.  Determined on a local level. **Definitions** (corresponding / similar to MN plan) and 
+*SUGGESTED GUIDELINES* based off of reference:
+
+   * **2wk**: Two-week case total
+(most recent 14 days), rate per 10K of county population
+   * **daily7**: Daily running average (7day)
+   * **2wk20s**:  Approximate two-week case total, rate per 10K of 20-29 population; since over 50% of students on campus are in early 20s
+ 
 
 
-*DRAFT GUIDELINES based off of reference*
+```{r}
+criteria2wk = c("> 25",  "> 28", "> 28", "> 30", "> 30")
+criteria2wk20s = c("> 30",  "> 40", "> 40", "> 50", "> 50")
+criteriadaily7 = c("--",  "--", "steady to increasing","decreasing", "steady to increasing")
 
-   * If **2wk** > 25 OR **2wk20s** > 30, urge extreme caution.
-   * If **2wk** > 28 (OR **2wk20s** > 40), consider staying home and watching class recordings (rather than attending in-person) and visit online OH.
-   * If **2wk** > 28 (OR **2wd20s** > 40) AND **daily7** increasing, strongly encouraged to stay home and watch class recordings (attend in-person only as absolutely needed) and visit online OH.  Dr. Kraker will  communicate with administration.
-   * If **2wk** > 30 (OR **2wd20s** > 50) AND **daily7** steady to increasing, based on the cited criteria from Minnesota, safety of in-person classes no longer seems supportable.
+action = c("urge extra caution",
+           "consider staying home and watching class recordings (rather than attending in-person) and visit online OH",
+           "strongly encouraged to stay home and watch class recordings (attend in-person only as absolutely needed) and visit online OH.",
+           "  ''    ''    ''  ",
+           "based on the cited criteria from Minnesota, safety of in-person classes no longer seems supportable"
+)
+
+HeadertoUse <- c("Criteria 2wk",
+                "Criteria 2wk20s",
+                "Criteria daily7",
+                "Suggestion")
+DecisionTable <- tibble(Criteria_2wk=criteria2wk,
+                        Criteria_2wk20s=criteria2wk20s,
+                        Criteria_daily7=criteriadaily7,
+                        Suggestion=action,
+                        .name_repair = ~HeadertoUse)
+
+kable(DecisionTable) %>%
+  kable_styling(full_width = F) %>%
+  column_spec(1, bold = T, border_right = T, border_left = T,include_thead = T) %>%
+  column_spec(2, bold = T, border_right = T,include_thead = T) %>%
+  column_spec(3, bold = T, border_right = T,include_thead = T) %>%
+  column_spec(4, width = "40em" ,include_thead = T) %>%
+  row_spec(1,background = "darkslateblue",color="white") %>%
+  row_spec(2,background = "purple",color="white") %>%
+  row_spec(3,background = "#d100d1",color = "white") %>%
+  row_spec(4, background = "#d100d1",color = "white") %>%
+  row_spec(5,background = "#ff0055",color="white") %>%
+  row_spec(0, color="black")
+
+
+
+```
+
 
 
 ### Eau Claire {data-width=100}
+
+```{r}
+SafetyCheckTable20s(ECdata, "Eau Claire", ECpop,EC20pop)
+```
 
 **Important Resources**:
 
@@ -209,13 +244,12 @@ Column {.tabset}
    * [Visual summary Eau Claire County Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
    * [Eau Claire County Demographics](https://datausa.io/profile/geo/eau-claire-county-wi#demographics)
 
-```{r}
-
-```
-
 
 ### Wisconsin {data-width=300}
 
+
+```{r}
+```
 
 **Important Resources**:
 
@@ -223,9 +257,6 @@ Column {.tabset}
    * [Reopening guidelines](https://www.dhs.wisconsin.gov/covid-19/prepare.htm#:~:text=Back%20Section%20Menu-,COVID-19:%20Badger%20Bounce%20Back,safest%20way%20to%20open%20Wisconsin.)
    * [Wisconsin Health Department's comprehensive website on COVID and planning](https://www.dhs.wisconsin.gov/outbreaks/index.htm)
    * [Visual summary of Wisconsin Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
-
-```{r}
-```
 
 
 Cumulative {data-orientation=columns}

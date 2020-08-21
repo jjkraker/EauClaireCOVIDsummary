@@ -48,13 +48,13 @@ FullTotalTable = function(usabledata, location) {
 PartialTotalTable = function(usabledata, location) {
   fulltable <-
     usabledata %>% 
-    filter(DATE %in% tail(DATE, 10)) %>%
+    filter(DATE %in% tail(DATE, 7)) %>%
     select(DATE, POSITIVE, NEGATIVE, DEATHS, TOTAL_10Days, TOTAL_14Days) %>%
     rename_at(vars(starts_with("TOTAL_")), ~str_to_title(str_replace_all(., "TOTAL_","New in Last "))) %>%
     rename_at(vars(starts_with("HOSP_")), ~str_to_title(str_replace_all(., "HOSP_","Hospitalization "))) %>%
     kable(digits = 3,booktabs = T, caption = paste(location, "cumulative counts of COVID cases and outcomes"),align = "c") %>%
     kable_styling(latex_options = c("hold_position", "scale_down"), font_size = 11) %>% 
-    row_spec(10, color = "darkblue", background = "#00FFFF") 
+    row_spec(7, color = "darkblue", background = "#00FFFF") 
   
   fulltable
 }
@@ -107,8 +107,56 @@ ActiveCases = function(usabledata, location) {
   DCplot
 }
 
+SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s) {
+  ##
+  n = dim(usabledata)[1]
+  ###
+  TodayTotal = usabledata$POSITIVE[n]
+  Lag14Total = usabledata$POSITIVE[n-14]
+  val2wk = round((TodayTotal - Lag14Total) / (usablepop/10000),1)
+  ###
+  TodayTotal20s = usabledata$POS_20_29[n]
+  Lag14Total20s = usabledata$POS_20_29[n-14]
+  val2wk20s = (TodayTotal20s - Lag14Total20s) / (usablepop20s/10000)
+  usableval2wk20s = val2wk20s
+  if(!is.null(usabledata$PROP_20_29)) {
+    nAlt = (n-3):n; LagnAlt = (n-14-2):(n-14+2)
+    TodayTotal20sAlt = round(usabledata$POSITIVE[n]*
+                               mean(usabledata$PROP_20_29[nAlt],na.rm = T),0)
+    Lag14Total20sAlt = round(usabledata$POSITIVE[n-14]*
+                               mean(usabledata$PROP_20_29[LagnAlt],na.rm = T),0)
+    val2wk20sAlt = (TodayTotal20sAlt - Lag14Total20sAlt) / (usablepop20s/10000)
+    usableval2wk20s = round(ifelse(is.na(val2wk20s),val2wk20sAlt,val2wk20s),1)
+  }
+  ###
+  valdaily7current = round(mean(usabledata$POS_NEW[(n-6):n]) ,1)
+  ###
+  valdaily7past = round(rollmean(usabledata$POS_NEW, 7, na.pad=T)[n-14],1)
+  ###
+  
+  locnames = paste(loc,c("2wk","2wk20s","current daily7","past daily7"),sep=" ")
+  
+  Current = tibble(val2wk,usableval2wk20s,valdaily7current,valdaily7past,.name_repair = ~locnames) 
+  
+  backcurrent = "slateblue"; colcurrent = "black"
+  if ((val2wk > 25) | (usableval2wk20s > 30)) {backcurrent = "darkslateblue"; colcurrent = "white"}
+  if ((val2wk > 28) | (usableval2wk20s > 40)) {backcurrent = "purple"}
+  if (valdaily7current > valdaily7past-.5) {backcurrent = "d100d1"}
+  if ((val2wk > 30) | (usableval2wk20s > 50)) {backcurrent = "d100d1"}
+  if (valdaily7current > valdaily7past-.5) {backcurrent = "ff0055"}
+  
+  safetytable <-  Current %>%
+    kable(escape = F) %>%
+    column_spec(1, bold = T, border_left = T, border_right = T,include_thead = T) %>%
+    column_spec(2, bold = T, border_right = T,include_thead = T) %>%
+    column_spec(3, bold = T, border_right = T,include_thead = T) %>%
+    column_spec(4, bold = T, border_right = T,include_thead = T) %>%
+    kable_styling(full_width = F, position = "center") %>%
+    row_spec(1,background=backcurrent,color=colcurrent) %>%
+    row_spec(0, color="black",background="#D3D3D3") 
 
-
+  safetytable
+}
 
 
 # like that from https://i.redd.it/o0lnkamvpn951.png
