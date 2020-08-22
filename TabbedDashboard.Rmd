@@ -23,6 +23,8 @@ library(lubridate)
 library(scales)
 library(zoo)
 library(formattable)
+library(gridExtra)
+library(ggpubr)
 
 source("PlottingFunctions.R")
 
@@ -408,76 +410,83 @@ Media articles / letters summarizing scientific publications:
    * https://www.npr.org/sections/health-shots/2020/06/21/880832213/yes-wearing-masks-helps-heres-why
    * https://www.sfgate.com/science/article/Study-100-face-mask-use-could-crush-second-15333170.php?
 
-Modeling  {data-orientation=rows}
+Modeling  {data-orientation=columns}
 =====================================     
 
 
-```{r}
-n=dim(WIdata)[1]; start = 30 # error on neg cases at 17
-allcorPOS = c()
-for (k in 1:24) {
-  allcorPOS = c(allcorPOS,
-                (cor(log(WIdata$POSITIVE[start:(n-k)]),
-                     log(WIdata$DEATHS[(k+start):n])
-                     )
-                 )
-                )
-#  plot(log(WIdata$POSITIVE[start:(n-k)]),log(WIdata$DEATHS[(k+start):n]))
-}
-#plot(1:24,allcorPOS)
 
-kLogPOS = order(allcorPOS)[24]
+Column {data-width=600}{.tabset}
+-------------------------------------
+     
+**Predicting cumulative deaths in state**
 
-allcorRateNEW = c()
-for (k in 1:25) {
-  TestsNEW = WIdata$POS_NEW[start:(n-k)]+WIdata$NEG_NEW[start:(n-k)]
-  RateNEW = WIdata$POS_NEW[start:(n-k)]/TestsNEW
-  allcorRateNEW = c(allcorRateNEW,
-                (cor(RateNEW,
-                     log(WIdata$DEATHS[(k+start):n])
-                     )
-                 )
-                )
-#  plot(RateNEW,log(WIdata$DEATHS[(k+start):n]))
-}
-#plot(1:25,allcorRateNEW)
-kRatePOS = order(allcorRateNEW)[1]
-        
-k=28; 
+   * WI correpondence between Cumulative cases and deaths (at time lag)
+   * Starting with late May, after daily tests regularly above 6000
 
-TestsNEW = WIdata$POS_NEW[start:(n-k)]+WIdata$NEG_NEW[start:(n-k)]
-RateNEW = WIdata$POS_NEW[start:(n-k)]/TestsNEW
-#plot(RateNEW,log(WIdata$DEATHS[(k+start):n]),
-#     col="#00CED1", lwd=2,
-#     xlab="New Positives (daily) rate",
-#     ylab=paste("log Deaths at lag",k)
-#)
-coef = lm(log(WIdata$DEATHS[(k+start):n])~log(WIdata$POSITIVE[start:(n-k)]))$coef
-print(paste("The number of  cumulative deaths, at a lag of", k, "days, are approximately", round(as.numeric(exp(coef[1])),1), "times number of cumulative cases to the", round(as.numeric(coef[2]),2), "power."))
-print(paste("We thus predict that on", today()+k, "the cumulative number of deaths in WI will be", round(exp(coef[1])*(max(WIdata$POSITIVE))^coef[2])))
+```{r,fig.width=4,fig.height=4}
+n=dim(WIdata)[1]; start = 61 # after daily tests regularly > 6000
+k=21; 
+base=10
 
+Lagdata <- data.frame(POStok=(WIdata$POSITIVE[start:(n-k)]),
+                      DTHlag=(WIdata$DEATHS[(k+start):n]),
+                      logPOStok=log(WIdata$POSITIVE[start:(n-k)],base),
+                      logDTHlag=log(WIdata$DEATHS[(k+start):n],base))
 
-plot(log(WIdata$POSITIVE[start:(n-k)]),log(WIdata$DEATHS[(k+start):n]), 
-     col="#00CED1", type="l", lwd=2,
-     xlab="log Cumulative Cases",
-     ylab=paste("log Deaths at lag",k)
-)
-Lagdata <- data.frame(logPOStok=log(WIdata$POSITIVE[start:(n-k)]),
-                     logDTHlag=log(WIdata$DEATHS[(k+start):n]))
+Model1plot <- ggplot(Lagdata, aes(x=POStok, y=DTHlag))+
+  geom_line(aes(color="correspondence"))+
+  scale_colour_manual(name=F, values=c('correspondence'='purple','Loess smooth'='grey','7-day moving avg'='navy')) + 
+  ggtitle(label = paste("Log",base,"-transformed plot", sep=""))+
+  theme_minimal()+
+  theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+        legend.position = "none",
+        axis.text.x = element_text(angle=90))+
+  ylab(paste("Log",base," Deaths at lag ", k, sep=""))+
+  xlab(paste("Log",base," Cumulative Cases", sep="")) +
+  scale_x_continuous(trans = 'log10') +
+  scale_y_continuous(trans = 'log10')
 
-Model1plot <- ggplot(Lagdata, aes(x=logPOStok, y=logDTHlag))+
-    geom_line(aes(color="correspondence"))+
-    scale_colour_manual(name=F, values=c('correspondence'='purple','Loess smooth'='grey','7-day moving avg'='navy')) + 
-    ggtitle(label = paste("WI correpondence between Cumulative cases and deaths"))+
-    theme_minimal()+
-    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
-          axis.text.x = element_text(angle=90))+
-    ylab(paste("Log Deaths at lag", k))+
-    xlab("Log Cases") 
+coef = lm(logDTHlag~logPOStok,data=Lagdata)$coef
+print(paste("The number of  cumulative deaths, at a lag of", k, "days, are approximately", round(as.numeric(base^(coef[1])),1), "times number of cumulative cases to the", round(as.numeric(coef[2]),2), "power."))
+print(paste("We thus predict that on", today()+k, "the cumulative number of deaths in WI will be", round(base^(coef[1])*(max(WIdata$POSITIVE))^coef[2])))
 
-#Model1plot
-
-
+#plot(Lagdata$logPOStok, Lagdata$logDTHlag); abline(coef[1],coef[2])
 #Modeling – log deaths (blue) and transformed-log cases (red or green).
 
 ```
+
+```{r}
+WIdata <- WIdata %>% 
+  mutate(TOTALTESTS = POSITIVE+NEGATIVE)%>% 
+  mutate(log10TOTALTESTS = log10(POSITIVE+NEGATIVE))%>% 
+  mutate(log10POSITIVE = log10(POSITIVE))%>% 
+  mutate(log10DEATHS = log10(DEATHS)) %>%
+  mutate(log10DEATHS = ifelse(log10DEATHS < -10^10,NA, log10DEATHS))
+
+Model2plot <- ggplot(WIdata, aes(y=log10TOTALTESTS, x=as.Date(DATE,"%B %d %Y"))) + 
+    geom_line(aes(color="log10 Testing"))+
+    geom_line(aes(y=log10POSITIVE, color="log10 Cases")) +
+    geom_line(aes(y=log10DEATHS, color="log10 Deaths"))+
+    scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("14 days"))+
+    ggtitle(label = "log10-transformed WI data")+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("log10 Cumulative Counts")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('log10 Testing'='#b8bc86',
+                                          'log10 Cases'='green',
+                                          'log10 Deaths'='#d100d1')) 
+
+```
+
+```{r,fig.height=3.5,fig.width=8.5}
+ggarrange(Model1plot, Model2plot, widths = c(3.5,5))
+
+```
+
+
+
+Column {data-width=600}{.tabset}
+-------------------------------------
+     
