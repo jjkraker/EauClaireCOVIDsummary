@@ -224,3 +224,51 @@ DailyInfoPlot = function(usabledata) {
   p1
 }
 
+
+DailyOutcomes <- function(usabledata, location) {
+  
+  n=dim(usabledata)[1]
+  stackDATE = c(usabledata$DATE,usabledata$DATE)
+  stackCOUNTS = c(usabledata$NEG_NEW,usabledata$POS_NEW)
+  stackOUTCOMES = c(rep("Negative",n),rep("Positive",n))
+  stackratio = rep(usabledata$POS_NEW/usabledata$TEST_NEW,2); stackratio[stackratio<0] = NA
+  stackdata = tibble(stackDATE,stackCOUNTS,stackOUTCOMES,stackratio)
+  scalingval = max(stackCOUNTS*1.05,na.rm=T)
+  # Grouped
+  OutPlot <- ggplot(stackdata, aes(fill=stackOUTCOMES, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
+    geom_bar(position="stack", stat="identity") +
+    ggtitle(label = paste(location, "Daily Negative and Positive Tests"))+
+    scale_x_date(breaks = date_breaks("14 days"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
+          axis.text.x = element_text(angle=90))+
+    ylab("Tests")+
+    xlab("Date") + 
+    labs(fill = "Test Outcomes")+
+    scale_fill_manual(values=c('lightgray','green')) 
+  
+  OutPlot
+}
+
+CumulativeOutcomes  <- function(usabledata, location) {
+  
+  n=dim(usabledata)[1]
+  stackDATE = c(usabledata$DATE,usabledata$DATE)
+  stackCOUNTS = c(usabledata$NEGATIVE,usabledata$POSITIVE)
+  stackOUTCOMES = c(rep("Negative",n),rep("Positive",n))
+  stackdata = tibble(stackDATE,stackCOUNTS,stackOUTCOMES)
+  # Grouped
+  OutPlot <- ggplot(stackdata, aes(fill=stackOUTCOMES, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
+    geom_bar(position="stack", stat="identity") +
+    ggtitle(label = paste(location, "Cumulative Negative and Positive Tests"))+
+    scale_x_date(breaks = date_breaks("14 days"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
+          axis.text.x = element_text(angle=90))+
+    ylab("Tests")+
+    xlab("Date") + 
+    labs(fill = "Test Outcomes")+
+    scale_fill_manual(values=c('lightgray','green')) 
+  
+  OutPlot
+}

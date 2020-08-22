@@ -62,8 +62,6 @@ Column {.tabset}
    * (blue dashed lines)  **March 25**:  Stay-at-Home order; **Aug 1**:  WI mask mandate
 
    
-**Note**:  due to lag time between exposure and final positive test, effects of changes are typically observed about two weeks after event.
-
 **Comment:** Why a 7-day moving average?  Wisconsin tends to have cyclical patterns in testing results, with low spots typically on Mondays (this may be due to lower testing on weekends)
 
 
@@ -71,6 +69,7 @@ Column {.tabset}
 
 ```{r,fig.height=3}
 DailyCases(ECdata, "Eau Claire") 
+DailyOutcomes(ECdata, "Eau Claire") 
 
 ```   
 
@@ -78,6 +77,7 @@ DailyCases(ECdata, "Eau Claire")
 
 ```{r,fig.height=3}
 DailyCases(CFdata, "Chippewa") 
+DailyOutcomes(CFdata, "Chippewa") 
 
 ```   
 
@@ -85,6 +85,7 @@ DailyCases(CFdata, "Chippewa")
 
 ```{r,fig.height=3}
 DailyCases(BAdata, "Barron") 
+DailyOutcomes(BAdata, "Barron") 
 
 ```   
 
@@ -92,6 +93,7 @@ DailyCases(BAdata, "Barron")
 
 ```{r,fig.height=3}
 DailyCases(WIdata, "Wisconsin") 
+DailyOutcomes(WIdata, "Wisconsin") 
 
 ```   
 
@@ -280,7 +282,7 @@ Cumulative {data-orientation=columns}
 Column {data-width=600}{.tabset}
 -------------------------------------
    
-### Eau Claire
+
 ```{r}
 #PartialTotalTable(ECdata, "Eau Claire")
 
@@ -291,26 +293,33 @@ Column {data-width=600}{.tabset}
 
 ```
 
+### Eau Claire
+
+```{r,fig.height=3}
+CumulativeOutcomes(ECdata, "Eau Claire") 
+
+```   
+
 ### Chippewa
 
-```{r}
-#PartialTotalTable(CFdata, "Chippewa") 
+```{r,fig.height=3}
+CumulativeOutcomes(CFdata, "Chippewa") 
 
 ```   
 
 ### Barron
 
-```{r}
-#PartialTotalTable(BAdata, "Barron") 
+```{r,fig.height=3}
+CumulativeOutcomes(BAdata, "Barron") 
 
 ```   
 
-### Wisconsin 
+### Wisconsin
 
-```{r}
-#PartialTotalTable(WIdata, "Wisconsin")
-```
+```{r,fig.height=3}
+CumulativeOutcomes(WIdata, "Wisconsin") 
 
+```   
 
 
 
@@ -323,6 +332,12 @@ Column {data-width=200}{.tabset}
 
 ### Eau Claire 
 
+
+```{r}
+# create a dataset
+
+
+```
 
 ### Wisconsin 
 
