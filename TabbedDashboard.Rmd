@@ -28,21 +28,20 @@ library(ggpubr)
 
 source("PlottingFunctions.R")
 
-WIdata = read.csv("Data/WIdata.csv")
-# names(WIdata)  
-WIdata <- CaseCheck(WIdata)
+#WIdata = read.csv("Data/WIdata.csv")
+#ECdata = read.csv("Data/ECdata.csv")
+#BAdata = read.csv("Data/BAdata.csv")
+#CFdata = read.csv("Data/CFdata.csv")
 
-ECdata = read.csv("Data/ECdata.csv")
-# names(ECdata)  
-ECdata <- CaseCheck(ECdata)
-
-BAdata = read.csv("Data/BAdata.csv")
-# names(BAdata)  
-BAdata <- CaseCheck(BAdata)
-
-CFdata = read.csv("Data/CFdata.csv")
-# names(CFdata)  
-CFdata <- CaseCheck(CFdata)
+ALLdata = read_csv("StateCountydata.csv")
+ECageprop <- read_csv("ECdataPROP.csv")
+ECageprop <- ECageprop %>%
+  mutate(DATE2 = format(as_date(DATE2), format = "%B %d %Y"))  
+ECdataORIG <- CaseCheck(arrange(filter(ALLdata,NAME=="Eau Claire"),DATE))
+BAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Barron"),DATE))
+CFdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Chippewa"),DATE))
+WIdata <- CaseCheck(arrange(filter(ALLdata,NAME=="WI"),DATE))
+ECdata <- left_join(ECdataORIG,ECageprop, by = c("DATE" = "DATE2") )
 
 ECpop = 102388 # https://datausa.io/profile/geo/eau-claire-county-wi
 EC20pop = 18430 # about 18% of 102,388 = 18,430 as number in 20s, with students
@@ -143,9 +142,7 @@ Column {.tabset}
    
 **Definitions** 
 
-*Case fatality rate*, etc:  **Need to add to table** 
-
-**Need to add to table** - Statistics computed directly from the raw data (sourced from WI DHS), stated without interpretation nor fuzziness. 
+*Case fatality rate*, etc:  **Need to add definitions and compute to table** 
 
 ### Eau Claire
 ```{r}
