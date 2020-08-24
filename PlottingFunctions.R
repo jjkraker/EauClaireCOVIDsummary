@@ -1,7 +1,12 @@
 CaseCheck = function(usabledata) {
-  usabledata <- usabledata %>% 
-  mutate(DATE = format(as_date(DATE), format = "%B %d %Y")) %>%   
-  mutate(DTH_NEW = as.numeric(DTH_NEW))  %>%
+  usabledata <- usabledata %>%
+    mutate(TOTALTESTS = POSITIVE+NEGATIVE)%>% 
+    mutate(log10TOTALTESTS = log10(POSITIVE+NEGATIVE))%>% 
+    mutate(log10POSITIVE = log10(POSITIVE))%>% 
+    mutate(log10DEATHS = log10(DEATHS)) %>%
+    mutate(log10DEATHS = ifelse(log10DEATHS < -10^10,NA, log10DEATHS)) %>% 
+    mutate(DATE = format(as_date(DATE), format = "%B %d %Y")) %>%   
+    mutate(DTH_NEW = as.numeric(DTH_NEW))  %>%
   mutate(DTH_NEW = case_when(is.na(DTH_NEW) ~ 0,
                              DTH_NEW <0 ~ 0,   
                              c(DTH_NEW[-1],0) < 0 ~ +1,
@@ -271,4 +276,27 @@ CumulativeOutcomes  <- function(usabledata, location) {
     scale_fill_manual(values=c('lightgray','green')) 
   
   OutPlot
+}
+
+
+CumulativeLines <- function(usabledata, location) {
+  LinePlot <- ggplot(usabledata, aes(y=TOTALTESTS, x=as.Date(DATE,"%B %d %Y"))) + 
+    geom_line(aes(color="Testing"))+
+    geom_line(aes(y=POSITIVE, color="Cases")) +
+    geom_line(aes(y=DEATHS, color="Deaths"))+
+    geom_line(aes(y=HOSP_YES, color="Hospitalized"))+
+    scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("14 days"))+
+    ggtitle(label = paste(location,"cumulative data, log10-scale"))+
+    theme_minimal()+
+   theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+        axis.text.x = element_text(angle=90))+
+    ylab("Cumulative Counts, log10-scale axis")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('Testing'='#b8bc86',
+                                        'Cases'='green',
+                                        'Hospitalized' = '#3399ff',
+                                        'Deaths'='#d100d1')) +
+    scale_y_continuous(trans = 'log10',labels = format_format(big.mark = " ", scientific = FALSE))
+
+  LinePlot 
 }

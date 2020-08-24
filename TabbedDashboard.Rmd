@@ -296,28 +296,29 @@ Column {data-width=600}{.tabset}
 
 ```{r,fig.height=3}
 CumulativeOutcomes(ECdata, "Eau Claire") 
-
+CumulativeLines(ECdata,"Eau Claire")
+#ggarrange(Model1plot, Model2plot, widths = c(3.5,5))CumulativeLines(WIdata,"Wisconsin")
 ```   
 
 ### Chippewa
 
 ```{r,fig.height=3}
 CumulativeOutcomes(CFdata, "Chippewa") 
-
+CumulativeLines(CFdata, "Chippewa")
 ```   
 
 ### Barron
 
 ```{r,fig.height=3}
 CumulativeOutcomes(BAdata, "Barron") 
-
+CumulativeLines(BAdata, "Barron") 
 ```   
 
 ### Wisconsin
 
 ```{r,fig.height=3}
 CumulativeOutcomes(WIdata, "Wisconsin") 
-
+CumulativeLines(WIdata, "Wisconsin")
 ```   
 
 
@@ -441,7 +442,7 @@ Model1plot <- ggplot(Lagdata, aes(x=POStok, y=DTHlag))+
   ylab(paste("Log",base," Deaths at lag ", k, sep=""))+
   xlab(paste("Log",base," Cumulative Cases", sep="")) +
   scale_x_continuous(trans = 'log10') +
-  scale_y_continuous(trans = 'log10')
+    scale_y_continuous(trans = 'log10',labels = format_format(big.mark = " ", scientific = FALSE))
 
 coef = lm(logDTHlag~logPOStok,data=Lagdata)$coef
 print(paste("The number of  cumulative deaths, at a lag of", k, "days, are approximately", round(as.numeric(base^(coef[1])),1), "times number of cumulative cases to the", round(as.numeric(coef[2]),2), "power."))
@@ -452,35 +453,13 @@ print(paste("We thus predict that on", today()+k, "the cumulative number of deat
 
 ```
 
-```{r}
-WIdata <- WIdata %>% 
-  mutate(TOTALTESTS = POSITIVE+NEGATIVE)%>% 
-  mutate(log10TOTALTESTS = log10(POSITIVE+NEGATIVE))%>% 
-  mutate(log10POSITIVE = log10(POSITIVE))%>% 
-  mutate(log10DEATHS = log10(DEATHS)) %>%
-  mutate(log10DEATHS = ifelse(log10DEATHS < -10^10,NA, log10DEATHS))
 
-Model2plot <- ggplot(WIdata, aes(y=log10TOTALTESTS, x=as.Date(DATE,"%B %d %Y"))) + 
-    geom_line(aes(color="log10 Testing"))+
-    geom_line(aes(y=log10POSITIVE, color="log10 Cases")) +
-    geom_line(aes(y=log10DEATHS, color="log10 Deaths"))+
-    scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("14 days"))+
-    ggtitle(label = "log10-transformed WI data")+
-    theme_minimal()+
-    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
-          axis.text.x = element_text(angle=90))+
-    ylab("log10 Cumulative Counts")+
-    xlab("Date") +
-    scale_colour_manual(name='', values=c('log10 Testing'='#b8bc86',
-                                          'log10 Cases'='green',
-                                          'log10 Deaths'='#d100d1')) 
-
+```{r,fig.height=3.5,fig.width=3.5}
+#ggarrange(Model1plot, Model2plot, widths = c(3.5,5))
+Model1plot
 ```
 
-```{r,fig.height=3.5,fig.width=8.5}
-ggarrange(Model1plot, Model2plot, widths = c(3.5,5))
 
-```
 
 
 
