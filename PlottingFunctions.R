@@ -255,6 +255,40 @@ DailyOutcomes <- function(usabledata, location) {
   OutPlot
 }
 
+
+
+DailyChanges <- function(usabledata, location) {
+  
+  n=dim(usabledata)[1]
+  newHOSP_YES = c(NA,usabledata$HOSP_YES[-1]-usabledata$HOSP_YES[-n])
+  newHOSP_UNK = c(NA,usabledata$HOSP_UNK[-1]-usabledata$HOSP_UNK[-n])
+  stackDATE = rep(usabledata$DATE,3)
+  stackCOUNTS = c(usabledata$POS_NEW,
+                  newHOSP_YES, usabledata$DTH_NEW)
+  stackOUTCOMES = c(rep("Positives",n),
+                    rep("Hospitalizations",n),
+                    rep("Deaths",n))
+  stackdata = tibble(stackDATE,stackCOUNTS,stackOUTCOMES)
+  OutPlot <- ggplot(stackdata, aes(fill=stackOUTCOMES, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
+    geom_bar(position="dodge", stat="identity") +
+    ggtitle(label = paste(location, "Daily Outcomes"))+
+    scale_x_date(breaks = date_breaks("14 days"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
+          axis.text.x = element_text(angle=90))+
+    ylab("Daily Occurrences")+
+    xlab("Date") + 
+    labs(fill = "Test Outcomes")+
+    scale_fill_manual(values=c(
+      '#d100d1','#3399ff','green'
+    )) 
+  
+  OutPlot
+}
+
+
+
+
 CumulativeOutcomes  <- function(usabledata, location) {
   
   n=dim(usabledata)[1]
@@ -277,7 +311,6 @@ CumulativeOutcomes  <- function(usabledata, location) {
   
   OutPlot
 }
-
 
 CumulativeLines <- function(usabledata, location) {
   LinePlot <- ggplot(usabledata, aes(y=TOTALTESTS, x=as.Date(DATE,"%B %d %Y"))) + 
