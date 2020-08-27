@@ -124,16 +124,6 @@ SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s) {
   Lag14Total20s = usabledata$POS_20_29[n-14]
   val2wk20s = (TodayTotal20s - Lag14Total20s) / (usablepop20s/10000)
   usableval2wk20s = round(val2wk20s,1)
-  if(!is.null(usabledata$PROP_20_29)) {
-    nAlt = (n-3):n; LagnAlt = (n-14-2):(n-14+2)
-    TodayTotal20sAlt = round(usabledata$POSITIVE[n]*
-                               mean(usabledata$PROP_20_29[nAlt],na.rm = T),0)
-    Lag14Total20sAlt = round(usabledata$POSITIVE[n-14]*
-                               mean(usabledata$PROP_20_29[LagnAlt],na.rm = T),0)
-    val2wk20sAlt = (TodayTotal20sAlt - Lag14Total20sAlt) / (usablepop20s/10000)
-    usableval2wk20s = round(ifelse(is.na(val2wk20s),val2wk20sAlt,val2wk20s),1)
-    usableval2wk20s = round(val2wk20sAlt,1)
-  }
   ###
   valdaily7current = round(mean(usabledata$POS_NEW[(n-6):n]) ,1)
   ###
