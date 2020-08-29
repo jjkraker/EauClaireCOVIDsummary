@@ -1,6 +1,7 @@
 CaseCheck = function(usabledata) {
   usabledata <- usabledata %>%
     mutate(TOTALTESTS = POSITIVE+NEGATIVE)%>% 
+    mutate(POSRATE_NEW = POS_NEW/TEST_NEW)%>%
     mutate(log10TOTALTESTS = log10(POSITIVE+NEGATIVE))%>% 
     mutate(log10POSITIVE = log10(POSITIVE))%>% 
     mutate(log10DEATHS = log10(DEATHS)) %>%
@@ -129,10 +130,14 @@ SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s) {
   ###
   valdaily7past = round(rollmean(usabledata$POS_NEW, 7, na.pad=T)[n-14],1)
   ###
+  #  dailytestrate7 = round(100*mean(usabledata$POSRATE_NEW[(n-6):n]) ,1)
+  dailytestrate7 = round(100*(usabledata$POSITIVE[n]-usabledata$POSITIVE[n-7])/
+                           (usabledata$TOTALTESTS[n]-usabledata$TOTALTESTS[n-7]),1)
+  ###
   
-  locnames = paste(loc,c("2wk","2wk20s","current daily7","past daily7"),sep=" ")
+  locnames = paste(loc,c("2wk","2wk20s","current daily7","past daily7","posratedaily7"),sep=" ")
   
-  Current = tibble(val2wk,usableval2wk20s,valdaily7current,valdaily7past,.name_repair = ~locnames) 
+  Current = tibble(val2wk,usableval2wk20s,valdaily7current,valdaily7past,paste(dailytestrate7,"%",sep=""),.name_repair = ~locnames) 
   
   backcurrent = "white"; colcurrent = "black"
   if ((val2wk > 20)) {backcurrent = "#778899"; colcurrent = "white"}
@@ -154,6 +159,7 @@ SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s) {
     column_spec(2, bold = T, border_right = T,include_thead = T) %>%
     column_spec(3, bold = T, border_right = T,include_thead = T) %>%
     column_spec(4, bold = T, border_right = T,include_thead = T) %>%
+    column_spec(5, bold = T, border_right = T,include_thead = T) %>%
     kable_styling(full_width = F, position = "center") %>%
     row_spec(1,background=backcurrent,color=colcurrent) %>%
     row_spec(0, color="black",background="#D3D3D3") 
@@ -175,11 +181,15 @@ SafetyCheckTable = function(usabledata, loc, usablepop) {
   ###
   valdaily7past = round(rollmean(usabledata$POS_NEW, 7, na.pad=T)[n-14],1)
   ###
+#  dailytestrate7 = round(100*mean(usabledata$POSRATE_NEW[(n-6):n]) ,1)
+  dailytestrate7 = round(100*(usabledata$POSITIVE[n]-usabledata$POSITIVE[n-7])/
+                           (usabledata$TOTALTESTS[n]-usabledata$TOTALTESTS[n-7]),1)
+  ###
   
-  locnames = paste(loc,c("2wk","current daily7","past daily7"),sep=" ")
+  locnames = paste(loc,c("2wk","current daily7","past daily7","posratedaily7"),sep=" ")
   
-  Current = tibble(val2wk,valdaily7current,valdaily7past,.name_repair = ~locnames) 
-  
+  Current = tibble(val2wk,valdaily7current,valdaily7past,paste(dailytestrate7,"%",sep=""),.name_repair = ~locnames) 
+
 
   backcurrent = "white"; colcurrent = "black"
   if ((val2wk > 20)) {backcurrent = "#778899"; colcurrent = "white"}

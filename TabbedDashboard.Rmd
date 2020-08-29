@@ -64,7 +64,7 @@ Column {.tabset}
 
 ### Eau Claire
 
-```{r,fig.height=3}
+```{r,fig.height=3,fig.width=8}
 DailyCases(ECdata, "Eau Claire") 
 DailyOutcomes(ECdata, "Eau Claire") 
 
@@ -72,7 +72,7 @@ DailyOutcomes(ECdata, "Eau Claire")
 
 ### Chippewa
 
-```{r,fig.height=3}
+```{r,fig.height=3,fig.width=8}
 DailyCases(CFdata, "Chippewa") 
 DailyOutcomes(CFdata, "Chippewa") 
 
@@ -80,7 +80,7 @@ DailyOutcomes(CFdata, "Chippewa")
 
 ### Barron
 
-```{r,fig.height=3}
+```{r,fig.height=3,fig.width=8}
 DailyCases(BAdata, "Barron") 
 DailyOutcomes(BAdata, "Barron") 
 
@@ -88,7 +88,7 @@ DailyOutcomes(BAdata, "Barron")
 
 ### Wisconsin
 
-```{r,fig.height=3}
+```{r,fig.height=3,fig.width=8}
 DailyCases(WIdata, "Wisconsin") 
 DailyOutcomes(WIdata, "Wisconsin") 
 
@@ -184,8 +184,7 @@ Column {.tabset}
 (most recent 14 days), **rate per** 10K of county population
    * **2wk20s**:  Approximate two-week case total, rate per 10K of 20-29 population; since over 50% of students on campus are in early 20s
    * **daily7**: Daily new-case running average (_average_ over 7 days)
- 
-
+   * **posratedaily7** (as a percent): Daily positive-test rate, running average (_average_ over 7 days)
 
 ```{r}
 criteria2wk = c("> 25",  "> 28", "> 28", "> 30", "> 30")
