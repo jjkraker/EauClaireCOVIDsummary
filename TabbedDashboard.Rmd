@@ -39,12 +39,13 @@ BAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Barron"),DATE))
 CFdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Chippewa"),DATE))
 WIdata <- CaseCheck(arrange(filter(ALLdata,NAME=="WI"),DATE))
 
-ECpop = 102388 # https://datausa.io/profile/geo/eau-claire-county-wi
-EC20pop = 18430 # about 18% of 102,388 = 18,430 as number in 20s, with students
-CFpop = 63445 # https://datausa.io/profile/geo/chippewa-county-wi
-BApop = 45358 # https://datausa.io/profile/geo/barron-county-wi
-WIpop = 5810000 # https://datausa.io/profile/geo/wisconsin 
-WI20pop = 760400
+#estimates of populations from https://www.census.gov/quickfacts, unless otherwise noted
+ECpop = 104646 
+EC20pop = 20930 # about 20% of 104,646 = 20,930 as number in 20s, with students, https://censusreporter.org/profiles/05000US55035-eau-claire-county-wi/
+CFpop = 64658 
+BApop = 45244 
+WIpop = 5822434 
+WI20pop = 768561 # about 13.2% of 5,822,434 as number in 20s
 ```
 
 Daily  {data-orientation=columns}
@@ -67,6 +68,7 @@ Column {.tabset}
 ```{r,fig.height=3,fig.width=8}
 DailyCases(ECdata, "Eau Claire") 
 DailyOutcomes(ECdata, "Eau Claire") 
+DailyTesting(ECdata, "Eau Claire")
 
 ```   
 
@@ -75,6 +77,7 @@ DailyOutcomes(ECdata, "Eau Claire")
 ```{r,fig.height=3,fig.width=8}
 DailyCases(CFdata, "Chippewa") 
 DailyOutcomes(CFdata, "Chippewa") 
+DailyTesting(CFdata, "Chippewa")
 
 ```   
 
@@ -83,6 +86,7 @@ DailyOutcomes(CFdata, "Chippewa")
 ```{r,fig.height=3,fig.width=8}
 DailyCases(BAdata, "Barron") 
 DailyOutcomes(BAdata, "Barron") 
+DailyTesting(BAdata, "Barron") 
 
 ```   
 
@@ -91,6 +95,7 @@ DailyOutcomes(BAdata, "Barron")
 ```{r,fig.height=3,fig.width=8}
 DailyCases(WIdata, "Wisconsin") 
 DailyOutcomes(WIdata, "Wisconsin") 
+DailyTesting(WIdata, "Wisconsin") 
 
 ```   
 
@@ -103,28 +108,30 @@ Active {.tabset}
 ### Eau Claire
 
 ```{r,fig.height=3}
-ActiveCases(ECdata, "Eau Claire") 
+ActiveCases(ECdata, "Eau Claire",F) 
+ActiveCases(ECdata, "Eau Claire",T) 
 
 ```   
 
 ### Chippewa
 
 ```{r,fig.height=3}
-ActiveCases(CFdata, "Chippewa") 
+ActiveCases(CFdata, "Chippewa",F) 
 
 ```   
 
 ### Barron
 
 ```{r,fig.height=3}
-ActiveCases(BAdata, "Barron") 
+ActiveCases(BAdata, "Barron",F) 
 
 ```   
 
 ### Wisconsin
 
 ```{r,fig.height=3}
-ActiveCases(WIdata, "Wisconsin") 
+ActiveCases(WIdata, "Wisconsin",F) 
+ActiveCases(WIdata, "Wisconsin",T) 
 
 
 ```

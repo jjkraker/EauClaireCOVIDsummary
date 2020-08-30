@@ -21,16 +21,18 @@ CaseCheck = function(usabledata) {
                              TRUE ~ POS_NEW
                              )
   ) %>%
-  mutate(TOTAL_10Days= rollsum(POS_NEW, 10, fill=NA,align="right")
-  ) %>%
-  mutate(TOTAL_15Days = rollsum(POS_NEW, 15, fill=NA,align="right")
-  ) %>%
-    mutate(TOTAL_12Days= rollsum(POS_NEW, 12, fill=NA,align="right")
-  ) %>%
-    mutate(TOTAL_14Days= rollsum(POS_NEW, 14, fill=NA,align="right")
-    ) %>%
-    mutate(TOTAL_8Days= rollsum(POS_NEW, 8, fill=NA,align="right")
-  )
+  mutate(POS_20_29_NEW = c(NA,usabledata$POS_20_29[2:(dim(usabledata)[1])]-
+                             usabledata$POS_20_29[1:(dim(usabledata)[1]-1)])) %>%
+  mutate(TOTAL_10Days= rollsum(POS_NEW, 10, fill=NA,align="right")) %>%
+  mutate(TOTAL_15Days = rollsum(POS_NEW, 15, fill=NA,align="right")) %>%
+  mutate(TOTAL_12Days= rollsum(POS_NEW, 12, fill=NA,align="right")) %>%
+  mutate(TOTAL_14Days= rollsum(POS_NEW, 14, fill=NA,align="right")) %>%
+  mutate(TOTAL_8Days= rollsum(POS_NEW, 8, fill=NA,align="right")) %>%
+  mutate(TOTAL_10Days20s= rollsum(POS_20_29_NEW, 10, fill=NA,align="right")) %>%
+  mutate(TOTAL_15Days20s = rollsum(POS_20_29_NEW, 15, fill=NA,align="right")) %>%
+  mutate(TOTAL_12Days20s= rollsum(POS_20_29_NEW, 12, fill=NA,align="right")) %>%
+  mutate(TOTAL_14Days20s= rollsum(POS_20_29_NEW, 14, fill=NA,align="right")) %>%
+  mutate(TOTAL_8Days20s= rollsum(POS_20_29_NEW, 8, fill=NA,align="right"))
   
 }
 
@@ -90,15 +92,27 @@ DailyCases = function(usabledata, location) {
 
 
 
-ActiveCases = function(usabledata, location) {
-  DCplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TOTAL_12Days))+
-    geom_line(aes(color="12days total"))+
-    geom_line(aes(y=TOTAL_10Days, color="10days total")) +
-    geom_line(aes(y=TOTAL_14Days, color="14days total"))+
-    geom_line(aes(y=POS_NEW, color="Daily Cases")) +
+ActiveCases = function(usabledata, location, twenties) {
+  if (twenties) {
+    plotused <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TOTAL_12Days20s))+
+      geom_line(aes(color="12days total"))+
+      geom_line(aes(y=TOTAL_10Days20s, color="10days total")) +
+      geom_line(aes(y=TOTAL_14Days20s, color="14days total"))+
+      geom_line(aes(y=POS_20_29_NEW, color="Daily Cases")) +
+      ylim(0, max(usabledata$TOTAL_14Days,na.rm=T)) +
+      ggtitle(label = paste(location, "Estimated Active COVID cases in 20s"))
+  } else {
+    plotused <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TOTAL_12Days))+
+      geom_line(aes(color="12days total"))+
+      geom_line(aes(y=TOTAL_10Days, color="10days total")) +
+      geom_line(aes(y=TOTAL_14Days, color="14days total"))+
+      geom_line(aes(y=POS_NEW, color="Daily Cases")) +
+      ylim(0, max(usabledata$TOTAL_14Days,na.rm=T)) +
+      ggtitle(label = paste(location, "Estimated Active COVID cases"))
+  }
+  DCplot <- plotused + 
     scale_x_date(date_minor_breaks = "1 week") +
     scale_x_date(breaks = date_breaks("14 days"))+
-    ggtitle(label = paste(location, "Estimated Active COVID cases"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
           axis.text.x = element_text(angle=90))+
@@ -111,6 +125,23 @@ ActiveCases = function(usabledata, location) {
   #  DCplot <- DCplot %>%
   #    
   DCplot
+}
+
+DailyTesting = function(usabledata, location) {
+  DTplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TEST_NEW))+
+    #  geom_line(aes(color=Month))+ 
+    geom_line(aes(color="Daily"))+
+    geom_line(aes(y=rollmean(TEST_NEW, 7, na.pad=TRUE), color="7-day moving avg")) +
+    geom_smooth(method = 'loess',aes(color="Loess smooth"))+
+    scale_x_date(breaks = date_breaks("14 days"))+
+    ggtitle(label = paste(location, "Daily tests"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("Daily Testing")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('Daily'='#32FFFF','Loess smooth'='grey','7-day moving avg'='navy')) 
+  DTplot
 }
 
 SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s) {
@@ -325,7 +356,7 @@ CumulativeLines <- function(usabledata, location) {
         axis.text.x = element_text(angle=90))+
     ylab("Cumulative Counts, log10-scale axis")+
     xlab("Date") +
-    scale_colour_manual(name='', values=c('Testing'='#b8bc86',
+    scale_colour_manual(name='', values=c('Testing'='#32FFFF',
                                         'Cases'='green',
                                         'Hospitalized' = '#3399ff',
                                         'Deaths'='#d100d1')) +
