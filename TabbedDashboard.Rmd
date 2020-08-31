@@ -69,7 +69,6 @@ Column {.tabset}
 DailyCases(ECdata, "Eau Claire") 
 DailyOutcomes(ECdata, "Eau Claire") 
 DailyTesting(ECdata, "Eau Claire")
-
 ```   
 
 ### Chippewa
@@ -150,7 +149,6 @@ Column {.tabset}
 ### Eau Claire
 ```{r}
 PartialTotalTable(ECdata, "Eau Claire")
-
 
 
 ```
@@ -298,29 +296,24 @@ Column {data-width=600}{.tabset}
 
 ```{r,fig.height=3}
 CumulativeOutcomes(ECdata, "Eau Claire") 
-CumulativeLines(ECdata,"Eau Claire")
-#ggarrange(Model1plot, Model2plot, widths = c(3.5,5))CumulativeLines(WIdata,"Wisconsin")
 ```   
 
 ### Chippewa
 
 ```{r,fig.height=3}
 CumulativeOutcomes(CFdata, "Chippewa") 
-CumulativeLines(CFdata, "Chippewa")
 ```   
 
 ### Barron
 
 ```{r,fig.height=3}
 CumulativeOutcomes(BAdata, "Barron") 
-CumulativeLines(BAdata, "Barron") 
 ```   
 
 ### Wisconsin
 
 ```{r,fig.height=3}
 CumulativeOutcomes(WIdata, "Wisconsin") 
-CumulativeLines(WIdata, "Wisconsin")
 ```   
 
 
@@ -332,16 +325,32 @@ CumulativeLines(WIdata, "Wisconsin")
 Column {data-width=200}{.tabset}
 -------------------------------------
 
-### Eau Claire 
+### Eau Claire
+
+```{r,fig.height=3}
+CumulativeLines(ECdata,"Eau Claire")
+#ggarrange(Model1plot, Model2plot, widths = c(3.5,5))CumulativeLines(WIdata,"Wisconsin")
+```   
+
+### Chippewa
+
+```{r,fig.height=3}
+CumulativeLines(CFdata, "Chippewa")
+```   
+
+### Barron
+
+```{r,fig.height=3}
+CumulativeLines(BAdata, "Barron") 
+```   
+
+### Wisconsin
+
+```{r,fig.height=3}
+CumulativeLines(WIdata, "Wisconsin")
+```   
 
 
-```{r}
-# create a dataset
-
-
-```
-
-### Wisconsin 
 
 
 

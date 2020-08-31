@@ -1,3 +1,9 @@
+
+###############################################
+###########INITIAL DATA computations###########
+###############################################
+
+
 CaseCheck = function(usabledata) {
   usabledata <- usabledata %>%
     mutate(TOTALTESTS = POSITIVE+NEGATIVE)%>% 
@@ -37,35 +43,9 @@ CaseCheck = function(usabledata) {
 }
 
 
-FullTotalTable = function(usabledata, location) {
-  fulltable <-
-    usabledata %>% 
-    filter(DATE %in% tail(DATE, 7)) %>%
-    select(DATE, POSITIVE, NEGATIVE, DEATHS, HOSP_YES, HOSP_UNK, IC_YES) %>%
-    rename_at(vars(starts_with("HOSP_")), ~str_to_title(str_replace_all(., "HOSP_","Hospitalization "))) %>%
-    rename_at(vars(starts_with("IC_")), ~str_to_title(str_replace_all(., "IC_","ICU "))) %>%   
-    rename_at(vars(ends_with("Unk")), ~str_to_title(str_replace_all(., "Unk","Unknown "))) %>%   
-    kable(digits = 3,booktabs = T, caption = paste(location, "cumulative counts of COVID cases and outcomes"),align = "c") %>%
-    kable_styling(latex_options = c("hold_position", "scale_down"), font_size = 11) %>% 
-    row_spec(7, color = "darkblue", background = "#00FFFF") 
-  
-  fulltable
-}
-
-
-PartialTotalTable = function(usabledata, location) {
-  fulltable <-
-    usabledata %>% 
-    filter(DATE %in% tail(DATE, 7)) %>%
-    select(DATE, POSITIVE, NEGATIVE, DEATHS, TOTAL_10Days, TOTAL_14Days) %>%
-    rename_at(vars(starts_with("TOTAL_")), ~str_to_title(str_replace_all(., "TOTAL_","New in Last "))) %>%
-    rename_at(vars(starts_with("HOSP_")), ~str_to_title(str_replace_all(., "HOSP_","Hospitalization "))) %>%
-    kable(digits = 3,booktabs = T, caption = paste(location, "cumulative counts of COVID cases and outcomes"),align = "c") %>%
-    kable_styling(latex_options = c("hold_position", "scale_down"), font_size = 11) %>% 
-    row_spec(7, color = "darkblue", background = "#00FFFF") 
-  
-  fulltable
-}
+###############################################
+########FUNCTIONS in "Daily" tab - left########
+###############################################
 
 
 DailyCases = function(usabledata, location) {
@@ -91,6 +71,56 @@ DailyCases = function(usabledata, location) {
 }
 
 
+
+DailyTesting = function(usabledata, location) {
+  DTplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TEST_NEW))+
+    #  geom_line(aes(color=Month))+ 
+    geom_line(aes(color="Daily"))+
+    geom_line(aes(y=rollmean(TEST_NEW, 7, na.pad=TRUE), color="7-day moving avg")) +
+    geom_smooth(method = 'loess',aes(color="Loess smooth"))+
+    scale_x_date(breaks = date_breaks("14 days"))+
+    ggtitle(label = paste(location, "Daily tests"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("Daily Testing")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('Daily'='#32FFFF','Loess smooth'='grey','7-day moving avg'='navy')) 
+  DTplot
+}
+
+
+
+DailyOutcomes <- function(usabledata, location) {
+  n=dim(usabledata)[1]
+  stackDATE = c(usabledata$DATE,usabledata$DATE)
+  stackCOUNTS = c(usabledata$NEG_NEW,usabledata$POS_NEW)
+  stackOUTCOMES = c(rep("Negative",n),rep("Positive",n))
+  stackratio = rep(usabledata$POS_NEW/usabledata$TEST_NEW,2); stackratio[stackratio<0] = NA
+  stackdata = tibble(stackDATE,stackCOUNTS,stackOUTCOMES,stackratio)
+  scalingval = max(stackCOUNTS*1.05,na.rm=T)
+  # Grouped
+  OutPlot <- ggplot(stackdata, aes(fill=stackOUTCOMES, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
+    geom_bar(position="stack", stat="identity") +
+    ggtitle(label = paste(location, "Daily Negative and Positive Tests"))+
+    scale_x_date(breaks = date_breaks("14 days"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
+          axis.text.x = element_text(angle=90))+
+    ylab("Tests")+
+    xlab("Date") + 
+    labs(fill = "Test Outcomes")+
+    scale_fill_manual(values=c('lightgray','green')) 
+  
+  OutPlot
+}
+
+
+
+
+##############################################
+#######FUNCTIONS in "Daily" tab - right#######
+##############################################
 
 ActiveCases = function(usabledata, location, twenties) {
   if (twenties) {
@@ -127,22 +157,45 @@ ActiveCases = function(usabledata, location, twenties) {
   DCplot
 }
 
-DailyTesting = function(usabledata, location) {
-  DTplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TEST_NEW))+
-    #  geom_line(aes(color=Month))+ 
-    geom_line(aes(color="Daily"))+
-    geom_line(aes(y=rollmean(TEST_NEW, 7, na.pad=TRUE), color="7-day moving avg")) +
-    geom_smooth(method = 'loess',aes(color="Loess smooth"))+
-    scale_x_date(breaks = date_breaks("14 days"))+
-    ggtitle(label = paste(location, "Daily tests"))+
-    theme_minimal()+
-    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
-          axis.text.x = element_text(angle=90))+
-    ylab("Daily Testing")+
-    xlab("Date") +
-    scale_colour_manual(name='', values=c('Daily'='#32FFFF','Loess smooth'='grey','7-day moving avg'='navy')) 
-  DTplot
+##############################################
+###FUNCTIONS in "By the Numbers" tab - left###
+##############################################
+
+FullTotalTable = function(usabledata, location) {
+  fulltable <-
+    usabledata %>% 
+    filter(DATE %in% tail(DATE, 7)) %>%
+    select(DATE, POSITIVE, NEGATIVE, DEATHS, HOSP_YES, HOSP_UNK, IC_YES) %>%
+    rename_at(vars(starts_with("HOSP_")), ~str_to_title(str_replace_all(., "HOSP_","Hospitalization "))) %>%
+    rename_at(vars(starts_with("IC_")), ~str_to_title(str_replace_all(., "IC_","ICU "))) %>%   
+    rename_at(vars(ends_with("Unk")), ~str_to_title(str_replace_all(., "Unk","Unknown "))) %>%   
+    kable(digits = 3,booktabs = T, caption = paste(location, "cumulative counts of COVID cases and outcomes"),align = "c") %>%
+    kable_styling(latex_options = c("hold_position", "scale_down"), font_size = 11) %>% 
+    row_spec(7, color = "darkblue", background = "#00FFFF") 
+  
+  fulltable
 }
+
+
+PartialTotalTable = function(usabledata, location) {
+  fulltable <-
+    usabledata %>% 
+    filter(DATE %in% tail(DATE, 7)) %>%
+    select(DATE, POSITIVE, NEGATIVE, DEATHS, TOTAL_10Days, TOTAL_14Days) %>%
+    rename_at(vars(starts_with("TOTAL_")), ~str_to_title(str_replace_all(., "TOTAL_","New in Last "))) %>%
+    rename_at(vars(starts_with("HOSP_")), ~str_to_title(str_replace_all(., "HOSP_","Hospitalization "))) %>%
+    kable(digits = 3,booktabs = T, caption = paste(location, "cumulative counts of COVID cases and outcomes"),align = "c") %>%
+    kable_styling(latex_options = c("hold_position", "scale_down"), font_size = 11) %>% 
+    row_spec(7, color = "darkblue", background = "#00FFFF") 
+  
+  fulltable
+}
+
+
+
+###############################################
+###FUNCTIONS in "By the Numbers" tab - right###
+###############################################
 
 SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s) {
   ##
@@ -194,7 +247,7 @@ SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s) {
     kable_styling(full_width = F, position = "center") %>%
     row_spec(1,background=backcurrent,color=colcurrent) %>%
     row_spec(0, color="black",background="#D3D3D3") 
-
+  
   safetytable
 }
 
@@ -212,7 +265,7 @@ SafetyCheckTable = function(usabledata, loc, usablepop) {
   ###
   valdaily7past = round(rollmean(usabledata$POS_NEW, 7, na.pad=T)[n-14],1)
   ###
-#  dailytestrate7 = round(100*mean(usabledata$POSRATE_NEW[(n-6):n]) ,1)
+  #  dailytestrate7 = round(100*mean(usabledata$POSRATE_NEW[(n-6):n]) ,1)
   dailytestrate7 = round(100*(usabledata$POSITIVE[n]-usabledata$POSITIVE[n-7])/
                            (usabledata$TOTALTESTS[n]-usabledata$TOTALTESTS[n-7]),1)
   ###
@@ -220,8 +273,8 @@ SafetyCheckTable = function(usabledata, loc, usablepop) {
   locnames = paste(loc,c("2wk","current daily7","past daily7","posratedaily7"),sep=" ")
   
   Current = tibble(val2wk,valdaily7current,valdaily7past,paste(dailytestrate7,"%",sep=""),.name_repair = ~locnames) 
-
-
+  
+  
   backcurrent = "white"; colcurrent = "black"
   if ((val2wk > 20)) {backcurrent = "#778899"; colcurrent = "white"}
   if (valdaily7current > valdaily7past-1) {backcurrent = "#778899"; colcurrent = "white"}
@@ -249,31 +302,22 @@ SafetyCheckTable = function(usabledata, loc, usablepop) {
 }
 
 
-# like that from https://i.redd.it/o0lnkamvpn951.png
 
-DailyInfoPlot = function(usabledata) {
-  ## plot daily new cases and deaths
-  usabledata %>%
-    ggplot( aes(x=price)) +
-    geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8)
-  
-  p1
-}
+###############################################
+#########FUNCTIONS in "Cumulative" tab#########
+###############################################
 
-
-DailyOutcomes <- function(usabledata, location) {
+CumulativeOutcomes  <- function(usabledata, location) {
   
   n=dim(usabledata)[1]
   stackDATE = c(usabledata$DATE,usabledata$DATE)
-  stackCOUNTS = c(usabledata$NEG_NEW,usabledata$POS_NEW)
+  stackCOUNTS = c(usabledata$NEGATIVE,usabledata$POSITIVE)
   stackOUTCOMES = c(rep("Negative",n),rep("Positive",n))
-  stackratio = rep(usabledata$POS_NEW/usabledata$TEST_NEW,2); stackratio[stackratio<0] = NA
-  stackdata = tibble(stackDATE,stackCOUNTS,stackOUTCOMES,stackratio)
-  scalingval = max(stackCOUNTS*1.05,na.rm=T)
+  stackdata = tibble(stackDATE,stackCOUNTS,stackOUTCOMES)
   # Grouped
   OutPlot <- ggplot(stackdata, aes(fill=stackOUTCOMES, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
     geom_bar(position="stack", stat="identity") +
-    ggtitle(label = paste(location, "Daily Negative and Positive Tests"))+
+    ggtitle(label = paste(location, "Cumulative Negative and Positive Tests"))+
     scale_x_date(breaks = date_breaks("14 days"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
@@ -287,6 +331,56 @@ DailyOutcomes <- function(usabledata, location) {
 }
 
 
+CumulativeLines <- function(usabledata, location) {
+  LinePlot <- ggplot(usabledata, aes(y=TOTALTESTS, x=as.Date(DATE,"%B %d %Y"))) + 
+    geom_line(aes(color="Testing"))+
+    geom_line(aes(y=POSITIVE, color="Cases")) +
+    geom_line(aes(y=DEATHS, color="Deaths"))+
+    geom_line(aes(y=HOSP_YES, color="Hospitalized"))+
+    scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("14 days"))+
+    ggtitle(label = paste(location,"cumulative data, log10-scale"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("Cumulative Counts, log10-scale axis")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('Testing'='#32FFFF',
+                                          'Cases'='green',
+                                          'Hospitalized' = '#3399ff',
+                                          'Deaths'='#d100d1')) +
+    scale_y_continuous(trans = 'log10',labels = format_format(big.mark = " ", scientific = FALSE))
+  
+  LinePlot 
+}
+
+###############################################
+##########FUNCTIONS in "Modeling" tab##########
+###############################################
+
+
+
+
+##############################################
+###############UNUSED FUNCTIONS###############
+##############################################
+
+AvgDayWeekTable = function(usabledata, location) {
+  n <- dim(usabledata)[1]; k <- floor(n/7)
+  weekdayshort = c("Sun","Mon", "Tues", "Wed","Thurs", "Fri", "Sat")
+  addon <- (n %% 7) > 0
+  dayadjust <- rep(weekdayshort, k)
+  if (addon)    dayadjust <- c(dayadjust,weekdayshort[1:(n%%7)])
+  usableadjust <- usabledata; usableadjust$WEEKDAY = dayadjust
+  fulltable <-
+    usableadjust %>% 
+    select(TEST_NEW, POS_NEW,WEEKDAY) %>%
+    group_by(WEEKDAY)  %>%
+    summarise(MedianDailyTest = round(median(TEST_NEW,na.rm=T),0),
+              MedianDailyPos = round(median(POS_NEW,na.rm=T),0)) %>%
+    kable()
+  
+  fulltable
+}
 
 DailyChanges <- function(usabledata, location) {
   
@@ -318,49 +412,12 @@ DailyChanges <- function(usabledata, location) {
 }
 
 
-
-
-CumulativeOutcomes  <- function(usabledata, location) {
+DailyInfoPlot = function(usabledata) {
+  ## plot daily new cases and deaths
+  usabledata %>%
+    ggplot( aes(x=price)) +
+    geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8)
   
-  n=dim(usabledata)[1]
-  stackDATE = c(usabledata$DATE,usabledata$DATE)
-  stackCOUNTS = c(usabledata$NEGATIVE,usabledata$POSITIVE)
-  stackOUTCOMES = c(rep("Negative",n),rep("Positive",n))
-  stackdata = tibble(stackDATE,stackCOUNTS,stackOUTCOMES)
-  # Grouped
-  OutPlot <- ggplot(stackdata, aes(fill=stackOUTCOMES, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
-    geom_bar(position="stack", stat="identity") +
-    ggtitle(label = paste(location, "Cumulative Negative and Positive Tests"))+
-    scale_x_date(breaks = date_breaks("14 days"))+
-    theme_minimal()+
-    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
-          axis.text.x = element_text(angle=90))+
-    ylab("Tests")+
-    xlab("Date") + 
-    labs(fill = "Test Outcomes")+
-    scale_fill_manual(values=c('lightgray','green')) 
-  
-  OutPlot
+  p1
 }
 
-CumulativeLines <- function(usabledata, location) {
-  LinePlot <- ggplot(usabledata, aes(y=TOTALTESTS, x=as.Date(DATE,"%B %d %Y"))) + 
-    geom_line(aes(color="Testing"))+
-    geom_line(aes(y=POSITIVE, color="Cases")) +
-    geom_line(aes(y=DEATHS, color="Deaths"))+
-    geom_line(aes(y=HOSP_YES, color="Hospitalized"))+
-    scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("14 days"))+
-    ggtitle(label = paste(location,"cumulative data, log10-scale"))+
-    theme_minimal()+
-   theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
-        axis.text.x = element_text(angle=90))+
-    ylab("Cumulative Counts, log10-scale axis")+
-    xlab("Date") +
-    scale_colour_manual(name='', values=c('Testing'='#32FFFF',
-                                        'Cases'='green',
-                                        'Hospitalized' = '#3399ff',
-                                        'Deaths'='#d100d1')) +
-    scale_y_continuous(trans = 'log10',labels = format_format(big.mark = " ", scientific = FALSE))
-
-  LinePlot 
-}
