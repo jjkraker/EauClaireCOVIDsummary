@@ -227,7 +227,7 @@ SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s) {
   if ((val2wk > 20)) {backcurrent = "#778899"; colcurrent = "white"}
   if (valdaily7current > valdaily7past-1) {backcurrent = "#778899"; colcurrent = "white"}
   if ((val2wk > 25) | (usableval2wk20s > 30)) {backcurrent = "darkslateblue"; colcurrent = "white"}
-  if ((val2wk > 28) | (usableval2wk20s > 40)) {
+  if ((val2wk > 28) | (usableval2wk20s > 45)) {
     backcurrent = "purple"
     if (valdaily7current > valdaily7past-.5) {backcurrent = "#d100d1"}
   }

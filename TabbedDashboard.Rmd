@@ -182,8 +182,9 @@ PartialTotalTable(WIdata, "Wisconsin")
 Column {.tabset}
 -------------------------------------
 
-**Source**:  [Minnesota’s safe learning plan](https://education.mn.gov/MDE/dse/health/covid19/) is very direct, very precise, with scientific basis.  Determined on a local level. **Definitions** (corresponding / similar to MN plan) and 
-*SUGGESTED GUIDELINES* based off of reference:
+**Source**:  [Minnesota’s safe learning plan](https://education.mn.gov/MDE/dse/health/covid19/) is very direct, very precise, with scientific basis.  Determined on a local level. 
+
+**Definitions** (corresponding / similar to MN plan):
 
    * **2wk**: Two-week case _total_
 (most recent 14 days), **rate per** 10K of county population
@@ -191,9 +192,12 @@ Column {.tabset}
    * **daily7**: Daily new-case running average (_average_ over 7 days)
    * **posratedaily7** (as a percent): Daily positive-test rate, running average (_average_ over 7 days)
 
+
+and a set of *SUGGESTED GUIDELINES* based on the Minnesota reference:
+
 ```{r}
 criteria2wk = c("> 25",  "> 28", "> 28", "> 30", "> 30")
-criteria2wk20s = c("> 30",  "> 40", "> 40", "> 50", "> 50")
+criteria2wk20s = c("> 30",  "> 45*", "> 45*", "> 50", "> 50")
 criteriadaily7 = c("--",  "decreasing", "steady to increasing","decreasing", "steady to increasing")
 
 action = c("urge extra caution",
@@ -229,8 +233,7 @@ kable(DecisionTable) %>%
 
 
 ```
-
-
+* adjusted to reflect a corresponding proportion of the top cut-off.
 
 ### Eau Claire {data-width=100}
 
