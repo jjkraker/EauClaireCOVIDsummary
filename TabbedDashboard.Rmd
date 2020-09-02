@@ -373,13 +373,11 @@ Column {data-height=100}
 
 ### Reliable Updated Visuals {data-width=300}
 
-   * Johns Hopkins dashboard (world, national, and county levels)
-   * National
-   * https://topic.newsbreak.com/covid-19.html?zip=19934&s=dmg_local_briefing.web2
-
+   * [Johns Hopkins dashboard]() (world, national, and county levels)
+   * [Another dashboard site](https://topic.newsbreak.com/covid-19.html?zip=19934&s=dmg_local_briefing.web2), with helpful interativity
    * [Wisconsin DHS website](https://www.dhs.wisconsin.gov/covid-19/county.htm), with interactive graphs; subsettable by county
    * [Re-opening Trends](https://www.nytimes.com/interactive/2020/07/09/us/coronavirus-cases-reopening-trends.html):  that is, why didn't the first wave end?
-
+   * [COVID College Cases Tracker](https://www.nytimes.com/interactive/2020/us/covid-college-cases-tracker.html)
    
    
 Column {data-height=400}
