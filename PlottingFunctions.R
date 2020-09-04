@@ -197,17 +197,17 @@ PartialTotalTable = function(usabledata, location) {
 ###FUNCTIONS in "By the Numbers" tab - right###
 ###############################################
 
-SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s) {
+SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s, lagdays) {
   ##
   n = dim(usabledata)[1]
   ###
   TodayTotal = usabledata$POSITIVE[n]
-  Lag14Total = usabledata$POSITIVE[n-14]
-  val2wk = round((TodayTotal - Lag14Total) / (usablepop/10000),1)
+  LagTotal = usabledata$POSITIVE[n-lagdays]
+  val2wk = round((TodayTotal - LagTotal) / (usablepop/10000),1)
   ###
   TodayTotal20s = usabledata$POS_20_29[n]
-  Lag14Total20s = usabledata$POS_20_29[n-14]
-  val2wk20s = (TodayTotal20s - Lag14Total20s) / (usablepop20s/10000)
+  LagTotal20s = usabledata$POS_20_29[n-lagdays]
+  val2wk20s = (TodayTotal20s - LagTotal20s) / (usablepop20s/10000)
   usableval2wk20s = round(val2wk20s,1)
   ###
   valdaily7current = round(mean(usabledata$POS_NEW[(n-6):n]) ,1)
@@ -220,7 +220,7 @@ SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s) {
   ###
   
   locnames = paste(loc,c("2wk","2wk20s","current daily7","past daily7","posratedaily7"),sep=" ")
-  
+  if (lagdays < 14)  locnames[1:2] = paste(loc,paste(lagdays,c("daystotal","daystotal20s"),sep=""),sep=" ")
   Current = tibble(val2wk,usableval2wk20s,valdaily7current,valdaily7past,paste(dailytestrate7,"%",sep=""),.name_repair = ~locnames) 
   
   backcurrent = "white"; colcurrent = "black"
