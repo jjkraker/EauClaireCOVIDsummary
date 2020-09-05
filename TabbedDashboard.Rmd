@@ -248,9 +248,9 @@ SafetyCheckTable20s(ECdata, "Eau Claire", ECpop,EC20pop,14)
 **Important Resources**:
 
    * [Eau Claire Reopening guidelines "Respond Together"](https://www.eauclairewi.gov/Home/ShowDocument?id=32685)
-   * [Eau Claire County Health Department's comprehensive website on COVID and planning](https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/), with [August 20 current info](https://www.eauclairewi.gov/Home/ShowDocument?id=32975)
-   * [Visual summary Eau Claire County Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
-   * [Eau Claire County Demographics](https://datausa.io/profile/geo/eau-claire-county-wi#demographics)
+* [Eau Claire County Health Department's comprehensive website on COVID and planning](https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/), with [August 20 current info](https://www.eauclairewi.gov/Home/ShowDocument?id=32975)
+* [Visual summary Eau Claire County Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
+* [Eau Claire County Demographics](https://datausa.io/profile/geo/eau-claire-county-wi#demographics)
 
 ### Chippewa
 
@@ -279,8 +279,8 @@ SafetyCheckTable20s(WIdata, "Wisconsin", WIpop,WI20pop,14)
 
 
    * [Reopening guidelines](https://www.dhs.wisconsin.gov/covid-19/prepare.htm#:~:text=Back%20Section%20Menu-,COVID-19:%20Badger%20Bounce%20Back,safest%20way%20to%20open%20Wisconsin.)
-   * [Wisconsin Health Department's comprehensive website on COVID and planning](https://www.dhs.wisconsin.gov/outbreaks/index.htm)
-   * [Visual summary of Wisconsin Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
+* [Wisconsin Health Department's comprehensive website on COVID and planning](https://www.dhs.wisconsin.gov/outbreaks/index.htm)
+* [Visual summary of Wisconsin Demographics](https://naccho.maps.arcgis.com/apps/opsdashboard/index.html#/dc74772707d94db9a7d24d30ffdcf36c)
 
 
 Cumulative {data-orientation=columns}
@@ -376,15 +376,15 @@ Column {data-height=100}
 ### Data Sources {data-width=200}
 
    * [Wisconsin Department of Health Services](https://data.dhsgis.wi.gov/datasets/covid-19-historical-data-table/data?where=GEO%20%3D%20%27State%27) with [variable definitions](https://www.dhs.wisconsin.gov/publications/p02677.pdf)
-   * [Eau Claire County statistics]( https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
+* [Eau Claire County statistics]( https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
 
 ### Reliable Updated Visuals {data-width=300}
 
    * [Johns Hopkins dashboard]() (world, national, and county levels)
-   * [Another dashboard site](https://topic.newsbreak.com/covid-19.html?zip=19934&s=dmg_local_briefing.web2), with helpful interativity
-   * [Wisconsin DHS website](https://www.dhs.wisconsin.gov/covid-19/county.htm), with interactive graphs; subsettable by county
-   * [Re-opening Trends](https://www.nytimes.com/interactive/2020/07/09/us/coronavirus-cases-reopening-trends.html):  that is, why didn't the first wave end?
-   * [COVID College Cases Tracker](https://www.nytimes.com/interactive/2020/us/covid-college-cases-tracker.html)
+* [Another dashboard site](https://topic.newsbreak.com/covid-19.html?zip=19934&s=dmg_local_briefing.web2), with helpful interativity
+* [Wisconsin DHS website](https://www.dhs.wisconsin.gov/covid-19/county.htm), with interactive graphs; subsettable by county
+* [Re-opening Trends](https://www.nytimes.com/interactive/2020/07/09/us/coronavirus-cases-reopening-trends.html):  that is, why didn't the first wave end?
+* [COVID College Cases Tracker](https://www.nytimes.com/interactive/2020/us/covid-college-cases-tracker.html)
    
    
 Column {data-height=400}
@@ -395,13 +395,13 @@ Column {data-height=400}
 *I devised plots that are similar to those found, for example, at the following locations:*
 
    * [Github repository by coolbaby0208](https://github.com/coolbaby0208/MN-COVID19)
-   * Covid Act Now https://covidactnow.org/?s=58173
-   * A regional breakdown of the United States COVID-19 curve https://www.reddit.com/r/dataisbeautiful/comments/heglc5/oc_a_regional_breakdown_of_the_united_states/
-   * Minnesota updates from Reddit  https://www.reddit.com/r/minnesota/comments/h9j6pj/covid19_update_up_222_230_by_mdh_active_2780/ and https://www.reddit.com/r/minnesota/comments/hfovhg/625_update_34123_positives_360_1406_deaths_9/
-   * [Wisconsin updates](https://www.reddit.com/r/CoronavirusWI/comments/hftc25/62520_graphs/) (from Redditor [unknown-and-alone](https://www.reddit.com/user/unknown-and-alone)) 
-   * <a href="https://www.reddit.com/r/CoronavirusWI/comments/hftc25/62520_graphs/" target="_blank">Wisconsin updates</a>
-   * https://www.reddit.com/r/dataisbeautiful/comments/hjwthw/oc_countylevel_covid19_case_growth_animation_in/
-   * https://www.cpp.edu/~clange/covid19/Covid19ReportCaliforniaComp.html
+* Covid Act Now https://covidactnow.org/?s=58173
+* A regional breakdown of the United States COVID-19 curve https://www.reddit.com/r/dataisbeautiful/comments/heglc5/oc_a_regional_breakdown_of_the_united_states/
+* Minnesota updates from Reddit  https://www.reddit.com/r/minnesota/comments/h9j6pj/covid19_update_up_222_230_by_mdh_active_2780/ and https://www.reddit.com/r/minnesota/comments/hfovhg/625_update_34123_positives_360_1406_deaths_9/
+* [Wisconsin updates](https://www.reddit.com/r/CoronavirusWI/comments/hftc25/62520_graphs/) (from Redditor [unknown-and-alone](https://www.reddit.com/user/unknown-and-alone)) 
+* <a href="https://www.reddit.com/r/CoronavirusWI/comments/hftc25/62520_graphs/" target="_blank">Wisconsin updates</a>
+* https://www.reddit.com/r/dataisbeautiful/comments/hjwthw/oc_countylevel_covid19_case_growth_animation_in/
+* https://www.cpp.edu/~clange/covid19/Covid19ReportCaliforniaComp.html
 
 ### Scientific References for Common Questions {data-width=500}
 
@@ -410,22 +410,22 @@ Column {data-height=400}
 **Masks** Should I wear a mask in enclosed public spaces?  Unequivocally, **YES**.  References for reasoning, using a current (as of July 8) [accumulation of over 70 references](https://threader.app/thread/1279144399897866248).  A few of my favorites (modeling-wise) are:
 
    * [Physical distancing, face masks, and eye protection to prevent person-to-person transmission of SARS-CoV-2 and COVID-19: a systematic review and meta-analysis](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)31142-9/fulltext)
-   * [Background for modelling: A modelling framework to assess the likely effectiveness of facemasks in combination with ‘lock-down’ in managing the COVID-19 pandemic](https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0376)
-   * [To mask or not to mask: Modeling the potential for face mask use by the general public to curtail the COVID-19 pandemic](https://www.sciencedirect.com/science/article/pii/S2468042720300117?via%3Dihub)
-   * [Face Masks Considerably Reduce COVID-19 Cases in Germany: A Synthetic Control Method Approach](http://ftp.iza.org/dp13319.pdf?fbclid=IwAR1jlcs2PjDIvg3AjqxMucwVPfexpxRDOt5T3k24MzNYmTCIE0Resziaeto)
+* [Background for modelling: A modelling framework to assess the likely effectiveness of facemasks in combination with ‘lock-down’ in managing the COVID-19 pandemic](https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0376)
+* [To mask or not to mask: Modeling the potential for face mask use by the general public to curtail the COVID-19 pandemic](https://www.sciencedirect.com/science/article/pii/S2468042720300117?via%3Dihub)
+* [Face Masks Considerably Reduce COVID-19 Cases in Germany: A Synthetic Control Method Approach](http://ftp.iza.org/dp13319.pdf?fbclid=IwAR1jlcs2PjDIvg3AjqxMucwVPfexpxRDOt5T3k24MzNYmTCIE0Resziaeto)
 
    
 A couple more in the works:
 
    * [Face mask wearing rate predicts country's COVID-19 death rates]( https://www.medrxiv.org/content/10.1101/2020.06.22.20137745v1)
-   * [Association of country-wide coronavirus mortality with demographics, testing, lockdowns, and public wearing of masks (Update June 15, 2020)]( https://www.researchgate.net/publication/342198360_Association_of_country-wide_coronavirus_mortality_with_demographics_testing_lockdowns_and_public_wearing_of_masks_Update_June_15_2020)
-   * [Physical distancing, face masks, and eye protection for prevention of COVID-19](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)31183-1/fulltext?fbclid=IwAR0TSoh6w_Pl54K5ZmmNU6p_cIBo2EoP9BmSxY5Pu2K0aV95IPwk5T53Q6s)
+* [Association of country-wide coronavirus mortality with demographics, testing, lockdowns, and public wearing of masks (Update June 15, 2020)]( https://www.researchgate.net/publication/342198360_Association_of_country-wide_coronavirus_mortality_with_demographics_testing_lockdowns_and_public_wearing_of_masks_Update_June_15_2020)
+* [Physical distancing, face masks, and eye protection for prevention of COVID-19](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)31183-1/fulltext?fbclid=IwAR0TSoh6w_Pl54K5ZmmNU6p_cIBo2EoP9BmSxY5Pu2K0aV95IPwk5T53Q6s)
 
 Media articles / letters summarizing scientific publications:
 
    * [Petition from Minnesota Healthcare Clinicians](https://docs.google.com/forms/d/e/1FAIpQLSel_CEtyTqFjyv_XFFyhPwbH-J6gnfX0YWsiEqlBLE4bsOHGg/viewform?fbclid=IwAR2QaUjDigeGZpGDS0mszJVXqiF4OqBCLlW_9hc7pApBv4WjDlIX1ToXlV4) to Gov. Walz, submitted July 7 with 1600 signatures
-   * https://www.npr.org/sections/health-shots/2020/06/21/880832213/yes-wearing-masks-helps-heres-why
-   * https://www.sfgate.com/science/article/Study-100-face-mask-use-could-crush-second-15333170.php?
+* https://www.npr.org/sections/health-shots/2020/06/21/880832213/yes-wearing-masks-helps-heres-why
+* https://www.sfgate.com/science/article/Study-100-face-mask-use-could-crush-second-15333170.php?
 
 Modeling  {data-orientation=columns}
 =====================================     
