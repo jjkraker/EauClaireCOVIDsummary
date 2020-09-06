@@ -28,11 +28,6 @@ library(ggpubr)
 
 source("PlottingFunctions.R")
 
-#WIdata = read.csv("Data/WIdata.csv")
-#ECdata = read.csv("Data/ECdata.csv")
-#BAdata = read.csv("Data/BAdata.csv")
-#CFdata = read.csv("Data/CFdata.csv")
-
 ALLdata = read_csv("StateCountydata.csv")
 ECdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Eau Claire"),DATE))
 BAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Barron"),DATE))
@@ -306,24 +301,28 @@ Column {data-width=600}{.tabset}
 
 ```{r,fig.height=3}
 CumulativeOutcomes(ECdata, "Eau Claire") 
+CumulativeLines(ECdata,"Eau Claire")
 ```   
 
 ### Chippewa
 
 ```{r,fig.height=3}
 CumulativeOutcomes(CFdata, "Chippewa") 
+CumulativeLines(CFdata, "Chippewa") 
 ```   
 
 ### Barron
 
 ```{r,fig.height=3}
 CumulativeOutcomes(BAdata, "Barron") 
+CumulativeLines(BAdata, "Barron") 
 ```   
 
 ### Wisconsin
 
 ```{r,fig.height=3}
 CumulativeOutcomes(WIdata, "Wisconsin") 
+CumulativeLines(WIdata, "Wisconsin") 
 ```   
 
 
@@ -338,26 +337,25 @@ Column {data-width=200}{.tabset}
 ### Eau Claire
 
 ```{r,fig.height=3}
-CumulativeLines(ECdata,"Eau Claire")
-#ggarrange(Model1plot, Model2plot, widths = c(3.5,5))CumulativeLines(WIdata,"Wisconsin")
+CumulativebyAge(ECdata,"Eau Claire")
 ```   
 
 ### Chippewa
 
 ```{r,fig.height=3}
-CumulativeLines(CFdata, "Chippewa")
+CumulativebyAge(CFdata, "Chippewa")
 ```   
 
 ### Barron
 
 ```{r,fig.height=3}
-CumulativeLines(BAdata, "Barron") 
+CumulativebyAge(BAdata, "Barron") 
 ```   
 
 ### Wisconsin
 
 ```{r,fig.height=3}
-CumulativeLines(WIdata, "Wisconsin")
+CumulativebyAge(WIdata, "Wisconsin")
 ```   
 
 
