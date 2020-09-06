@@ -60,7 +60,7 @@ Column {.tabset}
 
 ### Eau Claire
 
-```{r,fig.height=3,fig.width=8}
+```{r,fig.height=3,fig.width=6}
 DailyCases(ECdata, "Eau Claire") 
 DailyOutcomes(ECdata, "Eau Claire") 
 DailyTesting(ECdata, "Eau Claire")
@@ -68,7 +68,7 @@ DailyTesting(ECdata, "Eau Claire")
 
 ### Chippewa
 
-```{r,fig.height=3,fig.width=8}
+```{r,fig.height=3,fig.width=6}
 DailyCases(CFdata, "Chippewa") 
 DailyOutcomes(CFdata, "Chippewa") 
 DailyTesting(CFdata, "Chippewa")
@@ -77,7 +77,7 @@ DailyTesting(CFdata, "Chippewa")
 
 ### Barron
 
-```{r,fig.height=3,fig.width=8}
+```{r,fig.height=3,fig.width=6}
 DailyCases(BAdata, "Barron") 
 DailyOutcomes(BAdata, "Barron") 
 DailyTesting(BAdata, "Barron") 
@@ -86,7 +86,7 @@ DailyTesting(BAdata, "Barron")
 
 ### Wisconsin
 
-```{r,fig.height=3,fig.width=8}
+```{r,fig.height=3,fig.width=6}
 DailyCases(WIdata, "Wisconsin") 
 DailyOutcomes(WIdata, "Wisconsin") 
 DailyTesting(WIdata, "Wisconsin") 
@@ -129,6 +129,50 @@ ActiveCases(WIdata, "Wisconsin",T)
 
 
 ```
+
+Column {.tabset}
+-------------------------------------
+**Estimated Active**, split by Age group:
+
+   * First plot is conservative (10-day total) estimate
+* Second plot is 14-day total used in MN Safe-Learning plan
+
+### Eau Claire
+
+```{r,fig.height=3}
+ActiveSumbyAge(ECdata, "Eau Claire", 10) 
+ActiveSumbyAge(ECdata, "Eau Claire", 14)
+
+```   
+
+### Chippewa
+
+```{r,fig.height=3}
+ActiveSumbyAge(CFdata, "Chippewa", 10) 
+ActiveSumbyAge(CFdata, "Chippewa", 14)
+
+```   
+
+### Barron
+
+```{r,fig.height=3}
+ActiveSumbyAge(BAdata, "Barron",10) 
+ActiveSumbyAge(BAdata, "Barron",14) 
+
+```   
+
+### Wisconsin
+
+```{r,fig.height=3}
+ActiveSumbyAge(WIdata, "Wisconsin",10) 
+ActiveSumbyAge(WIdata, "Wisconsin",14) 
+
+
+```
+
+
+
+
 
 
 By the Numbers {data-orientation=columns}

@@ -129,7 +129,7 @@ DailyOutcomes <- function(usabledata, location) {
 
 
 ##############################################
-#######FUNCTIONS in "Daily" tab - right#######
+#######FUNCTIONS in "Daily" tab - middle#######
 ##############################################
 
 ActiveCases = function(usabledata, location, twenties) {
@@ -166,6 +166,50 @@ ActiveCases = function(usabledata, location, twenties) {
   #    
   DCplot
 }
+
+
+
+##############################################
+#######FUNCTIONS in "Daily" tab - right#######
+##############################################
+
+ActiveSumbyAge <- function(usabledata, location,sumlag) {
+  
+  n=dim(usabledata)[1]
+  usablesub <- select(usabledata, POS_70_79,POS_80_89,POS_90)
+  POS_70plus = rowSums(usablesub,na.rm=T)
+  stackDATE = rep(usabledata$DATE[(1+sumlag):n],8)
+  stackCOUNTS = c(usabledata$POS_0_9[(1+sumlag):n]-usabledata$POS_0_9[1:(n-sumlag)], 
+                  usabledata$POS_10_19[(1+sumlag):n]-usabledata$POS_10_19[1:(n-sumlag)],
+                  usabledata$POS_20_29[(1+sumlag):n]-usabledata$POS_20_29[1:(n-sumlag)],
+                  usabledata$POS_30_39[(1+sumlag):n]-usabledata$POS_30_39[1:(n-sumlag)],
+                  usabledata$POS_40_49[(1+sumlag):n]-usabledata$POS_40_49[1:(n-sumlag)],
+                  usabledata$POS_50_59[(1+sumlag):n]-usabledata$POS_50_59[1:(n-sumlag)],
+                  usabledata$POS_60_69[(1+sumlag):n]-usabledata$POS_60_69[1:(n-sumlag)],
+                  POS_70plus[(1+sumlag):n]-POS_70plus[1:(n-sumlag)])
+  ageGroup = c(rep("Ages 0-9",n-sumlag),
+                    rep("Ages 10-19",n-sumlag),
+                    rep("Ages 20-29",n-sumlag),
+                    rep("Ages 30-39",n-sumlag),
+                    rep("Ages 40-49",n-sumlag),
+                    rep("Ages 50-59",n-sumlag),
+                    rep("Ages 60-69",n-sumlag),
+                    rep("Ages 70 or more",n-sumlag))
+  stackdata = tibble(stackDATE,stackCOUNTS,ageGroup)
+  graphlag <- ifelse(sumlag < 14,"(conservative)","(MN-Safety-Plan)")
+  OutPlot <- ggplot(stackdata, aes(fill=ageGroup, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
+    geom_area() +
+    ggtitle(label = paste(location, "ACTIVE Cases",graphlag,"by Age"))+
+    scale_x_date(breaks = date_breaks("14 days"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
+          axis.text.x = element_text(angle=90))+
+    ylab(paste("Active Cases as sum of", sumlag,"days"))+
+    xlab("Date") 
+  
+  OutPlot
+}
+
 
 ##############################################
 ###FUNCTIONS in "By the Numbers" tab - left###
@@ -363,6 +407,43 @@ CumulativeLines <- function(usabledata, location) {
   LinePlot 
 }
 
+CumulativebyAge <- function(usabledata, location) {
+  
+  n=dim(usabledata)[1]
+  usablesub <- select(usabledata, POS_70_79,POS_80_89,POS_90)
+  POS_70plus = rowSums(usablesub,na.rm=T)
+  stackDATE = rep(usabledata$DATE,8)
+  stackCOUNTS = c(usabledata$POS_0_9, 
+                  usabledata$POS_10_19,
+                  usabledata$POS_20_29,
+                  usabledata$POS_30_39,
+                  usabledata$POS_40_49,
+                  usabledata$POS_50_59,
+                  usabledata$POS_60_69,
+                  POS_70plus)
+  ageGroup = c(rep("Ages 0-9",n),
+                    rep("Ages 10-19",n),
+                    rep("Ages 20-29",n),
+                    rep("Ages 30-39",n),
+                    rep("Ages 40-49",n),
+                    rep("Ages 50-59",n),
+                    rep("Ages 60-69",n),
+                    rep("Ages 70 or more",n))
+  stackdata = tibble(stackDATE,stackCOUNTS,ageGroup)
+  OutPlot <- ggplot(stackdata, aes(fill=ageGroup, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
+    geom_area() +
+    ggtitle(label = paste(location, "Cumulative Cases by Age"))+
+    scale_x_date(breaks = date_breaks("14 days"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
+          axis.text.x = element_text(angle=90))+
+    ylab("Cumulative Cases")+
+    xlab("Date") 
+  
+  OutPlot
+}
+
+
 ###############################################
 ##########FUNCTIONS in "Modeling" tab##########
 ###############################################
@@ -429,41 +510,5 @@ DailyInfoPlot = function(usabledata) {
     geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8)
   
   p1
-}
-
-CumulativebyAge <- function(usabledata, location) {
-  
-  n=dim(usabledata)[1]
-  usablesub <- select(usabledata, POS_70_79,POS_80_89,POS_90)
-  POS_70plus = rowSums(usablesub,na.rm=T)
-  stackDATE = rep(usabledata$DATE,8)
-  stackCOUNTS = c(usabledata$POS_0_9, 
-                  usabledata$POS_10_19,
-                  usabledata$POS_20_29,
-                  usabledata$POS_30_39,
-                  usabledata$POS_40_49,
-                  usabledata$POS_50_59,
-                  usabledata$POS_60_69,
-                  POS_70plus)
-  stackOUTCOMES = c(rep("Ages 0-9",n),
-                    rep("Ages 10-19",n),
-                    rep("Ages 20-29",n),
-                    rep("Ages 30-39",n),
-                    rep("Ages 40-49",n),
-                    rep("Ages 50-59",n),
-                    rep("Ages 60-69",n),
-                    rep("Ages 70 or more",n))
-  stackdata = tibble(stackDATE,stackCOUNTS,stackOUTCOMES)
-  OutPlot <- ggplot(stackdata, aes(fill=stackOUTCOMES, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
-    geom_area() +
-    ggtitle(label = paste(location, "Cumulative Cases by Age"))+
-    scale_x_date(breaks = date_breaks("14 days"))+
-    theme_minimal()+
-    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
-          axis.text.x = element_text(angle=90))+
-    ylab("Cumulative Cases")+
-    xlab("Date") 
-
-  OutPlot
 }
 
