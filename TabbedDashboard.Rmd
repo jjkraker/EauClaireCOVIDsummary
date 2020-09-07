@@ -39,8 +39,11 @@ ECpop = 104646
 EC20pop = 20930 # about 20% of 104,646 = 20,930 as number in 20s, with students, https://censusreporter.org/profiles/05000US55035-eau-claire-county-wi/
 ECprops = c(0.11,0.13,0.20,0.13,0.10,0.12,0.11,0.10)
 CFpop = 64658 
+CFprops = c(0.12,0.13,0.11,0.13,0.12,0.15,0.13,0.11)
 BApop = 45244 
+BAprops = c(0.12,0.12,0.10,0.12,0.11,0.15,0.14,0.14)
 WIpop = 5822434 
+WIprops = c(0.11,0.13,0.13,0.13,0.12,0.14,0.13,0.11)
 WI20pop = 768561 # about 13.2% of 5,822,434 as number in 20s
 ```
 
@@ -213,6 +216,7 @@ PartialTotalTable(BAdata, "Barron")
 
 ```{r}
 PartialTotalTable(WIdata, "Wisconsin")
+TablebyAge(WIdata, "Wisconsin", WIprops,WIpop)
 ```
 
 

@@ -262,9 +262,9 @@ TablebyAge <- function(usabledata,location,usableprops,usablepop) {
   usabletotable <- select(usablesub,POS_0_9, POS_10_19, POS_20_29, 
                           POS_30_39, POS_40_49, POS_50_59, POS_60_69,
                           POS_70plus,POSITIVE)
-  ageGroup = c("Ages 0-9","Ages 10-19","Ages 20-29",
-               "Ages 30-39","Ages 40-49","Ages 50-59","Ages 60-69",
-               "Ages 70 or more","All ages")
+  ageGroup = c("0-9","10-19","20-29",
+               "30-39","40-49","50-59","60-69",
+               "70+","All ages")
   DailyNew = usabletotable[n,]-usabletotable[n-1,]
   DailyNewAvg = round((usabletotable[n,]-usabletotable[n-7,])/7,1)
   Actives10day = usabletotable[n,]-usabletotable[n-11,]
