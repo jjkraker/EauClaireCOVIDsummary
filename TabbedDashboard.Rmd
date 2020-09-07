@@ -37,6 +37,7 @@ WIdata <- CaseCheck(arrange(filter(ALLdata,NAME=="WI"),DATE))
 #estimates of populations from https://www.census.gov/quickfacts, unless otherwise noted
 ECpop = 104646 
 EC20pop = 20930 # about 20% of 104,646 = 20,930 as number in 20s, with students, https://censusreporter.org/profiles/05000US55035-eau-claire-county-wi/
+ECprops = c(0.11,0.13,0.20,0.13,0.10,0.12,0.11,0.10)
 CFpop = 64658 
 BApop = 45244 
 WIpop = 5822434 
@@ -188,6 +189,8 @@ Column {.tabset}
 ### Eau Claire
 ```{r}
 PartialTotalTable(ECdata, "Eau Claire")
+
+TablebyAge(ECdata, "Eau Claire", ECprops,ECpop)
 
 
 ```

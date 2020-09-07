@@ -196,10 +196,10 @@ ActiveSumbyAge <- function(usabledata, location,sumlag) {
                     rep("Ages 60-69",n-sumlag),
                     rep("Ages 70 or more",n-sumlag))
   stackdata = tibble(stackDATE,stackCOUNTS,ageGroup)
-  graphlag <- ifelse(sumlag < 14,"(conservative)","(MN-Safety-Plan)")
+  graphlag <- ifelse(sumlag < 14,"(conservative estimate)","(MN-Safety-Plan)")
   OutPlot <- ggplot(stackdata, aes(fill=ageGroup, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
     geom_area() +
-    ggtitle(label = paste(location, "ACTIVE Cases",graphlag,"by Age"))+
+    ggtitle(label = paste(location, "Active Cases",graphlag))+
     scale_x_date(breaks = date_breaks("14 days"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
@@ -244,6 +244,63 @@ PartialTotalTable = function(usabledata, location) {
   
   fulltable
 }
+
+TablebyAge <- function(usabledata,location,usableprops,usablepop) {
+  HeadertoUse <- c("Age Group",
+                   "Daily New Cases",
+                   "Daily New Cases 7-day Average",
+                   "Percent of All Active Cases",
+                   "Actives (conservative estimate)",
+                   "Percent of Subpopulation (conservative)",
+                   "Actives (MN-Safety-Plan)",
+                   "Percent of Subpopulation (MN-Safety-Plan)")
+  n=dim(usabledata)[1]
+  usablesub <- select(usabledata, POS_0_9, POS_10_19, POS_20_29, 
+                      POS_30_39, POS_40_49, POS_50_59, POS_60_69,
+                      POS_70_79,POS_80_89,POS_90,POSITIVE)
+  usablesub$POS_70plus = rowSums(usablesub[,8:10],na.rm=T)
+  usabletotable <- select(usablesub,POS_0_9, POS_10_19, POS_20_29, 
+                          POS_30_39, POS_40_49, POS_50_59, POS_60_69,
+                          POS_70plus,POSITIVE)
+  ageGroup = c("Ages 0-9","Ages 10-19","Ages 20-29",
+               "Ages 30-39","Ages 40-49","Ages 50-59","Ages 60-69",
+               "Ages 70 or more","All ages")
+  DailyNew = usabletotable[n,]-usabletotable[n-1,]
+  DailyNewAvg = round((usabletotable[n,]-usabletotable[n-7,])/7,1)
+  Actives10day = usabletotable[n,]-usabletotable[n-11,]
+  PropAll10day = round(Actives10day/Actives10day[1,9],3)*100
+  Prop10day = round(Actives10day/(c(usableprops,1)*usablepop),4)*100
+  Actives14day = usabletotable[n,]-usabletotable[n-15,]
+  Prop14day = round(Actives14day/(c(usableprops,1)*usablepop),4)*100
+  
+  DecisionTable <- tibble(ageGroup,
+                          DailyNew=as.numeric(DailyNew),
+                          DailyNewAvg=as.numeric(DailyNewAvg),
+                          PropAll10day=paste(as.numeric(PropAll10day),"%",sep=""),
+                          Actives10day=as.numeric(Actives10day),
+                          Prop10day=paste(as.numeric(Prop10day),"%",sep=""),
+                          Actives14day=as.numeric(Actives14day),
+                          Prop14day=paste(as.numeric(Prop14day),"%",sep=""),
+                          .name_repair = ~HeadertoUse)
+  
+  AgeTable <-  kable(DecisionTable) %>%
+    kable_styling(full_width = F) %>%
+    column_spec(1, bold = T, border_right = T, border_left = T,include_thead = T) %>%
+    row_spec(1,background = "#FF6347") %>%
+    row_spec(2,background = "#DAA520",color="black") %>%
+    row_spec(3,background = "#6B8E23",color = "black") %>%
+    row_spec(4, background = "#32CD32") %>%
+    row_spec(5,background = "turquoise") %>%
+    row_spec(6,background = "#45b3e0") %>%
+    row_spec(7,background = "orchid") %>%
+    row_spec(8,background = "hotpink") %>%
+    row_spec(9,background = "white",color = "black") %>%
+    row_spec(0, color="black")
+
+  AgeTable
+}
+
+
 
 
 
