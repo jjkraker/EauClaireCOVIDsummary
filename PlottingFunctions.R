@@ -267,10 +267,10 @@ TablebyAge <- function(usabledata,location,usableprops,usablepop) {
                "70+","All ages")
   DailyNew = usabletotable[n,]-usabletotable[n-1,]
   DailyNewAvg = round((usabletotable[n,]-usabletotable[n-7,])/7,1)
-  Actives10day = usabletotable[n,]-usabletotable[n-11,]
+  Actives10day = usabletotable[n,]-usabletotable[n-10,]
   PropAll10day = round(Actives10day/Actives10day[1,9],3)*100
   Prop10day = round(Actives10day/(c(usableprops,1)*usablepop),4)*100
-  Actives14day = usabletotable[n,]-usabletotable[n-15,]
+  Actives14day = usabletotable[n,]-usabletotable[n-14,]
   Prop14day = round(Actives14day/(c(usableprops,1)*usablepop),4)*100
   
   DecisionTable <- tibble(ageGroup,
