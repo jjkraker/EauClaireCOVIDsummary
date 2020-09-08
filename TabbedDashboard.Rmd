@@ -30,14 +30,18 @@ source("PlottingFunctions.R")
 
 ALLdata = read_csv("StateCountydata.csv")
 ECdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Eau Claire"),DATE))
-BAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Barron"),DATE))
+DAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dane"),DATE))
 CFdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Chippewa"),DATE))
+BAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Barron"),DATE))
 WIdata <- CaseCheck(arrange(filter(ALLdata,NAME=="WI"),DATE))
 
 #estimates of populations from https://www.census.gov/quickfacts, unless otherwise noted
 ECpop = 104646 
 EC20pop = 20930 # about 20% of 104,646 = 20,930 as number in 20s, with students, https://censusreporter.org/profiles/05000US55035-eau-claire-county-wi/
 ECprops = c(0.11,0.13,0.20,0.13,0.10,0.12,0.11,0.10)
+DApop = 546695
+DAprops = c(0.11,0.13,0.19,0.14,0.12,0.12,0.10,0.09)
+DA20pop = round(.19*DApop)
 CFpop = 64658 
 CFprops = c(0.12,0.13,0.11,0.13,0.12,0.15,0.13,0.11)
 BApop = 45244 
@@ -88,6 +92,15 @@ DailyTesting(BAdata, "Barron")
 
 ```   
 
+### Dane
+
+```{r,fig.height=3,fig.width=6}
+DailyCases(DAdata, "Dane") 
+DailyOutcomes(DAdata, "Dane") 
+DailyTesting(DAdata, "Dane") 
+
+```   
+
 ### Wisconsin
 
 ```{r,fig.height=3,fig.width=6}
@@ -122,6 +135,16 @@ ActiveCases(CFdata, "Chippewa",F)
 
 ```{r,fig.height=3}
 ActiveCases(BAdata, "Barron",F) 
+
+```   
+
+
+
+### Dane
+
+```{r,fig.height=3}
+ActiveCases(DAdata, "Dane",F) 
+ActiveCases(DAdata, "Dane",T) 
 
 ```   
 
@@ -164,6 +187,15 @@ ActiveSumbyAge(BAdata, "Barron",10)
 ActiveSumbyAge(BAdata, "Barron",14) 
 
 ```   
+
+### Dane
+
+```{r,fig.height=3}
+ActiveSumbyAge(DAdata, "Dane",10) 
+ActiveSumbyAge(DAdata, "Dane",14) 
+
+```   
+
 
 ### Wisconsin
 
@@ -211,6 +243,15 @@ PartialTotalTable(CFdata, "Chippewa")
 PartialTotalTable(BAdata, "Barron") 
 
 ```   
+
+### Dane
+
+```{r,fig.height=3}
+PartialTotalTable(DAdata, "Dane") 
+TablebyAge(DAdata, "Dane", DAprops,DApop)
+
+```   
+
 
 ### Wisconsin {data-width=300}
 
@@ -311,6 +352,13 @@ SafetyCheckTable(BAdata, "Barron", BApop)
 
 ```   
 
+### Dane
+
+```{r,fig.height=3}
+SafetyCheckTable20s(DAdata, "Dane", DApop,DA20pop,14)
+
+``` 
+
 ### Wisconsin {data-width=300}
 
 
@@ -369,6 +417,14 @@ CumulativeOutcomes(BAdata, "Barron")
 CumulativeLines(BAdata, "Barron") 
 ```   
 
+
+### Dane
+
+```{r,fig.height=3}
+CumulativeOutcomes(DAdata, "Dane") 
+CumulativeLines(DAdata, "Dane") 
+```   
+
 ### Wisconsin
 
 ```{r,fig.height=3}
@@ -401,6 +457,12 @@ CumulativebyAge(CFdata, "Chippewa")
 
 ```{r,fig.height=3}
 CumulativebyAge(BAdata, "Barron") 
+```   
+
+### Dane
+
+```{r,fig.height=3}
+CumulativebyAge(DAdata, "Dane") 
 ```   
 
 ### Wisconsin
