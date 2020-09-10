@@ -235,7 +235,7 @@ PartialTotalTable = function(usabledata, location) {
   fulltable <-
     usabledata %>% 
     filter(DATE %in% tail(DATE, 7)) %>%
-    select(DATE, POSITIVE, NEGATIVE, DEATHS, TOTAL_10Days, TOTAL_14Days) %>%
+    select(DATE, POSITIVE, NEGATIVE, HOSP_YES, DEATHS, TOTAL_10Days, TOTAL_14Days) %>%
     rename_at(vars(starts_with("TOTAL_")), ~str_to_title(str_replace_all(., "TOTAL_","New in Last "))) %>%
     rename_at(vars(starts_with("HOSP_")), ~str_to_title(str_replace_all(., "HOSP_","Hospitalization "))) %>%
     kable(digits = 3,booktabs = T, caption = paste(location, "cumulative counts of COVID cases and outcomes"),align = "c") %>%
