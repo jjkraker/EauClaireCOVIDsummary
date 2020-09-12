@@ -31,6 +31,7 @@ source("PlottingFunctions.R")
 ALLdata = read_csv("StateCountydata.csv")
 ECdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Eau Claire"),DATE))
 DAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dane"),DATE))
+LCdata <- CaseCheck(arrange(filter(ALLdata,NAME=="La Crosse"),DATE))
 CFdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Chippewa"),DATE))
 BAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Barron"),DATE))
 WIdata <- CaseCheck(arrange(filter(ALLdata,NAME=="WI"),DATE))
@@ -42,6 +43,9 @@ ECprops = c(0.11,0.13,0.20,0.13,0.10,0.12,0.11,0.10)
 DApop = 546695
 DAprops = c(0.11,0.13,0.19,0.14,0.12,0.12,0.10,0.09)
 DA20pop = round(.19*DApop)
+LCpop = 118230
+LCprops = c(0.10,0.14,0.18,0.115,0.115,0.12,0.12,0.11)
+LC20pop = round(LCprops[3]*LCpop)
 CFpop = 64658 
 CFprops = c(0.12,0.13,0.11,0.13,0.12,0.15,0.13,0.11)
 BApop = 45244 
@@ -92,6 +96,14 @@ DailyTesting(BAdata, "Barron")
 
 ```   
 
+### La Crosse
+
+```{r,fig.height=3,fig.width=6}
+DailyCases(LCdata, "La Crosse") 
+DailyOutcomes(LCdata, "La Crosse") 
+DailyTesting(LCdata, "La Crosse") 
+
+```   
 ### Dane
 
 ```{r,fig.height=3,fig.width=6}
@@ -139,6 +151,14 @@ ActiveCases(BAdata, "Barron",F)
 ```   
 
 
+### La Crosse
+
+```{r,fig.height=3}
+ActiveCases(LCdata, "La Crosse",F) 
+ActiveCases(LCdata, "La Crosse",T) 
+
+```   
+
 
 ### Dane
 
@@ -185,6 +205,15 @@ ActiveSumbyAge(CFdata, "Chippewa", 14)
 ```{r,fig.height=3}
 ActiveSumbyAge(BAdata, "Barron",10) 
 ActiveSumbyAge(BAdata, "Barron",14) 
+
+```   
+
+
+### La Crosse
+
+```{r,fig.height=3}
+ActiveSumbyAge(LCdata, "La Crosse",10) 
+ActiveSumbyAge(LCdata, "La Crosse",14) 
 
 ```   
 
@@ -241,6 +270,15 @@ PartialTotalTable(CFdata, "Chippewa")
 
 ```{r,fig.height=3}
 PartialTotalTable(BAdata, "Barron") 
+
+```   
+
+
+### La Crosse
+
+```{r,fig.height=3}
+PartialTotalTable(LCdata, "La Crosse") 
+TablebyAge(LCdata, "La Crosse", LCprops,LCpop)
 
 ```   
 
@@ -352,6 +390,13 @@ SafetyCheckTable(BAdata, "Barron", BApop)
 
 ```   
 
+### La Crosse
+
+```{r,fig.height=3}
+SafetyCheckTable20s(LCdata, "La Crosse", LCpop,LC20pop,14)
+
+``` 
+
 ### Dane
 
 ```{r,fig.height=3}
@@ -418,6 +463,13 @@ CumulativeLines(BAdata, "Barron")
 ```   
 
 
+### La Crosse
+
+```{r,fig.height=3}
+CumulativeOutcomes(LCdata, "La Crosse") 
+CumulativeLines(LCdata, "La Crosse") 
+```   
+
 ### Dane
 
 ```{r,fig.height=3}
@@ -457,6 +509,13 @@ CumulativebyAge(CFdata, "Chippewa")
 
 ```{r,fig.height=3}
 CumulativebyAge(BAdata, "Barron") 
+```   
+
+
+### La Crosse
+
+```{r,fig.height=3}
+CumulativebyAge(LCdata, "La Crosse") 
 ```   
 
 ### Dane
