@@ -312,6 +312,7 @@ Column {.tabset}
 **Definitions** (corresponding / similar to MN plan):
 
    * **2wk**: Two-week case _total_ (most recent 14 days), **rate per** 10K of county population
+* **2wk10s**:  Approximate two-week case total, rate per 10K of 10-19 population
 * **2wk20s**:  Approximate two-week case total, rate per 10K of 20-29 population; since over 50% of students on campus are in early 20s
 * **daily7**: Daily new-case running average (_average_ over 7 days)
 * **posratedaily7** (as a percent): Daily positive-test rate, running average (_average_ over 7 days)
@@ -363,7 +364,7 @@ kable(DecisionTable) %>%
 
 
 ```{r}
-SafetyCheckTable20s(ECdata, "Eau Claire", ECpop,EC20pop,14)
+SafetyCheckTablecollege(ECdata, "Eau Claire", ECpop,ECpop*ECprops[2],ECpop*ECprops[3],14) 
 #The first table corresponds to the Minnesota plan, applied to Eau Claire county, while the second table uses a more conservative estimate of the number of active cases.
 
 #SafetyCheckTable20s(ECdata, "Eau Claire", ECpop,EC20pop,10)
@@ -393,14 +394,16 @@ SafetyCheckTable(BAdata, "Barron", BApop)
 ### La Crosse
 
 ```{r,fig.height=3}
-SafetyCheckTable20s(LCdata, "La Crosse", LCpop,LC20pop,14)
+SafetyCheckTablecollege(LCdata, "La Crosse", LCpop,LCpop*LCprops[2],LCpop*LCprops[3],14) 
+
 
 ``` 
 
 ### Dane
 
 ```{r,fig.height=3}
-SafetyCheckTable20s(DAdata, "Dane", DApop,DA20pop,14)
+SafetyCheckTablecollege(DAdata, "Dane", DApop,DApop*DAprops[2],DApop*DAprops[3],14) 
+
 
 ``` 
 
@@ -410,7 +413,7 @@ SafetyCheckTable20s(DAdata, "Dane", DApop,DA20pop,14)
 
 
 ```{r}
-SafetyCheckTable20s(WIdata, "Wisconsin", WIpop,WI20pop,14)
+SafetyCheckTablecollege(WIdata, "Wisconsin", WIpop,WIpop*WIprops[2],WIpop*WIprops[3],14) 
 #The first table corresponds to the Minnesota plan, applied to all of Wisconsin, while the second table uses a more conservative estimate of the number of active cases.
 ```
 

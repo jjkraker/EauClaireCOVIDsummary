@@ -308,7 +308,7 @@ TablebyAge <- function(usabledata,location,usableprops,usablepop) {
 ###FUNCTIONS in "By the Numbers" tab - right###
 ###############################################
 
-SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s, lagdays) {
+SafetyCheckTablecollege = function(usabledata, loc, usablepop,usablepop10s, usablepop20s, lagdays) {
   ##
   n = dim(usabledata)[1]
   ###
@@ -321,6 +321,11 @@ SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s, lagdays)
   val2wk20s = (TodayTotal20s - LagTotal20s) / (usablepop20s/10000)
   usableval2wk20s = round(val2wk20s,1)
   ###
+  TodayTotal10s = usabledata$POS_10_19[n]
+  LagTotal10s = usabledata$POS_10_19[n-lagdays]
+  val2wk10s = (TodayTotal10s - LagTotal10s) / (usablepop10s/10000)
+  usableval2wk10s = round(val2wk10s,1)
+  ###
   valdaily7current = round(mean(usabledata$POS_NEW[(n-6):n]) ,1)
   ###
   valdaily7past = round(rollmean(usabledata$POS_NEW, 7, na.pad=T)[n-14],1)
@@ -330,9 +335,9 @@ SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s, lagdays)
                            (usabledata$TOTALTESTS[n]-usabledata$TOTALTESTS[n-7]),1)
   ###
   
-  locnames = paste(loc,c("2wk","2wk20s","current daily7","past daily7","posratedaily7"),sep=" ")
+  locnames = paste(loc,c("2wk","2wk10s","2wk20s","current daily7","past daily7","posratedaily7"),sep=" ")
   if (lagdays < 14)  locnames[1:2] = paste(loc,paste(lagdays,c("daystotal","daystotal20s"),sep=""),sep=" ")
-  Current = tibble(val2wk,usableval2wk20s,valdaily7current,valdaily7past,paste(dailytestrate7,"%",sep=""),.name_repair = ~locnames) 
+  Current = tibble(val2wk,usableval2wk10s,usableval2wk20s,valdaily7current,valdaily7past,paste(dailytestrate7,"%",sep=""),.name_repair = ~locnames) 
   
   backcurrent = "white"; colcurrent = "black"
   if ((val2wk > 20)) {backcurrent = "#778899"; colcurrent = "white"}
@@ -355,6 +360,7 @@ SafetyCheckTable20s = function(usabledata, loc, usablepop,usablepop20s, lagdays)
     column_spec(3, bold = T, border_right = T,include_thead = T) %>%
     column_spec(4, bold = T, border_right = T,include_thead = T) %>%
     column_spec(5, bold = T, border_right = T,include_thead = T) %>%
+    column_spec(6, bold = T, border_right = T,include_thead = T) %>%
     kable_styling(full_width = F, position = "center") %>%
     row_spec(1,background=backcurrent,color=colcurrent) %>%
     row_spec(0, color="black",background="#D3D3D3") 
