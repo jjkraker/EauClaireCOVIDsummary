@@ -34,6 +34,7 @@ DAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dane"),DATE))
 LCdata <- CaseCheck(arrange(filter(ALLdata,NAME=="La Crosse"),DATE))
 CFdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Chippewa"),DATE))
 BAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Barron"),DATE))
+POdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Portage"),DATE))
 WIdata <- CaseCheck(arrange(filter(ALLdata,NAME=="WI"),DATE))
 
 #estimates of populations from https://www.census.gov/quickfacts, unless otherwise noted
@@ -53,6 +54,8 @@ BAprops = c(0.12,0.12,0.10,0.12,0.11,0.15,0.14,0.14)
 WIpop = 5822434 
 WIprops = c(0.11,0.13,0.13,0.13,0.12,0.14,0.13,0.11)
 WI20pop = 768561 # about 13.2% of 5,822,434 as number in 20s
+POpop = 70772
+
 ```
 
 Daily  {data-orientation=columns}
@@ -657,4 +660,46 @@ Model1plot
 
 Column {data-width=600}{.tabset}
 -------------------------------------
-     
+
+**Comparing county-wide active case rates in counties with colleges **
+
+   * Portage county (Stevens Point): gray
+* Eau Claire county (Eau Claire):  blue
+* Dane county (Madison): green
+* La Crosse county (La Crosse): red
+
+```{r,fig.height=3.5,fig.width=8.5}
+#plot(LCdata$TOTAL_10Days/LCpop,type="l")
+#points(ECdata$TOTAL_10Days/ECpop,col="blue",type="l")
+#points(DAdata$TOTAL_10Days/DApop,col="red",type="l")
+#points(POdata$TOTAL_10Days/POpop,col="gray",type="l")
+
+PopAdjActive = data.frame(LCActive = LCdata$TOTAL_10Days/LCpop,
+                         ECActive = ECdata$TOTAL_10Days/ECpop,
+                         DAActive = DAdata$TOTAL_10Days/DApop,
+                         POActive = POdata$TOTAL_10Days/POpop,
+                         DATE = ECdata$DATE)
+
+LinePlotActive <- ggplot(PopAdjActive, aes(y=LCActive, x=as.Date(DATE,"%B %d %Y"))) + 
+    geom_line(aes(color="La Crosse"))+
+    geom_line(aes(y=ECActive, color="Eau Claire")) +
+    geom_line(aes(y=DAActive, color="Dane"))+
+    geom_line(aes(y=POActive, color="Portage"))+
+    scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("14 days"))+
+    ggtitle(label = "Active cases (conservative), percent of population")+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("Percent active cases in county population")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('La Crosse'='red',
+                                          'Eau Claire'='blue',
+                                          'Dane' = 'green',
+                                          'Portage'='gray50')) +
+    scale_y_continuous(labels = scales::percent)
+  
+  LinePlotActive 
+
+
+
+```
