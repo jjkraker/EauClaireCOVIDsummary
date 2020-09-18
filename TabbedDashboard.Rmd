@@ -107,6 +107,7 @@ DailyOutcomes(LCdata, "La Crosse")
 DailyTesting(LCdata, "La Crosse") 
 
 ```   
+
 ### Dane
 
 ```{r,fig.height=3,fig.width=6}
