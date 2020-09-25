@@ -267,6 +267,7 @@ TablebyAge(ECdata, "Eau Claire", ECprops,ECpop)
 
 ```{r,fig.height=3}
 PartialTotalTable(CFdata, "Chippewa") 
+TablebyAge(CFdata, "Chippewa", CFprops,CFpop)
 
 ```   
 
