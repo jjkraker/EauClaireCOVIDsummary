@@ -28,7 +28,7 @@ library(ggpubr)
 
 source("PlottingFunctions.R")
 
-ALLdata = read_csv("StateCountydataNew.csv")
+ALLdata = read_csv("StateCountydata.csv")
 ECdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Eau Claire"),DATE))
 DAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dane"),DATE))
 LCdata <- CaseCheck(arrange(filter(ALLdata,NAME=="La Crosse"),DATE))
