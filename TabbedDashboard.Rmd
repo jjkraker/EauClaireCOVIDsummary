@@ -28,7 +28,16 @@ library(ggpubr)
 
 source("PlottingFunctions.R")
 
-ALLdata = read_csv("StateCountydata.csv")
+# ALLdata = read_csv("StateCountydata.csv")
+ORIGdata = read_csv("StateCountydata.csv")
+CountyNewdata = read_csv("CountyNewdata.csv")
+CountyNewdata <- CountyNewdata %>% 
+  filter(DATE > "2020/10/08 19:00:00+00")
+StateNewdata = read_csv("StateNewdata.csv")
+StateNewdata <- StateNewdata %>% 
+  filter(DATE > "2020/10/08 19:00:00+00")
+ALLdata = bind_rows(ORIGdata,CountyNewdata,StateNewdata)
+
 ECdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Eau Claire"),DATE))
 DAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dane"),DATE))
 LCdata <- CaseCheck(arrange(filter(ALLdata,NAME=="La Crosse"),DATE))
@@ -680,6 +689,7 @@ PopAdjActive = data.frame(LCActive = LCdata$TOTAL_10Days/LCpop,
                          ECActive = ECdata$TOTAL_10Days/ECpop,
                          DAActive = DAdata$TOTAL_10Days/DApop,
                          POActive = POdata$TOTAL_10Days/POpop,
+                         WIActive = WIdata$TOTAL_10Days/WIpop,
                          DATE = ECdata$DATE)
 
 LinePlotActive <- ggplot(PopAdjActive, aes(y=LCActive, x=as.Date(DATE,"%B %d %Y"))) + 
@@ -687,6 +697,7 @@ LinePlotActive <- ggplot(PopAdjActive, aes(y=LCActive, x=as.Date(DATE,"%B %d %Y"
     geom_line(aes(y=ECActive, color="Eau Claire")) +
     geom_line(aes(y=DAActive, color="Dane"))+
     geom_line(aes(y=POActive, color="Portage"))+
+    geom_line(aes(y=WIActive, color="state of WI"))+
     scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("14 days"))+
     ggtitle(label = "Active cases (conservative), percent of population")+
     theme_minimal()+
@@ -697,7 +708,8 @@ LinePlotActive <- ggplot(PopAdjActive, aes(y=LCActive, x=as.Date(DATE,"%B %d %Y"
     scale_colour_manual(name='', values=c('La Crosse'='red',
                                           'Eau Claire'='blue',
                                           'Dane' = 'green',
-                                          'Portage'='gray50')) +
+                                          'Portage'='gray50',
+                                          'state of WI' = 'orange3')) +
     scale_y_continuous(labels = scales::percent)
   
   LinePlotActive 
