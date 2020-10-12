@@ -86,6 +86,7 @@ Column {.tabset}
 
 ```{r,fig.height=3,fig.width=6}
 DailyCases(ECdata, "Eau Claire") 
+DailybyAge(ECdata, "Eau Claire")
 DailyOutcomes(ECdata, "Eau Claire") 
 DailyTesting(ECdata, "Eau Claire")
 ```   
@@ -94,6 +95,7 @@ DailyTesting(ECdata, "Eau Claire")
 
 ```{r,fig.height=3,fig.width=6}
 DailyCases(CFdata, "Chippewa") 
+DailybyAge(CFdata, "Chippewa")
 DailyOutcomes(CFdata, "Chippewa") 
 DailyTesting(CFdata, "Chippewa")
 
@@ -103,6 +105,7 @@ DailyTesting(CFdata, "Chippewa")
 
 ```{r,fig.height=3,fig.width=6}
 DailyCases(BAdata, "Barron") 
+DailybyAge(BAdata, "Barron")
 DailyOutcomes(BAdata, "Barron") 
 DailyTesting(BAdata, "Barron") 
 
@@ -112,6 +115,7 @@ DailyTesting(BAdata, "Barron")
 
 ```{r,fig.height=3,fig.width=6}
 DailyCases(LCdata, "La Crosse") 
+DailybyAge(LCdata, "La Crosse")
 DailyOutcomes(LCdata, "La Crosse") 
 DailyTesting(LCdata, "La Crosse") 
 
@@ -121,6 +125,7 @@ DailyTesting(LCdata, "La Crosse")
 
 ```{r,fig.height=3,fig.width=6}
 DailyCases(DAdata, "Dane") 
+DailybyAge(DAdata, "Dane")
 DailyOutcomes(DAdata, "Dane") 
 DailyTesting(DAdata, "Dane") 
 
@@ -130,6 +135,7 @@ DailyTesting(DAdata, "Dane")
 
 ```{r,fig.height=3,fig.width=6}
 DailyCases(WIdata, "Wisconsin") 
+DailybyAge(WIdata, "Wisconsin")
 DailyOutcomes(WIdata, "Wisconsin") 
 DailyTesting(WIdata, "Wisconsin") 
 

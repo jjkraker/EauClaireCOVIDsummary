@@ -25,3 +25,4 @@ coefD[1]*ECdata$POSITIVE^coefD[2]
 
 # plot 7-day running averages of daily hosp vs daily cases?
 # to find the lag
+

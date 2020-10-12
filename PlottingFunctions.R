@@ -81,6 +81,51 @@ DailyCases = function(usabledata, location) {
 }
 
 
+DailybyAge <- function(usabledata, location,sumlag=1) {
+
+  n=dim(usabledata)[1]
+  usablesub <- select(usabledata, POS_0_9, POS_10_19)
+  usabledata$POS_below20 = rowSums(usablesub,na.rm=T)
+  usabledata$POS_NEW_below20 <- c(rep(NA,sumlag),
+    usabledata$POS_below20[(1+sumlag):n]-
+    usabledata$POS_below20[1:(n-sumlag)])
+
+  usabledata$POS_NEW_20s <- c(rep(NA,sumlag),
+                              usabledata$POS_20_29[(1+sumlag):n]-
+                                usabledata$POS_20_29[1:(n-sumlag)])
+  
+  usablesub <- select(usabledata, POS_30_39, POS_40_49)
+  usabledata$POS_30_49 = rowSums(usablesub,na.rm=T)
+  usabledata$POS_NEW_30_49 <- c(rep(NA,sumlag),
+                                usabledata$POS_30_49[(1+sumlag):n]-
+                                  usabledata$POS_30_49[1:(n-sumlag)])
+
+  usablesub <- select(usabledata, POS_50_59, POS_60_69, POS_70_79,POS_80_89,POS_90)
+  usabledata$POS_50plus = rowSums(usablesub,na.rm=T)
+  usabledata$POS_NEW_50plus <- c(rep(NA,sumlag),
+                                 usabledata$POS_50plus[(1+sumlag):n]-
+                                   usabledata$POS_50plus[1:(n-sumlag)])
+  
+  DAplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=POS_NEW))+
+    geom_line(aes(y=rollmean(POS_NEW_below20, 7, na.pad=TRUE), color="ages 0-19")) +
+    geom_line(aes(y=rollmean(POS_NEW_20s, 7, na.pad=TRUE), color="ages 20-29")) +
+    geom_line(aes(y=rollmean(POS_NEW_30_49, 7, na.pad=TRUE), color="ages 30-49")) +
+    geom_line(aes(y=rollmean(POS_NEW_50plus, 7, na.pad=TRUE), color="ages 50+")) +
+    scale_x_date(breaks = date_breaks("14 days"))+
+    ggtitle(label = paste(location, "Daily new cases (7-day average) by Ages"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("Daily New Cases")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c(  "ages 0-19"='#DAA520',
+                                            "ages 20-29"='#6B8E23',
+                                            "ages 30-49"='turquoise',
+                                            "ages 50+"='orchid')) 
+  
+  DAplot
+}
+
 
 DailyTesting = function(usabledata, location) {
   DTplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TEST_NEW))+
@@ -172,6 +217,7 @@ ActiveCases = function(usabledata, location, twenties) {
 ##############################################
 #######FUNCTIONS in "Daily" tab - right#######
 ##############################################
+
 
 ActiveSumbyAge <- function(usabledata, location,sumlag) {
   
