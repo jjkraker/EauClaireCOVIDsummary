@@ -26,3 +26,18 @@ coefD[1]*ECdata$POSITIVE^coefD[2]
 # plot 7-day running averages of daily hosp vs daily cases?
 # to find the lag
 
+
+rollmean(ECdata$POS_NEW, 7, na.pad=TRUE)
+
+lagHosp = 18
+n = dim(WIdata)[1]
+daily7POSlagH <- rollmean(WIdata$POS_NEW[1:(n-lagHosp)], 14, na.pad=TRUE)
+daily7HOSPlagH <- rollmean(c(0,WIdata$HOSP_YES[2:n]-WIdata$HOSP_YES[1:(n-1)])[(lagHosp+1):n], 14, na.pad=TRUE)
+plot(daily7POSlagH,daily7HOSPlagH)
+abline(0,.034)
+
+lagDths = 24
+daily7POSlagD <- rollmean(WIdata$POS_NEW[1:(n-lagDths)], 14, na.pad=TRUE)
+daily7DTHlagD <- rollmean(WIdata$DTH_NEW[(lagDths+1):n], 14, na.pad=TRUE)
+plot(daily7POSlagD,daily7DTHlagD)
+abline(1,.01)
