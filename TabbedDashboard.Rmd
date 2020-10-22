@@ -29,14 +29,14 @@ library(ggpubr)
 source("PlottingFunctions.R")
 
 # ALLdata = read_csv("StateCountydata.csv")
-ORIGdata = read_csv("StateCountydata.csv")
+# ORIGdata = read_csv("StateCountydata.csv")
 CountyNewdata = read_csv("CountyNewdata.csv")
-CountyNewdata <- CountyNewdata %>% 
-  filter(DATE > "2020/10/08 19:00:00+00")
+#CountyNewdata <- CountyNewdata %>% 
+#  filter(DATE > "2020/10/08 19:00:00+00")
 StateNewdata = read_csv("StateNewdata.csv")
-StateNewdata <- StateNewdata %>% 
-  filter(DATE > "2020/10/08 19:00:00+00")
-ALLdata = bind_rows(ORIGdata,CountyNewdata,StateNewdata)
+#StateNewdata <- StateNewdata %>% 
+#  filter(DATE > "2020/10/08 19:00:00+00")
+ALLdata = bind_rows(StateNewdata,CountyNewdata)
 
 ECdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Eau Claire"),DATE))
 DAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dane"),DATE))
@@ -74,9 +74,8 @@ Column {.tabset}
 -------------------------------------
 **Important dates**:
 
-   * (purple dashed lines)  **May 14**:  Stay-at-Home *reversed*;  **May 25**:  Memorial Day; **July 4**:  Independence Day 
+   * (purple dashed lines)  **August 31**, **Sept 14**, **Sept 28**:  Return to campus/school, +2 weeks, +4 weeks 
 
-   * (blue dashed lines)  **March 25**:  Stay-at-Home order; **Aug 1**:  WI mask mandate
 
    
 **Comment:** Why a 7-day moving average?  Wisconsin tends to have cyclical patterns in testing results, with low spots typically on Mondays (this may be due to lower testing on weekends)

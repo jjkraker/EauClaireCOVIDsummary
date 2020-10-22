@@ -63,7 +63,7 @@ DailyCases = function(usabledata, location) {
   #  geom_line(aes(color=Month))+ 
   geom_line(aes(color="Daily"))+
   geom_line(aes(y=rollmean(POS_NEW, 7, na.pad=TRUE), color="7-day moving avg")) +
-  geom_smooth(method = 'loess',aes(color="Loess smooth"))+
+#  geom_smooth(method = 'loess',aes(color="Loess smooth"))+
   scale_x_date(breaks = date_breaks("14 days"))+
   ggtitle(label = paste(location, "Daily new COVID cases"))+
   theme_minimal()+
@@ -71,12 +71,10 @@ DailyCases = function(usabledata, location) {
         axis.text.x = element_text(angle=90))+
   ylab("Daily New Cases")+
   xlab("Date") +
-  geom_vline(xintercept = c("2020-03-25","2020-08-01") %>% as.Date(), lty = 2, col= "#00FFFF") +
-  geom_vline(xintercept = c("2020-05-14","2020-05-25","2020-07-04") %>% as.Date(), lty = 2, col= "purple") +
+#  geom_vline(xintercept = c("2020-08-31") %>% as.Date(), lty = 2, col= "#00FFFF") +
+  geom_vline(xintercept = c("2020-08-31","2020-09-14","2020-09-28") %>% as.Date(), lty = 2, col= "purple") +
   scale_colour_manual(name='', values=c('Daily'='green','Loess smooth'='grey','7-day moving avg'='navy')) 
   
-#  DCplot <- DCplot %>%
-#    
   DCplot
 }
 
@@ -118,6 +116,7 @@ DailybyAge <- function(usabledata, location,sumlag=1) {
           axis.text.x = element_text(angle=90))+
     ylab("Daily New Cases")+
     xlab("Date") +
+    geom_vline(xintercept = c("2020-08-31","2020-09-14","2020-09-28") %>% as.Date(), lty = 2, col= "purple") +
     scale_colour_manual(name='', values=c(  "ages 0-19"='#DAA520',
                                             "ages 20-29"='#6B8E23',
                                             "ages 30-49"='turquoise',
@@ -250,6 +249,7 @@ ActiveSumbyAge <- function(usabledata, location,sumlag) {
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
           axis.text.x = element_text(angle=90))+
+    geom_vline(xintercept = c("2020-08-31","2020-09-14","2020-09-28") %>% as.Date(), lty = 2, col= "purple") +
     ylab(paste("Active Cases as sum of", sumlag,"days"))+
     xlab("Date") 
   
