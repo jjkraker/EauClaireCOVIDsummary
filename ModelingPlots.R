@@ -1,14 +1,29 @@
 
+n = dim(CFdata)[1]
+lagHosp = 12; lagDths = 25
+plot(CFdata$POSITIVE,type="l")
+points(1:(n-lagHosp),CFdata$HOSP_YES[(lagHosp+1):n]*16,col="red",type="l")
+points(1:(n-lagDths),CFdata$DEATHS[(lagDths+1):n]*100,col="navy",type="l")
+lagHosp = 21; lagDths = 28
+plot(CFdata$POSITIVE[1:(n-lagHosp)],CFdata$HOSP_YES[(lagHosp+1):n])
+abline(-5,1/15)
+plot(CFdata$POSITIVE[1:(n-lagDths)],CFdata$DEATHS[(lagDths+1):n])
+abline(1.5,1/90)
 
 
+n = dim(ECdata)[1]
+lagHosp = 21; lagDths = 28
+plot(ECdata$POSITIVE[1:(n-lagHosp)],ECdata$HOSP_YES[(lagHosp+1):n])
+abline(10,1/22)
+plot(ECdata$POSITIVE[1:(n-lagDths)],ECdata$DEATHS[(lagDths+1):n])
+abline(1.5,1/180)
 plot(ECdata$POSITIVE,type="l")
-points(1:(209-20),ECdata$HOSP_YES[21:209]*18,col="red",type="l")
-points(1:(209-25),ECdata$DEATHS[26:209]*140,col="navy",type="l")
-lagHosp = 20; lagDths = 25
-logPOSlagH <- log(ECdata$POSITIVE[1:(209-lagHosp)])
-logHOSPlagH <- log(ECdata$HOSP_YES[(lagHosp+1):209])
-logPOSlagD <- log(ECdata$POSITIVE[1:(209-lagDths)])
-logDTHSlagD <- log(ECdata$DEATHS[(lagDths+1):209])
+points(1:(n-lagHosp),ECdata$HOSP_YES[(lagHosp+1):n]*20,col="red",type="l")
+points(1:(n-lagDths),ECdata$DEATHS[(lagDths+1):n]*140,col="navy",type="l")
+logPOSlagH <- log(ECdata$POSITIVE[1:(n-lagHosp)])
+logHOSPlagH <- log(ECdata$HOSP_YES[(lagHosp+1):n])
+logPOSlagD <- log(ECdata$POSITIVE[1:(n-lagDths)])
+logDTHSlagD <- log(ECdata$DEATHS[(lagDths+1):n])
 logDTHSlagD[logDTHSlagD< -100] = NA
 plot(logPOSlagH,logHOSPlagH, type="l",col="red")
 points(logPOSlagD,logDTHSlagD, type="l",col="navy")
