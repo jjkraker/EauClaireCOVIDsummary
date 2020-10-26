@@ -18,16 +18,28 @@ abline(-5,1/15)
 plot(CFdata$POSITIVE[1:(n-lagDths)],CFdata$DEATHS[(lagDths+1):n])
 abline(1.5,1/90)
 
+# WI data
+n = dim(WIdata)[1]
+lagHosp = 14; lagDths = 21
+datausing = WIdata
+plot(datausing$POSITIVE[1:(n-lagHosp)],datausing$HOSP_YES[(lagHosp+1):n])
+abline(2300,1/19)
+plot(datausing$POSITIVE[1:(n-lagDths)],datausing$DEATHS[(lagDths+1):n])
+abline(600,1/115)
 
+
+# EC data
 n = dim(ECdata)[1]
-lagHosp = 21; lagDths = 28
+lagHosp = 18; lagDths = 24
 plot(ECdata$POSITIVE[1:(n-lagHosp)],ECdata$HOSP_YES[(lagHosp+1):n])
 abline(10,1/22)
 plot(ECdata$POSITIVE[1:(n-lagDths)],ECdata$DEATHS[(lagDths+1):n])
-abline(1.5,1/180)
+abline(1.5,1/170)
 plot(ECdata$POSITIVE,type="l")
-points(1:(n-lagHosp),ECdata$HOSP_YES[(lagHosp+1):n]*20,col="red",type="l")
-points(1:(n-lagDths),ECdata$DEATHS[(lagDths+1):n]*140,col="navy",type="l")
+points(1:(n-lagHosp),ECdata$HOSP_YES[(lagHosp+1):n]*22,col="red",type="l")
+points(1:(n-lagDths),ECdata$DEATHS[(lagDths+1):n]*170,col="navy",type="l")
+
+# modeling log response
 logPOSlagH <- log(ECdata$POSITIVE[1:(n-lagHosp)])
 logHOSPlagH <- log(ECdata$HOSP_YES[(lagHosp+1):n])
 logPOSlagD <- log(ECdata$POSITIVE[1:(n-lagDths)])
@@ -57,7 +69,7 @@ n = dim(WIdata)[1]
 daily7POSlagH <- rollmean(WIdata$POS_NEW[1:(n-lagHosp)], 14, na.pad=TRUE)
 daily7HOSPlagH <- rollmean(c(0,WIdata$HOSP_YES[2:n]-WIdata$HOSP_YES[1:(n-1)])[(lagHosp+1):n], 14, na.pad=TRUE)
 plot(daily7POSlagH,daily7HOSPlagH)
-abline(0,.034)
+abline(15,.05)
 
 lagDths = 24
 daily7POSlagD <- rollmean(WIdata$POS_NEW[1:(n-lagDths)], 14, na.pad=TRUE)
