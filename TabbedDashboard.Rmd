@@ -289,6 +289,7 @@ TablebyAge(CFdata, "Chippewa", CFprops,CFpop)
 
 ```{r,fig.height=3}
 PartialTotalTable(BAdata, "Barron") 
+TablebyAge(BAdata, "Barron", BAprops,BApop)
 
 ```   
 
