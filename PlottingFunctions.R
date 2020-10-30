@@ -27,6 +27,10 @@ CaseCheck = function(usabledata) {
                              TRUE ~ POS_NEW
                              )
   ) %>%
+  mutate(POS_7DAY_AVG = rollmean(POS_NEW, 7, na.pad=TRUE)) %>%
+  mutate(HOSP_NEW = c(NA,HOSP_YES[2:length(HOSP_YES)]-HOSP_YES[1:(length(HOSP_YES)-1)])) %>%
+  mutate(HOSP_7DAY_AVG = rollmean(HOSP_NEW, 7, na.pad=TRUE)) %>%
+  mutate(DTH_14DAY_AVG = rollmean(DTH_NEW, 14, na.pad=TRUE)) %>%
   mutate(POS_0_9 = ifelse(POS_0_9 < 0, NA, POS_0_9)) %>%
   mutate(POS_10_19 = ifelse(POS_10_19 < 0, NA, POS_10_19)) %>%
   mutate(POS_20_29 = ifelse(POS_20_29 < 0, NA, POS_20_29)) %>%
