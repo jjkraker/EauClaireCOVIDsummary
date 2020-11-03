@@ -42,6 +42,7 @@ ECdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Eau Claire"),DATE))
 DAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dane"),DATE))
 LCdata <- CaseCheck(arrange(filter(ALLdata,NAME=="La Crosse"),DATE))
 CFdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Chippewa"),DATE))
+DUdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dunn"),DATE))
 BAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Barron"),DATE))
 POdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Portage"),DATE))
 WIdata <- CaseCheck(arrange(filter(ALLdata,NAME=="WI"),DATE))
@@ -53,6 +54,8 @@ ECprops = c(0.11,0.13,0.20,0.13,0.10,0.12,0.11,0.10)
 DApop = 546695
 DAprops = c(0.11,0.13,0.19,0.14,0.12,0.12,0.10,0.09)
 DA20pop = round(.19*DApop)
+DUpop = 45368
+DUprops = c(0.11,0.15,0.19,0.11,0.11,0.12,0.11,0.10)
 LCpop = 118230
 LCprops = c(0.10,0.14,0.18,0.115,0.115,0.12,0.12,0.11)
 LC20pop = round(LCprops[3]*LCpop)

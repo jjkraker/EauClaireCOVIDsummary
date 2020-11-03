@@ -1,15 +1,16 @@
 
-n = dim(ECdata)[1]; hosplag = 10; dthlag=12
+n = dim(ECdata)[1]; hosplag = 8; dthlag=12
 plot(ECdata$POS_7DAY_AVG,type="l")  
-points(ECdata$HOSP_7DAY_AVG[hosplag:n]*20,type="l",col="blue")
-points(ECdata$DTH_7DAY_AVG[dthlag:n]*100,type="l",col="red")
-ECdata$POS_7DAY_AVG[n-3]/20*7
-ECdata$POS_7DAY_AVG[n-3]/100*7
+hosprate = 20; dthrate=80
+points(ECdata$HOSP_7DAY_AVG[hosplag:n]*hosprate,type="l",col="blue")
+points(ECdata$DTH_7DAY_AVG[dthlag:n]*dthrate,type="l",col="red")
+ECdata$POS_7DAY_AVG[n-3]/hosprate*7
+ECdata$POS_7DAY_AVG[n-3]/dthrate*7
 plot(ECdata$POS_7DAY_AVG[1:(n-hosplag+1)],ECdata$HOSP_7DAY_AVG[hosplag:n])
-abline(0,1/20)
+abline(0,1/hosprate)
 # consider older groups avgs
-plot(ECdata$HOSP_YES[1:(n-10)],ECdata$DEATHS[11:n])
-abline(-1,1/3)
+plot(ECdata$HOSP_YES[1:(n-4)],ECdata$DEATHS[5:n])
+abline(-1,1/7)
 
 n = dim(CFdata)[1]; hosplag = 10; dthlag=8
 plot(CFdata$POS_7DAY_AVG,type="l")  # consider older groups avgs
@@ -21,9 +22,9 @@ plot(CFdata$HOSP_YES[1:(n-10)],CFdata$DEATHS[11:n])
 abline(-5,1/2)
 
 
-n = dim(WIdata)[1]; hosplag = 10; dthlag=12
+n = dim(WIdata)[1]; hosplag = 8; dthlag=12
 plot(WIdata$POS_7DAY_AVG,type="l")  
-hosprate = 19; dthrate=115
+hosprate = 20; dthrate=110
 points(WIdata$HOSP_7DAY_AVG[hosplag:n]*hosprate,type="l",col="blue")
 points(WIdata$DTH_14DAY_AVG[dthlag:n]*dthrate,type="l",col="red")
 WIdata$POS_7DAY_AVG[n-3]/hosprate
