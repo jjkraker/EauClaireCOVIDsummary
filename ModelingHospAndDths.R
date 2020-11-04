@@ -1,14 +1,22 @@
+n = dim(ECdata)[1]; 
 
-n = dim(ECdata)[1]; hosplag = 8; dthlag=12
-plot(ECdata$POS_7DAY_AVG,type="l")  
-hosprate = 20; dthrate=80
+ECdata <- mutate(ECdata,POS_50plus = rowSums(cbind(POS_50_59, POS_60_69, POS_70_79, POS_80_89,  POS_90),na.rm=T))
+ECdata <- mutate(ECdata,POS_50plus_DAILY = c(0,POS_50plus[-1] - POS_50plus[-n]))
+ECdata <- mutate(ECdata,POS_50plus_7DAY = rollmean(POS_50plus_DAILY, 7, na.pad=TRUE))
+#plot(ECdata$POS_7DAY_AVG,type="l")  
+plot(ECdata$POS_50plus_7DAY,type="l")  
+hosplag = 8; dthlag=12
+hosprate = 5.5; dthrate=20
 points(ECdata$HOSP_7DAY_AVG[hosplag:n]*hosprate,type="l",col="blue")
 points(ECdata$DTH_7DAY_AVG[dthlag:n]*dthrate,type="l",col="red")
-ECdata$POS_7DAY_AVG[n-3]/hosprate*7
-ECdata$POS_7DAY_AVG[n-3]/dthrate*7
-plot(ECdata$POS_7DAY_AVG[1:(n-hosplag+1)],ECdata$HOSP_7DAY_AVG[hosplag:n])
+ECdata$POS_50plus_7DAY[n-3]/hosprate*7
+ECdata$POS_50plus_7DAY[n-3]/dthrate*7
+plot(ECdata$POS_50plus_7DAY[1:(n-hosplag+1)],ECdata$HOSP_7DAY_AVG[hosplag:n])
 abline(0,1/hosprate)
 # consider older groups avgs
+plot(ECdata$POS_50plus_7DAY[1:(n-dthlag+1)],ECdata$DTH_7DAY_AVG[dthlag:n])
+abline(0,1/dthrate)
+
 plot(ECdata$HOSP_YES[1:(n-4)],ECdata$DEATHS[5:n])
 abline(-1,1/7)
 
