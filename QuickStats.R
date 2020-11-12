@@ -1,4 +1,4 @@
-usabledata = WIdata; usablepop = WIpop
+usabledata = ECdata; usablepop = ECpop
 usabledata$TOTAL_10Days[n]
 usabledata$POS_NEW[n]
 
