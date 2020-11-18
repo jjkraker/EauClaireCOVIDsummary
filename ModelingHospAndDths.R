@@ -5,8 +5,8 @@ ECdata <- mutate(ECdata,POS_50plus_DAILY = c(0,POS_50plus[-1] - POS_50plus[-n]))
 ECdata <- mutate(ECdata,POS_50plus_7DAY = rollmean(POS_50plus_DAILY, 7, na.pad=TRUE))
 #plot(ECdata$POS_7DAY_AVG,type="l")  
 plot(ECdata$POS_50plus_7DAY,type="l")  
-hosplag = 8; dthlag=11
-hosprate = 7; dthrate=25
+hosplag = 8; dthlag=12
+hosprate = 10; dthrate=20
 points(ECdata$HOSP_7DAY_AVG[hosplag:n]*hosprate,type="l",col="blue")
 points(ECdata$DTH_7DAY_AVG[dthlag:n]*dthrate,type="l",col="red")
 ECdata$POS_50plus_7DAY[n-3]/hosprate*7
