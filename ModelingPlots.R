@@ -1,7 +1,8 @@
 
+
 plot(ECdata$HOSP_YES)
 abline(-30,.4); abline(-230,1.45)
-abline(v=c(190,218),col="red")
+abline(v=c(190,218),col="blue") #change the color of the line
 abline(-610,3.2)
 ECdata$DATE[c(190,218)]
 
@@ -9,7 +10,7 @@ ECdata$DATE[c(190,218)]
 
 n = dim(CFdata)[1]
 lagHosp = 14; lagDths = 24
-plot(CFdata$POSITIVE,type="l")
+plot(CFdata$POSITIVE,type="p") #change the type from line into point
 points(1:(n-lagHosp),CFdata$HOSP_YES[(lagHosp+1):n]*18,col="red",type="l")
 points(1:(n-lagDths),CFdata$DEATHS[(lagDths+1):n]*100,col="navy",type="l")
 lagHosp = 21; lagDths = 28
