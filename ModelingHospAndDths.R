@@ -30,18 +30,20 @@ plot(CFdata$HOSP_YES[1:(n-10)],CFdata$DEATHS[11:n])
 abline(-5,1/2)
 
 
+n = dim(WIdata)[1]; hosplag = 9; dthlag=9
 WIdata <- mutate(WIdata,POS_50plus = rowSums(cbind(POS_50_59, POS_60_69, POS_70_79, POS_80_89,  POS_90),na.rm=T))
 WIdata <- mutate(WIdata,POS_50plus_DAILY = c(0,POS_50plus[-1] - POS_50plus[-n]))
 WIdata <- mutate(WIdata,POS_50plus_7DAY = rollmean(POS_50plus_DAILY, 7, na.pad=TRUE))
-n = dim(WIdata)[1]; hosplag = 9; dthlag=11
 #plot(WIdata$POS_7DAY_AVG,type="l")  
 plot(WIdata$POS_50plus_7DAY,type="l")
-hosprate = 8; dthrate=42
+hosprate = 8; dthrate=47
 points(WIdata$HOSP_7DAY_AVG[hosplag:n]*hosprate,type="l",col="blue")
 points(WIdata$DTH_14DAY_AVG[dthlag:n]*dthrate,type="l",col="red")
-WIdata$POS_7DAY_AVG[n-3]/hosprate
-WIdata$POS_7DAY_AVG[n-3]/dthrate
+WIdata$POS_50plus_7DAY[n-3]/hosprate
+WIdata$POS_50plus_7DAY[n-7]/dthrate
 plot(WIdata$POS_7DAY_AVG[1:(n-hosplag+1)],WIdata$HOSP_7DAY_AVG[hosplag:n])
+abline(0,1/hosprate)
+plot(WIdata$POS_50plus_7DAY[1:(n-hosplag+1)],WIdata$HOSP_7DAY_AVG[hosplag:n])
 abline(0,1/hosprate)
 plot(WIdata$POS_7DAY_AVG[1:(n-dthlag+1)],WIdata$DTH_7DAY_AVG[dthlag:n])
 abline(0,1/dthrate)
