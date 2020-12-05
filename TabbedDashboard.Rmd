@@ -157,8 +157,6 @@ Various Trends {.tabset}
 ```{r,fig.height=3}
 Daily7day(ECdata, "Eau Claire")
 Daily7Hosp(ECdata, "Eau Claire")
-ActiveCases(ECdata, "Eau Claire",F) 
-ActiveCases(ECdata, "Eau Claire",T) 
 
 ```   
 
@@ -167,7 +165,6 @@ ActiveCases(ECdata, "Eau Claire",T)
 ```{r,fig.height=3}
 Daily7day(CFdata, "Chippewa")
 Daily7Hosp(CFdata, "Chippewa")
-ActiveCases(CFdata, "Chippewa",F) 
 
 ```   
 
@@ -176,7 +173,6 @@ ActiveCases(CFdata, "Chippewa",F)
 ```{r,fig.height=3}
 Daily7day(BAdata, "Barron")
 Daily7Hosp(BAdata, "Barron")
-ActiveCases(BAdata, "Barron",F) 
 
 ```   
 
@@ -186,8 +182,6 @@ ActiveCases(BAdata, "Barron",F)
 ```{r,fig.height=3}
 Daily7day(LCdata, "La Crosse")
 Daily7Hosp(LCdata, "La Crosse")
-ActiveCases(LCdata, "La Crosse",F) 
-ActiveCases(LCdata, "La Crosse",T) 
 
 ```   
 
@@ -197,8 +191,6 @@ ActiveCases(LCdata, "La Crosse",T)
 ```{r,fig.height=3}
 Daily7day(DAdata, "Dane")
 Daily7Hosp(DAdata, "Dane")
-ActiveCases(DAdata, "Dane",F) 
-ActiveCases(DAdata, "Dane",T) 
 
 ```   
 
@@ -207,8 +199,6 @@ ActiveCases(DAdata, "Dane",T)
 ```{r,fig.height=3}
 Daily7day(WIdata, "Wisconsin")
 Daily7Hosp(WIdata, "Wisconsin")
-ActiveCases(WIdata, "Wisconsin",F) 
-ActiveCases(WIdata, "Wisconsin",T) 
 
 
 ```
@@ -225,6 +215,8 @@ Column {.tabset}
 ```{r,fig.height=3}
 ActiveSumbyAge(ECdata, "Eau Claire", 10) 
 ActiveSumbyAge(ECdata, "Eau Claire", 14)
+ActiveCases(ECdata, "Eau Claire",F) 
+ActiveCases(ECdata, "Eau Claire",T) 
 
 ```   
 
@@ -233,6 +225,7 @@ ActiveSumbyAge(ECdata, "Eau Claire", 14)
 ```{r,fig.height=3}
 ActiveSumbyAge(CFdata, "Chippewa", 10) 
 ActiveSumbyAge(CFdata, "Chippewa", 14)
+ActiveCases(CFdata, "Chippewa",F) 
 
 ```   
 
@@ -241,6 +234,7 @@ ActiveSumbyAge(CFdata, "Chippewa", 14)
 ```{r,fig.height=3}
 ActiveSumbyAge(BAdata, "Barron",10) 
 ActiveSumbyAge(BAdata, "Barron",14) 
+ActiveCases(BAdata, "Barron",F) 
 
 ```   
 
@@ -250,6 +244,8 @@ ActiveSumbyAge(BAdata, "Barron",14)
 ```{r,fig.height=3}
 ActiveSumbyAge(LCdata, "La Crosse",10) 
 ActiveSumbyAge(LCdata, "La Crosse",14) 
+ActiveCases(LCdata, "La Crosse",F) 
+ActiveCases(LCdata, "La Crosse",T) 
 
 ```   
 
@@ -258,6 +254,8 @@ ActiveSumbyAge(LCdata, "La Crosse",14)
 ```{r,fig.height=3}
 ActiveSumbyAge(DAdata, "Dane",10) 
 ActiveSumbyAge(DAdata, "Dane",14) 
+ActiveCases(DAdata, "Dane",F) 
+ActiveCases(DAdata, "Dane",T) 
 
 ```   
 
@@ -267,6 +265,8 @@ ActiveSumbyAge(DAdata, "Dane",14)
 ```{r,fig.height=3}
 ActiveSumbyAge(WIdata, "Wisconsin",10) 
 ActiveSumbyAge(WIdata, "Wisconsin",14) 
+ActiveCases(WIdata, "Wisconsin",F) 
+ActiveCases(WIdata, "Wisconsin",T) 
 
 
 ```
