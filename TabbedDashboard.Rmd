@@ -145,13 +145,18 @@ DailyTesting(WIdata, "Wisconsin")
 
 
 
-Active {.tabset}
+Various Trends {.tabset}
 -------------------------------------
-**Active cases**:  Estimated recovery time from health experts varies between 10-20 days, with a nontrivial proportion of cases being [long-term / on-going](https://www.theatlantic.com/health/archive/2020/08/long-haulers-covid-19-recognition-support-groups-symptoms/615382/).  Even given the testing lag, a conservative approximation is to use the total number of positive (diagnosed) cases across the last 10 days.  We will go with this standard, along with a range from 10-14 days of active accumulation, and adjust as more precise information becomes available. *14 days corresponds with two-week standard in place in MN school decisions.*
-   
+**Various 7-day average trends**
+
+   * Comparing the 7-day averages of Testing and New-Positives can better show rates.
+   * Visualizing 7-day averages of Hospitalizations can show lagged effects of diagnosed cases.
+
 ### Eau Claire
 
 ```{r,fig.height=3}
+Daily7day(ECdata, "Eau Claire")
+Daily7Hosp(ECdata, "Eau Claire")
 ActiveCases(ECdata, "Eau Claire",F) 
 ActiveCases(ECdata, "Eau Claire",T) 
 
@@ -160,6 +165,8 @@ ActiveCases(ECdata, "Eau Claire",T)
 ### Chippewa
 
 ```{r,fig.height=3}
+Daily7day(CFdata, "Chippewa")
+Daily7Hosp(CFdata, "Chippewa")
 ActiveCases(CFdata, "Chippewa",F) 
 
 ```   
@@ -167,6 +174,8 @@ ActiveCases(CFdata, "Chippewa",F)
 ### Barron
 
 ```{r,fig.height=3}
+Daily7day(BAdata, "Barron")
+Daily7Hosp(BAdata, "Barron")
 ActiveCases(BAdata, "Barron",F) 
 
 ```   
@@ -175,6 +184,8 @@ ActiveCases(BAdata, "Barron",F)
 ### La Crosse
 
 ```{r,fig.height=3}
+Daily7day(LCdata, "La Crosse")
+Daily7Hosp(LCdata, "La Crosse")
 ActiveCases(LCdata, "La Crosse",F) 
 ActiveCases(LCdata, "La Crosse",T) 
 
@@ -184,6 +195,8 @@ ActiveCases(LCdata, "La Crosse",T)
 ### Dane
 
 ```{r,fig.height=3}
+Daily7day(DAdata, "Dane")
+Daily7Hosp(DAdata, "Dane")
 ActiveCases(DAdata, "Dane",F) 
 ActiveCases(DAdata, "Dane",T) 
 
@@ -192,6 +205,8 @@ ActiveCases(DAdata, "Dane",T)
 ### Wisconsin
 
 ```{r,fig.height=3}
+Daily7day(WIdata, "Wisconsin")
+Daily7Hosp(WIdata, "Wisconsin")
 ActiveCases(WIdata, "Wisconsin",F) 
 ActiveCases(WIdata, "Wisconsin",T) 
 
@@ -200,7 +215,7 @@ ActiveCases(WIdata, "Wisconsin",T)
 
 Column {.tabset}
 -------------------------------------
-**Estimated Active**, split by Age group:
+**Estimated Active**, split by Age group:  Estimated recovery time from health experts varies between 10-20 days, with a nontrivial proportion of cases being [long-term / on-going](https://www.theatlantic.com/health/archive/2020/08/long-haulers-covid-19-recognition-support-groups-symptoms/615382/). 
 
    * First plot is conservative (10-day total) estimate
 * Second plot is 14-day total used in MN Safe-Learning plan

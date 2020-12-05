@@ -181,6 +181,63 @@ DailyOutcomes <- function(usabledata, location) {
 #######FUNCTIONS in "Daily" tab - middle#######
 ##############################################
 
+Daily7day = function(usabledata, location) {
+  D7plot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TEST_7DAYAVG))+
+    geom_line(aes(color="Testing 7day avg"))+
+    geom_line(aes(y=POS_7DAYAVG, color="New-Cases 7day avg")) +    
+    geom_line(aes(y=DTH_7DAY_AVG, color="Deaths 7day avg"))+
+    geom_line(aes(y=HOSP_7DAY_AVG, color="Hospitalized 7day avg"))+
+    scale_x_date(breaks = date_breaks("14 days"))+
+    ggtitle(label = paste(location, "7-day averages,testing & positives"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("Daily 7day Average")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('New-Cases 7day avg'='green4',
+                                          'Testing 7day avg'='#32FFFF',
+                                          'Hospitalized 7day avg'='#3399ff',
+                                          'Deaths 7day avg'='#d100d1')) 
+  D7plot
+}
+
+Daily7Cases = function(usabledata, location) {
+  D7Cplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=POS_7DAYAVG))+
+    geom_line(aes(color="New-Cases 7day avg")) +    
+    geom_line(aes(y=DTH_7DAY_AVG, color="Deaths 7day avg"))+
+    geom_line(aes(y=HOSP_7DAY_AVG, color="Hospitalized 7day avg"))+
+    scale_x_date(breaks = date_breaks("14 days"))+
+    ggtitle(label = paste(location, "7-day averages, positives & hosp"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("Daily 7day Average")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('New-Cases 7day avg'='green4',
+                                          'Testing 7day avg'='#32FFFF',
+                                          'Hospitalized 7day avg'='#3399ff',
+                                          'Deaths 7day avg'='#d100d1')) 
+  D7Cplot
+}
+
+Daily7Hosp = function(usabledata, location) {
+  D7Hplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=HOSP_7DAY_AVG))+
+    geom_line(aes(color="Hospitalized 7day avg")) +    
+    geom_line(aes(y=DTH_7DAY_AVG, color="Deaths 7day avg"))+
+    scale_x_date(breaks = date_breaks("14 days"))+
+    ggtitle(label = paste(location, "7-day averages, hospitalizations & deaths"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("Daily 7day Average")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('New-Cases 7day avg'='green4',
+                                          'Testing 7day avg'='#32FFFF',
+                                          'Hospitalized 7day avg'='#3399ff',
+                                          'Deaths 7day avg'='#d100d1')) 
+  D7Hplot
+}
+
 ActiveCases = function(usabledata, location, twenties) {
   if (twenties) {
     plotused <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TOTAL_12Days20s))+
