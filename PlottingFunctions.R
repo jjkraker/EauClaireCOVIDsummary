@@ -30,6 +30,7 @@ CaseCheck = function(usabledata) {
   mutate(POS_7DAY_AVG = rollmean(POS_NEW, 7, na.pad=TRUE)) %>%
   mutate(HOSP_NEW = c(NA,HOSP_YES[2:length(HOSP_YES)]-HOSP_YES[1:(length(HOSP_YES)-1)])) %>%
   mutate(HOSP_7DAY_AVG = rollmean(HOSP_NEW, 7, na.pad=TRUE)) %>%
+  mutate(HOSP_14DAY_AVG = rollmean(HOSP_NEW, 14, na.pad=TRUE)) %>%
   mutate(DTH_7DAY_AVG = rollmean(DTH_NEW, 7, na.pad=TRUE)) %>%
   mutate(DTH_14DAY_AVG = rollmean(DTH_NEW, 14, na.pad=TRUE)) %>%
   mutate(POS_0_9 = ifelse(POS_0_9 < 0, NA, POS_0_9)) %>%
@@ -236,6 +237,24 @@ Daily7Hosp = function(usabledata, location) {
                                           'Hospitalized'='#3399ff',
                                           'Deaths'='#d100d1')) 
   D7Hplot
+}
+
+Daily14Hosp = function(usabledata, location) {
+  D14Hplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=HOSP_14DAY_AVG))+
+    geom_line(aes(color="Hospitalized")) +    
+    geom_line(aes(y=DTH_14DAY_AVG, color="Deaths"))+
+    scale_x_date(breaks = date_breaks("14 days"))+
+    ggtitle(label = paste(location, "14-day averages, hospitalizations & deaths"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("Daily 14day Average")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('New-Cases'='green4',
+                                          'Testing'='#32FFFF',
+                                          'Hospitalized'='#3399ff',
+                                          'Deaths'='#d100d1')) 
+  D14Hplot
 }
 
 POSRATE = function(usabledata, location) {
