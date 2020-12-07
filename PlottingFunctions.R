@@ -183,10 +183,10 @@ DailyOutcomes <- function(usabledata, location) {
 
 Daily7day = function(usabledata, location) {
   D7plot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TEST_7DAYAVG))+
-    geom_line(aes(color="Testing 7day avg"))+
-    geom_line(aes(y=POS_7DAYAVG, color="New-Cases 7day avg")) +    
-    geom_line(aes(y=DTH_7DAY_AVG, color="Deaths 7day avg"))+
-    geom_line(aes(y=HOSP_7DAY_AVG, color="Hospitalized 7day avg"))+
+    geom_line(aes(color="Testing"))+
+    geom_line(aes(y=POS_7DAYAVG, color="New-Cases")) +    
+    geom_line(aes(y=DTH_7DAY_AVG, color="Deaths"))+
+    geom_line(aes(y=HOSP_7DAY_AVG, color="Hospitalized"))+
     scale_x_date(breaks = date_breaks("14 days"))+
     ggtitle(label = paste(location, "7-day averages,testing & positives"))+
     theme_minimal()+
@@ -194,18 +194,18 @@ Daily7day = function(usabledata, location) {
           axis.text.x = element_text(angle=90))+
     ylab("Daily 7day Average")+
     xlab("Date") +
-    scale_colour_manual(name='', values=c('New-Cases 7day avg'='green4',
-                                          'Testing 7day avg'='#32FFFF',
-                                          'Hospitalized 7day avg'='#3399ff',
-                                          'Deaths 7day avg'='#d100d1')) 
+    scale_colour_manual(name='', values=c('New-Cases'='green4',
+                                          'Testing'='#32FFFF',
+                                          'Hospitalized'='#3399ff',
+                                          'Deaths'='#d100d1')) 
   D7plot
 }
 
 Daily7Cases = function(usabledata, location) {
   D7Cplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=POS_7DAYAVG))+
-    geom_line(aes(color="New-Cases 7day avg")) +    
-    geom_line(aes(y=DTH_7DAY_AVG, color="Deaths 7day avg"))+
-    geom_line(aes(y=HOSP_7DAY_AVG, color="Hospitalized 7day avg"))+
+    geom_line(aes(color="New-Cases")) +    
+    geom_line(aes(y=DTH_7DAY_AVG, color="Deaths"))+
+    geom_line(aes(y=HOSP_7DAY_AVG, color="Hospitalized"))+
     scale_x_date(breaks = date_breaks("14 days"))+
     ggtitle(label = paste(location, "7-day averages, positives & hosp"))+
     theme_minimal()+
@@ -213,17 +213,17 @@ Daily7Cases = function(usabledata, location) {
           axis.text.x = element_text(angle=90))+
     ylab("Daily 7day Average")+
     xlab("Date") +
-    scale_colour_manual(name='', values=c('New-Cases 7day avg'='green4',
-                                          'Testing 7day avg'='#32FFFF',
-                                          'Hospitalized 7day avg'='#3399ff',
-                                          'Deaths 7day avg'='#d100d1')) 
+    scale_colour_manual(name='', values=c('New-Cases'='green4',
+                                          'Testing'='#32FFFF',
+                                          'Hospitalized'='#3399ff',
+                                          'Deaths'='#d100d1')) 
   D7Cplot
 }
 
 Daily7Hosp = function(usabledata, location) {
   D7Hplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=HOSP_7DAY_AVG))+
-    geom_line(aes(color="Hospitalized 7day avg")) +    
-    geom_line(aes(y=DTH_7DAY_AVG, color="Deaths 7day avg"))+
+    geom_line(aes(color="Hospitalized")) +    
+    geom_line(aes(y=DTH_7DAY_AVG, color="Deaths"))+
     scale_x_date(breaks = date_breaks("14 days"))+
     ggtitle(label = paste(location, "7-day averages, hospitalizations & deaths"))+
     theme_minimal()+
@@ -231,47 +231,31 @@ Daily7Hosp = function(usabledata, location) {
           axis.text.x = element_text(angle=90))+
     ylab("Daily 7day Average")+
     xlab("Date") +
-    scale_colour_manual(name='', values=c('New-Cases 7day avg'='green4',
-                                          'Testing 7day avg'='#32FFFF',
-                                          'Hospitalized 7day avg'='#3399ff',
-                                          'Deaths 7day avg'='#d100d1')) 
+    scale_colour_manual(name='', values=c('New-Cases'='green4',
+                                          'Testing'='#32FFFF',
+                                          'Hospitalized'='#3399ff',
+                                          'Deaths'='#d100d1')) 
   D7Hplot
 }
 
-ActiveCases = function(usabledata, location, twenties) {
-  if (twenties) {
-    plotused <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TOTAL_12Days20s))+
-      geom_line(aes(color="12days total"))+
-      geom_line(aes(y=TOTAL_10Days20s, color="10days total")) +
-      geom_line(aes(y=TOTAL_14Days20s, color="14days total"))+
-      geom_line(aes(y=POS_20_29_NEW, color="Daily Cases")) +
-      ylim(0, max(usabledata$TOTAL_14Days,na.rm=T)) +
-      ggtitle(label = paste(location, "Estimated Active COVID cases in 20s"))
-  } else {
-    plotused <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TOTAL_12Days))+
-      geom_line(aes(color="12days total"))+
-      geom_line(aes(y=TOTAL_10Days, color="10days total")) +
-      geom_line(aes(y=TOTAL_14Days, color="14days total"))+
-      geom_line(aes(y=POS_NEW, color="Daily Cases")) +
-      ylim(0, max(usabledata$TOTAL_14Days,na.rm=T)) +
-      ggtitle(label = paste(location, "Estimated Active COVID cases"))
-  }
-  DCplot <- plotused + 
-    scale_x_date(date_minor_breaks = "1 week") +
+POSRATE = function(usabledata, location) {
+  usabledata$POS_RATE_7DAY <- pmax(0,rollmean(rollmean(usabledata$POS_NEW,3,na.pad=TRUE)/
+                                         rollmean(usabledata$TEST_NEW,3,na.pad=TRUE),7,na.pad=TRUE))
+  POSplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=POS_RATE_7DAY))+
+    geom_line(aes(color="Pos. Rate  "))+
     scale_x_date(breaks = date_breaks("14 days"))+
+    ggtitle(label = paste(location, "Smoothed Positivity Rate"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
           axis.text.x = element_text(angle=90))+
-    ylab("Estimated Active Cases")+
+    ylab("Pos. Rate (%) 7day Avg")+
     xlab("Date") +
-    scale_colour_manual(name='', values=c('10days total'='navy',
-                                          '12days total'='grey','14days total'='red4','15days total'='grey',
-                                          'Daily Cases'='green')) 
-  
-  #  DCplot <- DCplot %>%
-  #    
-  DCplot
+    scale_colour_manual(name='', values=c('Pos. Rate  '='navy')) + 
+    scale_y_continuous(labels = scales::percent)
+  POSplot
 }
+
+
 
 
 
@@ -318,6 +302,40 @@ ActiveSumbyAge <- function(usabledata, location,sumlag) {
   OutPlot
 }
 
+ActiveCases = function(usabledata, location, twenties) {
+  if (twenties) {
+    plotused <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TOTAL_12Days20s))+
+      geom_line(aes(color="12days total"))+
+      geom_line(aes(y=TOTAL_10Days20s, color="10days total")) +
+      geom_line(aes(y=TOTAL_14Days20s, color="14days total"))+
+      geom_line(aes(y=POS_20_29_NEW, color="Daily Cases")) +
+      ylim(0, max(usabledata$TOTAL_14Days,na.rm=T)) +
+      ggtitle(label = paste(location, "Estimated Active COVID cases in 20s"))
+  } else {
+    plotused <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=TOTAL_12Days))+
+      geom_line(aes(color="12days total"))+
+      geom_line(aes(y=TOTAL_10Days, color="10days total")) +
+      geom_line(aes(y=TOTAL_14Days, color="14days total"))+
+      geom_line(aes(y=POS_NEW, color="Daily Cases")) +
+      ylim(0, max(usabledata$TOTAL_14Days,na.rm=T)) +
+      ggtitle(label = paste(location, "Estimated Active COVID cases"))
+  }
+  DCplot <- plotused + 
+    scale_x_date(date_minor_breaks = "1 week") +
+    scale_x_date(breaks = date_breaks("14 days"))+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("Estimated Active Cases")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('10days total'='navy',
+                                          '12days total'='grey','14days total'='red4','15days total'='grey',
+                                          'Daily Cases'='green')) 
+  
+  #  DCplot <- DCplot %>%
+  #    
+  DCplot
+}
 
 ##############################################
 ###FUNCTIONS in "By the Numbers" tab - left###
