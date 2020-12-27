@@ -69,6 +69,7 @@ WI20pop = 768561 # about 13.2% of 5,822,434 as number in 20s
 POpop = 70772
 
 ```
+<h2 style="color:Tomato;">My apologies for the delay in updates - I am back now after grading + vacation!</h2>
 
 Daily  {data-orientation=columns}
 =====================================  
