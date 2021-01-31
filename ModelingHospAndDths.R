@@ -20,6 +20,10 @@ dataused <- mutate(dataused,POS_80plus_7DAY = rollmean(c(0,POS_80plus[-1] - POS_
 dataused <- mutate(dataused,HOSP_80plus_7DAY = rollmean(c(0,IP_Y_80plus[-1] - IP_Y_80plus[-n]), 7, na.pad=TRUE))
 dataused <- mutate(dataused,DTHS_80plus_7DAY = rollmean(c(0,DTHS_80plus[-1] - DTHS_80plus[-n]), 7, na.pad=TRUE))
 
+dataused <- mutate(dataused,POS_less50_7DAY = rollmean(c(0,POS_80plus[-1] - POS_80plus[-n]), 7, na.pad=TRUE))
+dataused <- mutate(dataused,HOSP_80plus_7DAY = rollmean(c(0,IP_Y_80plus[-1] - IP_Y_80plus[-n]), 7, na.pad=TRUE))
+dataused <- mutate(dataused,DTHS_80plus_7DAY = rollmean(c(0,DTHS_80plus[-1] - DTHS_80plus[-n]), 7, na.pad=TRUE))
+
 allhosprates <- rep(0,9)
 alldthrates <- rep(0,9)
 #### plots - 80plus ####
@@ -28,7 +32,7 @@ hosplag = 4; dthlag=4
 hosprate = 4.3; dthrate=8.5
 points(hosplag:(n+hosplag-1),dataused$HOSP_80plus_7DAY*hosprate,type="l",col="blue")
 #plot(dataused$POS_80plus_7DAY[1:(n-hosplag+1)],dataused$HOSP_80plus_7DAY[hosplag:n])
-points(dthlag:(n+dthlag-1),dataused$DTHS_80plus_7DAY*dthrate,type="l",col="red")
+points(-dthlag:(n-dthlag+1),dataused$DTHS_80plus_7DAY*dthrate,type="l",col="red")
 #plot(dataused$POS_80plus_7DAY[1:(n-hosplag+1)],dataused$DTHS_80plus_7DAY[hosplag:n])
 #points(dataused$POS_80plus_7DAY[186:(n-hosplag+1)],dataused$DTHS_80plus_7DAY[(hosplag+185):n],col="blue",pch=20)
 allhosprates[9] = 1/hosprate
