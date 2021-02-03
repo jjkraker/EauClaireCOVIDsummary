@@ -79,7 +79,7 @@ Column {.tabset}
 -------------------------------------
 **Important dates**:
 
-   * (purple dashed lines)  **August 31**, **Sept 14**, **Sept 28**:  Return to campus/school, +2 weeks, +4 weeks 
+   * (purple dashed lines)  **Aug 31**, **Sept 14**, **Sept 28** and **Jan 31**, **Feb 14**, **Feb 28**:  Return to campus/school, +2 weeks, +4 weeks 
 
 
    
