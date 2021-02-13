@@ -160,7 +160,7 @@ Various Trends {.tabset}
 Daily7day(ECdata, "Eau Claire")
 Daily7Hosp(ECdata, "Eau Claire")
 # pos rate 7day averages
-POSRATE(ECdata, "Eau Claire")
+#POSRATE(ECdata, "Eau Claire")
 ```   
 
 ### Chippewa
@@ -168,7 +168,7 @@ POSRATE(ECdata, "Eau Claire")
 ```{r,fig.height=3}
 Daily7day(CFdata, "Chippewa")
 Daily7Hosp(CFdata, "Chippewa")
-POSRATE(CFdata, "Chippewa")
+#POSRATE(CFdata, "Chippewa")
 ```   
 
 ### Barron
@@ -176,7 +176,7 @@ POSRATE(CFdata, "Chippewa")
 ```{r,fig.height=3}
 Daily7day(BAdata, "Barron")
 Daily7Hosp(BAdata, "Barron")
-POSRATE(BAdata, "Barron")
+#POSRATE(BAdata, "Barron")
 ```   
 
 
@@ -185,7 +185,7 @@ POSRATE(BAdata, "Barron")
 ```{r,fig.height=3}
 Daily7day(LCdata, "La Crosse")
 Daily7Hosp(LCdata, "La Crosse")
-POSRATE(LCdata, "La Crosse")
+#POSRATE(LCdata, "La Crosse")
 ```   
 
 
@@ -194,7 +194,7 @@ POSRATE(LCdata, "La Crosse")
 ```{r,fig.height=3}
 Daily7day(DAdata, "Dane")
 Daily7Hosp(DAdata, "Dane")
-POSRATE(DAdata, "Dane")
+#POSRATE(DAdata, "Dane")
 ```   
 
 ### Wisconsin
@@ -202,7 +202,7 @@ POSRATE(DAdata, "Dane")
 ```{r,fig.height=3}
 Daily7day(WIdata, "Wisconsin")
 Daily7Hosp(WIdata, "Wisconsin")
-POSRATE(WIdata, "Wisconsin")
+#POSRATE(WIdata, "Wisconsin")
 
 ```
 
