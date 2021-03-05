@@ -1,8 +1,24 @@
 dataused = WIdata
 n = dim(dataused)[1]; 
+dataused <- mutate(dataused,POS_less30 = rowSums(cbind(POS_0_9, POS_10_19, POS_20_29),na.rm=T))
+dataused <- mutate(dataused,HOSP_less30 = rowSums(cbind(IP_Y_0_9, IP_Y_10_19, IP_Y_20_29),na.rm=T))
+dataused <- mutate(dataused,DTHS_less30 = rowSums(cbind(DTHS_0_9, DTHS_10_19, DTHS_20_29),na.rm=T))
+
 dataused <- mutate(dataused,POS_80plus = rowSums(cbind(POS_80_89,  POS_90),na.rm=T))
-dataused <- mutate(dataused,IP_Y_80plus = rowSums(cbind(IP_Y_80_89,  IP_Y_90),na.rm=T))
+dataused <- mutate(dataused,HOSP_80plus = rowSums(cbind(IP_Y_80_89,  IP_Y_90),na.rm=T))
 dataused <- mutate(dataused,DTHS_80plus = rowSums(cbind(DTHS_80_89,  DTHS_90),na.rm=T))
+
+dataused <- mutate(dataused,POS_less30_7DAY = rollmean(c(0,POS_less30[-1] - POS_less30[-n]), 7, na.pad=TRUE))
+dataused <- mutate(dataused,HOSP_less30_7DAY = rollmean(c(0,HOSP_less30[-1] - HOSP_less30[-n]), 7, na.pad=TRUE))
+dataused <- mutate(dataused,DTHS_less30_7DAY = rollmean(c(0,DTHS_less30[-1] - DTHS_less30[-n]), 7, na.pad=TRUE))
+
+dataused <- mutate(dataused,POS_30_39_7DAY = rollmean(c(0,POS_30_39[-1] - POS_30_39[-n]), 7, na.pad=TRUE))
+dataused <- mutate(dataused,HOSP_30_39_7DAY = rollmean(c(0,IP_Y_30_39[-1] - IP_Y_30_39[-n]), 7, na.pad=TRUE))
+dataused <- mutate(dataused,DTHS_30_39_7DAY = rollmean(c(0,DTHS_30_39[-1] - DTHS_30_39[-n]), 7, na.pad=TRUE))
+
+dataused <- mutate(dataused,POS_40_49_7DAY = rollmean(c(0,POS_40_49[-1] - POS_40_49[-n]), 7, na.pad=TRUE))
+dataused <- mutate(dataused,HOSP_40_49_7DAY = rollmean(c(0,IP_Y_40_49[-1] - IP_Y_40_49[-n]), 7, na.pad=TRUE))
+dataused <- mutate(dataused,DTHS_40_49_7DAY = rollmean(c(0,DTHS_40_49[-1] - DTHS_40_49[-n]), 7, na.pad=TRUE))
 
 dataused <- mutate(dataused,POS_50_59_7DAY = rollmean(c(0,POS_50_59[-1] - POS_50_59[-n]), 7, na.pad=TRUE))
 dataused <- mutate(dataused,HOSP_50_59_7DAY = rollmean(c(0,IP_Y_50_59[-1] - IP_Y_50_59[-n]), 7, na.pad=TRUE))
@@ -17,12 +33,12 @@ dataused <- mutate(dataused,HOSP_70_79_7DAY = rollmean(c(0,IP_Y_70_79[-1] - IP_Y
 dataused <- mutate(dataused,DTHS_70_79_7DAY = rollmean(c(0,DTHS_70_79[-1] - DTHS_70_79[-n]), 7, na.pad=TRUE))
 
 dataused <- mutate(dataused,POS_80plus_7DAY = rollmean(c(0,POS_80plus[-1] - POS_80plus[-n]), 7, na.pad=TRUE))
-dataused <- mutate(dataused,HOSP_80plus_7DAY = rollmean(c(0,IP_Y_80plus[-1] - IP_Y_80plus[-n]), 7, na.pad=TRUE))
+dataused <- mutate(dataused,HOSP_80plus_7DAY = rollmean(c(0,HOSP_80plus[-1] - HOSP_80plus[-n]), 7, na.pad=TRUE))
 dataused <- mutate(dataused,DTHS_80plus_7DAY = rollmean(c(0,DTHS_80plus[-1] - DTHS_80plus[-n]), 7, na.pad=TRUE))
 
-dataused <- mutate(dataused,POS_less50_7DAY = rollmean(c(0,POS_80plus[-1] - POS_80plus[-n]), 7, na.pad=TRUE))
-dataused <- mutate(dataused,HOSP_80plus_7DAY = rollmean(c(0,IP_Y_80plus[-1] - IP_Y_80plus[-n]), 7, na.pad=TRUE))
-dataused <- mutate(dataused,DTHS_80plus_7DAY = rollmean(c(0,DTHS_80plus[-1] - DTHS_80plus[-n]), 7, na.pad=TRUE))
+WIdataTimeSeries <- select(WIdata,HOSP_7DAY_AVG, DTH_7DAY_AVG, POS_less30_7DAY,
+                           POS_30_39_7DAY,POS_40_49_7DAY,POS_50_59_7DAY,
+                           POS_60_69_7DAY, POS_70_79_7DAY, POS_80plus_7DAY)
 
 allhosprates <- rep(0,9)
 alldthrates <- rep(0,9)
