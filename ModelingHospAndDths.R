@@ -36,9 +36,13 @@ dataused <- mutate(dataused,POS_80plus_7DAY = rollmean(c(0,POS_80plus[-1] - POS_
 dataused <- mutate(dataused,HOSP_80plus_7DAY = rollmean(c(0,HOSP_80plus[-1] - HOSP_80plus[-n]), 7, na.pad=TRUE))
 dataused <- mutate(dataused,DTHS_80plus_7DAY = rollmean(c(0,DTHS_80plus[-1] - DTHS_80plus[-n]), 7, na.pad=TRUE))
 
-WIdataTimeSeries <- select(WIdata,HOSP_7DAY_AVG, DTH_7DAY_AVG, POS_less30_7DAY,
+WIdataTS <- select(dataused,HOSP_7DAY_AVG, DTH_7DAY_AVG, POS_less30_7DAY,
                            POS_30_39_7DAY,POS_40_49_7DAY,POS_50_59_7DAY,
                            POS_60_69_7DAY, POS_70_79_7DAY, POS_80plus_7DAY)
+
+
+
+
 
 allhosprates <- rep(0,9)
 alldthrates <- rep(0,9)
