@@ -73,7 +73,7 @@ DailyCases = function(usabledata, location) {
   geom_line(aes(color="Daily"))+
   geom_line(aes(y=rollmean(POS_NEW, 7, na.pad=TRUE), color="7-day moving avg")) +
 #  geom_smooth(method = 'loess',aes(color="Loess smooth"))+
-  scale_x_date(breaks = date_breaks("14 days"))+
+  scale_x_date(breaks = date_breaks("28 days"))+
   ggtitle(label = paste(location, "Daily new COVID cases"))+
   theme_minimal()+
   theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
@@ -81,7 +81,7 @@ DailyCases = function(usabledata, location) {
   ylab("Daily New Cases")+
   xlab("Date") +
   geom_vline(xintercept = UniversityDates %>% as.Date(), lty = 2, col= "purple") +
-  scale_colour_manual(name='', values=c('Daily'='green','Loess smooth'='grey','7-day moving avg'='navy')) 
+  scale_colour_manual(name='', values=c('Daily'='green','Loess smooth'='grey','7-day avg'='navy')) 
   
   DCplot
 }
@@ -117,7 +117,7 @@ DailybyAge <- function(usabledata, location,sumlag=1) {
     geom_line(aes(y=rollmean(POS_NEW_20s, 7, na.pad=TRUE), color="ages 20-29")) +
     geom_line(aes(y=rollmean(POS_NEW_30_49, 7, na.pad=TRUE), color="ages 30-49")) +
     geom_line(aes(y=rollmean(POS_NEW_50plus, 7, na.pad=TRUE), color="ages 50+")) +
-    scale_x_date(breaks = date_breaks("14 days"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     ggtitle(label = paste(location, "Daily new cases (7-day average) by Ages"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
@@ -140,7 +140,7 @@ DailyTesting = function(usabledata, location) {
     geom_line(aes(color="Daily"))+
     geom_line(aes(y=rollmean(TEST_NEW, 7, na.pad=TRUE), color="7-day moving avg")) +
     geom_smooth(method = 'loess',aes(color="Loess smooth"))+
-    scale_x_date(breaks = date_breaks("14 days"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     ggtitle(label = paste(location, "Daily tests"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
@@ -164,8 +164,8 @@ DailyOutcomes <- function(usabledata, location) {
   # Grouped
   OutPlot <- ggplot(stackdata, aes(fill=stackOUTCOMES, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
     geom_bar(position="stack", stat="identity") +
-    ggtitle(label = paste(location, "Daily Negative and Positive Tests"))+
-    scale_x_date(breaks = date_breaks("14 days"))+
+    ggtitle(label = paste(location, "Daily NEW Negative and Positive Tests"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
           axis.text.x = element_text(angle=90))+
@@ -190,7 +190,7 @@ Daily7day = function(usabledata, location) {
     geom_line(aes(y=POS_7DAYAVG, color="New-Cases")) +    
     geom_line(aes(y=DTH_7DAY_AVG, color="Deaths"))+
     geom_line(aes(y=HOSP_7DAY_AVG, color="Hospitalized"))+
-    scale_x_date(breaks = date_breaks("14 days"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     ggtitle(label = paste(location, "7-day averages,testing & positives"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
@@ -209,7 +209,7 @@ Daily7Cases = function(usabledata, location) {
     geom_line(aes(color="New-Cases")) +    
     geom_line(aes(y=DTH_7DAY_AVG, color="Deaths"))+
     geom_line(aes(y=HOSP_7DAY_AVG, color="Hospitalized"))+
-    scale_x_date(breaks = date_breaks("14 days"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     ggtitle(label = paste(location, "7-day averages, positives & hosp"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
@@ -227,7 +227,7 @@ Daily7Hosp = function(usabledata, location) {
   D7Hplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=HOSP_7DAY_AVG))+
     geom_line(aes(color="Hospitalized")) +    
     geom_line(aes(y=DTH_7DAY_AVG, color="Deaths"))+
-    scale_x_date(breaks = date_breaks("14 days"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     ggtitle(label = paste(location, "7-day averages, hospitalizations & deaths"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
@@ -245,7 +245,7 @@ Daily14Hosp = function(usabledata, location) {
   D14Hplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=HOSP_14DAY_AVG))+
     geom_line(aes(color="Hospitalized")) +    
     geom_line(aes(y=DTH_14DAY_AVG, color="Deaths"))+
-    scale_x_date(breaks = date_breaks("14 days"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     ggtitle(label = paste(location, "14-day averages, hospitalizations & deaths"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
@@ -264,7 +264,7 @@ POSRATE = function(usabledata, location) {
                                          rollmean(usabledata$TEST_NEW,3,na.pad=TRUE),7,na.pad=TRUE))
   POSplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=POS_RATE_7DAY))+
     geom_line(aes(color="Pos. Rate  "))+
-    scale_x_date(breaks = date_breaks("14 days"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     ggtitle(label = paste(location, "Smoothed Positivity Rate"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
@@ -312,7 +312,7 @@ ActiveSumbyAge <- function(usabledata, location,sumlag) {
   OutPlot <- ggplot(stackdata, aes(fill=ageGroup, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
     geom_area() +
     ggtitle(label = paste(location, "Active Cases",graphlag))+
-    scale_x_date(breaks = date_breaks("14 days"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
           axis.text.x = element_text(angle=90))+
@@ -343,7 +343,7 @@ ActiveCases = function(usabledata, location, twenties) {
   }
   DCplot <- plotused + 
     scale_x_date(date_minor_breaks = "1 week") +
-    scale_x_date(breaks = date_breaks("14 days"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
           axis.text.x = element_text(angle=90))+
@@ -582,7 +582,7 @@ CumulativeOutcomes  <- function(usabledata, location) {
   OutPlot <- ggplot(stackdata, aes(fill=stackOUTCOMES, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
     geom_bar(position="stack", stat="identity") +
     ggtitle(label = paste(location, "Cumulative Negative and Positive Tests"))+
-    scale_x_date(breaks = date_breaks("14 days"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
           axis.text.x = element_text(angle=90))+
@@ -601,7 +601,7 @@ CumulativeLines <- function(usabledata, location) {
     geom_line(aes(y=POSITIVE, color="Cases")) +
     geom_line(aes(y=DEATHS, color="Deaths"))+
     geom_line(aes(y=HOSP_YES, color="Hospitalized"))+
-    scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("14 days"))+
+    scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("28 days"))+
     ggtitle(label = paste(location,"cumulative data, log10-scale"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
@@ -643,7 +643,7 @@ CumulativebyAge <- function(usabledata, location) {
   OutPlot <- ggplot(stackdata, aes(fill=ageGroup, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
     geom_area() +
     ggtitle(label = paste(location, "Cumulative Cases by Age"))+
-    scale_x_date(breaks = date_breaks("14 days"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
           axis.text.x = element_text(angle=90))+
@@ -698,7 +698,7 @@ DailyChanges <- function(usabledata, location) {
   OutPlot <- ggplot(stackdata, aes(fill=stackOUTCOMES, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
     geom_bar(position="dodge", stat="identity") +
     ggtitle(label = paste(location, "Daily Outcomes"))+
-    scale_x_date(breaks = date_breaks("14 days"))+
+    scale_x_date(breaks = date_breaks("28 days"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
           axis.text.x = element_text(angle=90))+
