@@ -71,7 +71,7 @@ DailyCases = function(usabledata, location) {
   DCplot <- ggplot(usabledata, aes(x=as.Date(DATE,"%B %d %Y"), y=POS_NEW))+
   #  geom_line(aes(color=Month))+ 
   geom_line(aes(color="Daily"))+
-  geom_line(aes(y=rollmean(POS_NEW, 7, na.pad=TRUE), color="7-day moving avg")) +
+  geom_line(aes(y=rollmean(POS_NEW, 7, na.pad=TRUE), color="7-day avg")) +
 #  geom_smooth(method = 'loess',aes(color="Loess smooth"))+
   scale_x_date(breaks = date_breaks("28 days"))+
   ggtitle(label = paste(location, "Daily new COVID cases"))+
