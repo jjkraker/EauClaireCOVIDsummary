@@ -1,7 +1,7 @@
 ---
 title: "Eau Claire COVID"
 #author:  "by ____"
-date:  "as of `r format(Sys.time()-1*86400, '%B %d, %Y')`"
+date:  "as of `r format(Sys.time()-0*86400, '%B %d, %Y')`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -79,7 +79,8 @@ Column {.tabset}
 -------------------------------------
 **Important dates**:
 
-   * (purple dashed lines)  **Aug 31**, **Sept 14**, **Sept 28** and **Jan 31**, **Feb 14**, **Feb 28**:  Return to campus/school, +2 weeks, +4 weeks 
+   * (purple dashed lines)  delineating Friday summaries on:  2020-05-15 to 2020-05-22, 2020-10-16 to 2020-10-23, 2020-11-20 to2020-11-27.
+ 
 
 
    
