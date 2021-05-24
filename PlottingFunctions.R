@@ -5,8 +5,10 @@
 
 #UniversityDates = c("2020-08-31","2020-09-14","2020-09-28", "2021-01-31","2021-02-14","2021-02-28")
 UniversityDates = c("2020-05-15","2020-05-22","2020-10-16", "2020-10-23","2020-11-20","2020-11-27")
+UniversityDates = c()
 # fix Date markings
 # adjust Date range?
+MaskingDates = c("2021-05-13","2021-05-18")
 
 CaseCheck = function(usabledata) {
   usabledata <- usabledata %>%
@@ -82,6 +84,7 @@ DailyCases = function(usabledata, location) {
   ylab("Daily New Cases")+
   xlab("Date") +
   geom_vline(xintercept = UniversityDates %>% as.Date(), lty = 2, col= "purple") +
+  geom_vline(xintercept = MaskingDates %>% as.Date(), lty = 2, col= "blue") +
   scale_colour_manual(name='', values=c('Daily'='green','Loess smooth'='grey','7-day avg'='navy')) 
   
   DCplot
@@ -126,6 +129,7 @@ DailybyAge <- function(usabledata, location,sumlag=1) {
     ylab("Daily New Cases")+
     xlab("Date") +
     geom_vline(xintercept = UniversityDates %>% as.Date(), lty = 2, col= "purple") +
+    geom_vline(xintercept = MaskingDates %>% as.Date(), lty = 2, col= "blue") +
     scale_colour_manual(name='', values=c(  "ages 0-19"='#DAA520',
                                             "ages 20-29"='#6B8E23',
                                             "ages 30-49"='turquoise',
@@ -318,6 +322,7 @@ ActiveSumbyAge <- function(usabledata, location,sumlag) {
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
           axis.text.x = element_text(angle=90))+
     geom_vline(xintercept = UniversityDates %>% as.Date(), lty = 2, col= "purple") +
+    geom_vline(xintercept = MaskingDates %>% as.Date(), lty = 2, col= "blue") +
     ylab(paste("Active Cases as sum of", sumlag,"days"))+
     xlab("Date") 
   

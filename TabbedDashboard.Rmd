@@ -77,9 +77,11 @@ Daily  {data-orientation=columns}
     
 Column {.tabset}
 -------------------------------------
-**Important dates**:
+**Important dates**: (blue dashed lines)  delineating mask mandate / advice changes for "fully-vaccinated individuals":  
 
-   * (purple dashed lines)  delineating Friday summaries on:  2020-05-15 to 2020-05-22, 2020-10-16 to 2020-10-23, 2020-11-20 to2020-11-27.
+   * [CDC](https://www.cdc.gov/coronavirus/2019-ncov/vaccines/fully-vaccinated-guidance.html) 2021-05-13
+   * [E.C. county](https://volumeone.org/articles/2021/05/18/276916-eau-claire-unmasked-city-county-repeal-face-mask#:~:text=City%20Council%2C%20County%20Board%20decisions%20follow%20revised%20CDC%20guidelines&text=FACING%20THE%20MUSIC.,people%20wear%20face%20masks%20indoors.) 2021-05-18
+
  
 
 
@@ -90,6 +92,7 @@ Column {.tabset}
 ### Eau Claire
 
 ```{r,fig.height=3,fig.width=6}
+#   * (purple dashed lines)  delineating Friday summaries on:  2020-05-15 to 2020-05-22, 2020-10-16 to 2020-10-23, 2020-11-20 to 2020-11-27.
 DailyCases(ECdata, "Eau Claire") 
 DailybyAge(ECdata, "Eau Claire")
 DailyOutcomes(ECdata, "Eau Claire") 
