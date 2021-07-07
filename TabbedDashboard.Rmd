@@ -595,12 +595,12 @@ Column {data-height=100}
     
 ### Data Sources {data-width=200}
 
-   * [Wisconsin Department of Health Services](https://data.dhsgis.wi.gov/datasets/covid-19-historical-data-table/data?where=GEO%20%3D%20%27State%27) with [variable definitions](https://www.dhs.wisconsin.gov/publications/p02677.pdf)
+   * [Wisconsin Department of Health Services](https://data.dhsgis.wi.gov/search?q=historical%20data) with [variable definitions](https://www.dhs.wisconsin.gov/publications/p02677.pdf)
 * [Eau Claire County statistics]( https://coronavirus-and-covid-19-information-hub-eccounty.hub.arcgis.com/)
 
 ### Reliable Updated Visuals {data-width=300}
 
-   * [Johns Hopkins dashboard]() (world, national, and county levels)
+   * [Johns Hopkins dashboard](https://coronavirus.jhu.edu/map.html) (world, national, and county levels)
 * [Another dashboard site](https://topic.newsbreak.com/covid-19.html?zip=19934&s=dmg_local_briefing.web2), with helpful interativity
 * [Wisconsin DHS website](https://www.dhs.wisconsin.gov/covid-19/county.htm), with interactive graphs; subsettable by county
 * [Re-opening Trends](https://www.nytimes.com/interactive/2020/07/09/us/coronavirus-cases-reopening-trends.html):  that is, why didn't the first wave end?
