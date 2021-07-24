@@ -3,13 +3,6 @@
 ###########INITIAL DATA computations###########
 ###############################################
 
-#UniversityDates = c("2020-08-31","2020-09-14","2020-09-28", "2021-01-31","2021-02-14","2021-02-28")
-UniversityDates = c("2020-05-15","2020-05-22","2020-10-16", "2020-10-23","2020-11-20","2020-11-27")
-UniversityDates = c()
-# fix Date markings
-# adjust Date range?
-MaskingDates = c("2021-05-13","2021-05-18")
-
 CaseCheck = function(usabledata) {
   usabledata <- usabledata %>%
     mutate(TOTALTESTS = POSITIVE+NEGATIVE)%>% 
