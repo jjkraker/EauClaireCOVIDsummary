@@ -75,7 +75,7 @@ POpop = 70772
 UniversityDates = c("2020-07-04","2021-07-04")
 # fix Date markings
 # adjust Date range?
-MaskingDates = c("2021-05-13","2021-05-18")
+MaskingDates = c("2021-05-13","2021-05-18", "2021-07-27", "2021-07-30")
 #startDate = as.Date("January 1 2021","%B %d %Y")
 #endDate = max(as.Date(WIdata$DATE,"%B %d %Y"))
 startDate = "January 01 2021"; startrow = (1:length(WIdata$DATE))[WIdata$DATE == startDate]
@@ -104,8 +104,8 @@ Column {.tabset}
 
 (blue dashed lines)  delineating mask mandate / advice changes for "fully-vaccinated individuals":  
 
-   * [CDC](https://www.cdc.gov/coronavirus/2019-ncov/vaccines/fully-vaccinated-guidance.html) 2021-05-13
-   * [E.C. county](https://volumeone.org/articles/2021/05/18/276916-eau-claire-unmasked-city-county-repeal-face-mask#:~:text=City%20Council%2C%20County%20Board%20decisions%20follow%20revised%20CDC%20guidelines&text=FACING%20THE%20MUSIC.,people%20wear%20face%20masks%20indoors.) 2021-05-18
+   * [CDC](https://www.cdc.gov/coronavirus/2019-ncov/vaccines/fully-vaccinated-guidance.html) 2021-05-13 (masks optional for vaccinated); 2021-07-27 (masks advised indoors for all individuals)
+   * [E.C. county](https://volumeone.org/articles/2021/05/18/276916-eau-claire-unmasked-city-county-repeal-face-mask#:~:text=City%20Council%2C%20County%20Board%20decisions%20follow%20revised%20CDC%20guidelines&text=FACING%20THE%20MUSIC.,people%20wear%20face%20masks%20indoors.) 2021-05-18 (local mask mandate removed); 2021-07-30 (masks advised indoors for all individuals)
 
 (purple lines)  denoting July 4 holiday
  
