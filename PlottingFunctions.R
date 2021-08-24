@@ -1,3 +1,6 @@
+UniversityDates = c("2020-07-04","2021-07-04")
+# adjust Date range?
+MaskingDates = c("2021-05-13","2021-05-18", "2021-07-27", "2021-07-30")
 
 ###############################################
 ###########INITIAL DATA computations###########
@@ -365,7 +368,8 @@ FullTotalTable = function(usabledata, location) {
   fulltable <-
     usabledata %>% 
     filter(DATE %in% tail(DATE, 7)) %>%
-    select(DATE, POSITIVE, NEGATIVE, DEATHS, HOSP_YES, HOSP_UNK, IC_YES) %>%
+    mutate(DATEnew = format(as.Date(DATE, format = "%b %d"),"%b %d")) %>%
+    select(DATEnew, POSITIVE, NEGATIVE, DEATHS, HOSP_YES, HOSP_UNK, IC_YES) %>%
     rename_at(vars(starts_with("HOSP_")), ~str_to_title(str_replace_all(., "HOSP_","Hospitalization "))) %>%
     rename_at(vars(starts_with("IC_")), ~str_to_title(str_replace_all(., "IC_","ICU "))) %>%   
     rename_at(vars(ends_with("Unk")), ~str_to_title(str_replace_all(., "Unk","Unknown "))) %>%   
@@ -381,7 +385,8 @@ PartialTotalTable = function(usabledata, location) {
   fulltable <-
     usabledata %>% 
     filter(DATE %in% tail(DATE, 7)) %>%
-    select(DATE, POSITIVE, NEGATIVE, HOSP_YES, DEATHS, TOTAL_10Days, TOTAL_14Days) %>%
+    mutate(DATEnew = format(as.Date(DATE, format = "%b %d"),"%b %d")) %>%
+    select(DATEnew, POSITIVE, NEGATIVE, HOSP_YES, DEATHS, TOTAL_10Days) %>%
     rename_at(vars(starts_with("TOTAL_")), ~str_to_title(str_replace_all(., "TOTAL_","New in Last "))) %>%
     rename_at(vars(starts_with("HOSP_")), ~str_to_title(str_replace_all(., "HOSP_","Hospitalization "))) %>%
     kable(digits = 3,booktabs = T, caption = paste(location, "cumulative counts of COVID cases and outcomes"),align = "c") %>%
@@ -397,9 +402,7 @@ TablebyAge <- function(usabledata,location,usableprops,usablepop) {
                    "Daily New Cases 7-day Average",
                    "Percent of All Active Cases",
                    "Actives (conservative estimate)",
-                   "Percent of Subpopulation (conservative)",
-                   "Actives (MN-Safety-Plan)",
-                   "Percent of Subpopulation (MN-Safety-Plan)")
+                   "Percent of Subpopulation (conservative)")
   n=dim(usabledata)[1]
   usablesub <- select(usabledata, POS_0_9, POS_10_19, POS_20_29, 
                       POS_30_39, POS_40_49, POS_50_59, POS_60_69,
@@ -425,8 +428,6 @@ TablebyAge <- function(usabledata,location,usableprops,usablepop) {
                           PropAll10day=paste(as.numeric(PropAll10day),"%",sep=""),
                           Actives10day=as.numeric(Actives10day),
                           Prop10day=paste(as.numeric(Prop10day),"%",sep=""),
-                          Actives14day=as.numeric(Actives14day),
-                          Prop14day=paste(as.numeric(Prop14day),"%",sep=""),
                           .name_repair = ~HeadertoUse)
   
   AgeTable <-  kable(DecisionTable) %>%

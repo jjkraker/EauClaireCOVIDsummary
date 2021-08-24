@@ -1,7 +1,7 @@
 ---
 title: "Eau Claire COVID"
 #author:  "by ____"
-date:  "as of `r format(Sys.time()-0*86400, '%B %d, %Y')`"
+date:  "as of `r format(Sys.time()-1*86400, '%B %d, %Y')`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -26,8 +26,6 @@ library(formattable)
 library(gridExtra)
 library(ggpubr)
 
-source("PlottingFunctions.R")
-
 # ALLdata = read_csv("StateCountydata.csv")
 # ORIGdata = read_csv("StateCountydata.csv")
 CountyNewdata = read_csv("CountyNewdata.csv")
@@ -38,6 +36,8 @@ StateNewdata = read_csv("StateNewdata.csv")
 #  filter(DATE > "2020/10/08 19:00:00+00")
 ALLdata = bind_rows(StateNewdata,CountyNewdata)
 
+source("PlottingFunctions.R")
+
 ECdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Eau Claire"),DATE))
 DAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dane"),DATE))
 LCdata <- CaseCheck(arrange(filter(ALLdata,NAME=="La Crosse"),DATE))
@@ -46,6 +46,7 @@ DUdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dunn"),DATE))
 BAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Barron"),DATE))
 POdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Portage"),DATE))
 WIdata <- CaseCheck(arrange(filter(ALLdata,NAME=="WI"),DATE))
+
 
 #estimates of populations from https://www.census.gov/quickfacts, unless otherwise noted
 ECpop = 104646 
@@ -68,54 +69,40 @@ WIprops = c(0.11,0.13,0.13,0.13,0.12,0.14,0.13,0.11)
 WI20pop = 768561 # about 13.2% of 5,822,434 as number in 20s
 POpop = 70772
 
-#<h2 style="color:Tomato;">From [WI DHS](https://www.dhs.wisconsin.gov/covid-19/data.htm):  "As of May 27, 2021, the visualizations are using an updated data file that allows corrections due to quality assurance to be counted on the date when a case or death was first reported, rather than affecting the current daily count of cases or deaths." New cases will include both confirmed and probable.</h2>
-
-#UniversityDates = c("2020-08-31","2020-09-14","2020-09-28", "2021-01-31","2021-02-14","2021-02-28")
-#UniversityDates = c("2020-05-15","2020-05-22","2020-10-16", "2020-10-23","2020-11-20","2020-11-27")
-UniversityDates = c("2020-07-04","2021-07-04")
-# fix Date markings
-# adjust Date range?
-MaskingDates = c("2021-05-13","2021-05-18", "2021-07-27", "2021-07-30")
-#startDate = as.Date("January 1 2021","%B %d %Y")
-#endDate = max(as.Date(WIdata$DATE,"%B %d %Y"))
 startDate = "January 01 2021"; startrow = (1:length(WIdata$DATE))[WIdata$DATE == startDate]
-endDate = max(WIdata$DATE)
+endDate = "August 17 2021"; endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
+#endDate = today()-3; endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
 
-ECdata2021 <- ECdata[startrow:length(WIdata$DATE),]
-DAdata2021 <- DAdata[startrow:length(WIdata$DATE),]
-LCdata2021 <- LCdata[startrow:length(WIdata$DATE),]
-CFdata2021 <- CFdata[startrow:length(WIdata$DATE),]
-DUdata2021 <- DUdata[startrow:length(WIdata$DATE),]
-BAdata2021 <- BAdata[startrow:length(WIdata$DATE),]
-POdata2021 <- POdata[startrow:length(WIdata$DATE),]
-WIdata2021 <- WIdata[startrow:length(WIdata$DATE),]
+ECdata2021 <- ECdata[startrow:endrow,]
+DAdata2021 <- DAdata[startrow:endrow,]
+LCdata2021 <- LCdata[startrow:endrow,]
+CFdata2021 <- CFdata[startrow:endrow,]
+DUdata2021 <- DUdata[startrow:endrow,]
+BAdata2021 <- BAdata[startrow:endrow,]
+POdata2021 <- POdata[startrow:endrow,]
+WIdata2021 <- WIdata[startrow:endrow,]
 ```
 
 
 
-2021 Daily  {data-orientation=columns}
+2021 Summaries  {data-orientation=columns}
 =====================================  
 
 <h2 style="color:Tomato;"> This page shows information from January 1, 2021, and forward.  Go to the "Longitudinal" page to see the full-pandemic-length records. </h2>
     
-Column {.tabset}
+Column {data-width=400} {.tabset}
 -------------------------------------
 **Important dates**: 
 
-(blue dashed lines)  delineating mask mandate / advice changes for "fully-vaccinated individuals":  
-
-   * [CDC](https://www.cdc.gov/coronavirus/2019-ncov/vaccines/fully-vaccinated-guidance.html) 2021-05-13 (masks optional for vaccinated); 2021-07-27 (masks advised indoors for all individuals)
-   * [E.C. county](https://volumeone.org/articles/2021/05/18/276916-eau-claire-unmasked-city-county-repeal-face-mask#:~:text=City%20Council%2C%20County%20Board%20decisions%20follow%20revised%20CDC%20guidelines&text=FACING%20THE%20MUSIC.,people%20wear%20face%20masks%20indoors.) 2021-05-18 (local mask mandate removed); 2021-07-30 (masks advised indoors for all individuals)
-
-(purple lines)  denoting July 4 holiday
+   * (blue dashed lines)  delineating mask mandate / advice changes 
+   * (purple lines)  denoting July 4 holiday
  
 
 
    
-**Comment:** Why a 7-day moving average?  Wisconsin tends to have cyclical patterns in testing results, with low spots typically on Mondays (this may be due to lower testing on weekends)
-
 
 ### Eau Claire
+
 
 ```{r,fig.height=3,fig.width=6}
 #   * (purple dashed lines)  delineating Friday summaries on:  2020-05-15 to 2020-05-22, 2020-10-16 to 2020-10-23, 2020-11-20 to 2020-11-27.
@@ -124,6 +111,8 @@ DailybyAge(ECdata2021, "Eau Claire")
 #DailyOutcomes(ECdata, "Eau Claire") 
 #DailyTesting(ECdata, "Eau Claire")
 ```   
+
+
 
 ### Chippewa
 
@@ -166,13 +155,142 @@ DailybyAge(WIdata2021, "Wisconsin")
 ```   
 
 
+Column {data-width=600} {.tabset}
+-------------------------------------
+   
+
+### Eau Claire
+```{r}
+PartialTotalTable(ECdata, "Eau Claire")
+
+TablebyAge(ECdata, "Eau Claire", ECprops,ECpop)
+
+
+```
+
+### Chippewa
+
+```{r,fig.height=3}
+PartialTotalTable(CFdata, "Chippewa") 
+TablebyAge(CFdata, "Chippewa", CFprops,CFpop)
+
+```   
+
+### Barron
+
+```{r,fig.height=3}
+PartialTotalTable(BAdata, "Barron") 
+TablebyAge(BAdata, "Barron", BAprops,BApop)
+
+```   
+
+
+### La Crosse
+
+```{r,fig.height=3}
+PartialTotalTable(LCdata, "La Crosse") 
+TablebyAge(LCdata, "La Crosse", LCprops,LCpop)
+
+```   
+
+### Dane
+
+```{r,fig.height=3}
+PartialTotalTable(DAdata, "Dane") 
+TablebyAge(DAdata, "Dane", DAprops,DApop)
+
+```   
+
+
+### Wisconsin 
+
+```{r}
+PartialTotalTable(WIdata, "Wisconsin")
+TablebyAge(WIdata, "Wisconsin", WIprops,WIpop)
+```
+
+
+
+
+
+Column {data-width=400} {.tabset}
+-------------------------------------
+
+Estimated recovery time from health experts varies between 10-20 days, with a nontrivial proportion of cases being [long-term / on-going](https://www.theatlantic.com/health/archive/2020/08/long-haulers-covid-19-recognition-support-groups-symptoms/615382/):
+
+   * First plot shows both conservative (10-day total) estimate and  14-day total used in MN Safe-Learning plan
+   * Second plot is (conservative) **Estimated Active**, split by Age group
+   
+   
+### Eau Claire
+
+```{r,fig.height=3}
+ActiveCases(ECdata2021, "Eau Claire",F) 
+ActiveSumbyAge(ECdata2021, "Eau Claire", 10) 
+
+```   
+
+### Chippewa
+
+```{r,fig.height=3}
+ActiveCases(CFdata2021, "Chippewa",F) 
+ActiveSumbyAge(CFdata2021, "Chippewa", 10) 
+
+```   
+
+### Barron
+
+```{r,fig.height=3}
+ActiveCases(BAdata2021, "Barron",F) 
+ActiveSumbyAge(BAdata2021, "Barron",10) 
+
+```   
+
+
+### La Crosse
+
+```{r,fig.height=3}
+ActiveCases(LCdata2021, "La Crosse",F) 
+ActiveSumbyAge(LCdata2021, "La Crosse",10) 
+
+```   
+
+### Dane
+
+```{r,fig.height=3}
+ActiveCases(DAdata2021, "Dane",F) 
+ActiveSumbyAge(DAdata2021, "Dane",10) 
+
+```   
+
+
+### Wisconsin
+
+```{r,fig.height=3}
+ActiveCases(WIdata2021, "Wisconsin",F) 
+ActiveSumbyAge(WIdata2021, "Wisconsin",10) 
+
+
+```
+
+
+
+
+
+
+Trends {data-orientation=columns}
+=====================================     
 
 Various Trends {.tabset}
 -------------------------------------
+
 **Various 7-day average trends**
 
    * Comparing the 7-day averages of Testing and New-Positives can better show rates.
    * Visualizing 7-day averages of Hospitalizations can show lagged effects of diagnosed cases.
+
+**Comment:** Why a 7-day moving average?  Wisconsin tends to have cyclical patterns in testing results, with low spots typically on Mondays (this may be due to lower testing on weekends)
+
 
 ### Eau Claire
 
@@ -219,137 +337,6 @@ Daily7Hosp(DAdata2021, "Dane")
 Daily7day(WIdata2021, "Wisconsin")
 Daily7Hosp(WIdata2021, "Wisconsin")
 
-```
-
-Column {.tabset}
--------------------------------------
-**Estimated Active**, split by Age group:  Estimated recovery time from health experts varies between 10-20 days, with a nontrivial proportion of cases being [long-term / on-going](https://www.theatlantic.com/health/archive/2020/08/long-haulers-covid-19-recognition-support-groups-symptoms/615382/). 
-
-   * First plot is conservative (10-day total) estimate
-* Second plot is 14-day total used in MN Safe-Learning plan
-
-### Eau Claire
-
-```{r,fig.height=3}
-ActiveSumbyAge(ECdata2021, "Eau Claire", 10) 
-#ActiveSumbyAge(ECdata, "Eau Claire", 14)
-ActiveCases(ECdata2021, "Eau Claire",F) 
-#ActiveCases(ECdata, "Eau Claire",T) 
-
-```   
-
-### Chippewa
-
-```{r,fig.height=3}
-ActiveSumbyAge(CFdata2021, "Chippewa", 10) 
-ActiveCases(CFdata2021, "Chippewa",F) 
-
-```   
-
-### Barron
-
-```{r,fig.height=3}
-ActiveSumbyAge(BAdata2021, "Barron",10) 
-ActiveCases(BAdata2021, "Barron",F) 
-
-```   
-
-
-### La Crosse
-
-```{r,fig.height=3}
-ActiveSumbyAge(LCdata2021, "La Crosse",10) 
-ActiveCases(LCdata2021, "La Crosse",F) 
-
-```   
-
-### Dane
-
-```{r,fig.height=3}
-ActiveSumbyAge(DAdata2021, "Dane",10) 
-ActiveCases(DAdata2021, "Dane",F) 
-
-```   
-
-
-### Wisconsin
-
-```{r,fig.height=3}
-ActiveSumbyAge(WIdata2021, "Wisconsin",10) 
-ActiveCases(WIdata2021, "Wisconsin",F) 
-
-
-```
-
-
-
-
-
-
-By the Numbers {data-orientation=columns}
-=====================================     
-
-Column {.tabset}
--------------------------------------
-   
-**Definitions** 
-
-*Case fatality rate*, etc:  **Need to add definitions and compute to table** 
-
-### Eau Claire
-```{r}
-PartialTotalTable(ECdata, "Eau Claire")
-
-TablebyAge(ECdata, "Eau Claire", ECprops,ECpop)
-
-
-```
-
-### Chippewa
-
-```{r,fig.height=3}
-PartialTotalTable(CFdata, "Chippewa") 
-TablebyAge(CFdata, "Chippewa", CFprops,CFpop)
-
-```   
-
-### Barron
-
-```{r,fig.height=3}
-PartialTotalTable(BAdata, "Barron") 
-TablebyAge(BAdata, "Barron", BAprops,BApop)
-
-```   
-
-
-### La Crosse
-
-```{r,fig.height=3}
-PartialTotalTable(LCdata, "La Crosse") 
-TablebyAge(LCdata, "La Crosse", LCprops,LCpop)
-
-```   
-
-### Dane
-
-```{r,fig.height=3}
-PartialTotalTable(DAdata, "Dane") 
-TablebyAge(DAdata, "Dane", DAprops,DApop)
-
-```   
-
-
-### Wisconsin {data-width=300}
-
-```{r}
-PartialTotalTable(WIdata, "Wisconsin")
-TablebyAge(WIdata, "Wisconsin", WIprops,WIpop)
-```
-
-
-
-
-```{r}
 ```
 
 Column {.tabset}
@@ -488,7 +475,7 @@ Column {data-width=600}{.tabset}
 #   * (purple dashed lines)  delineating Friday summaries on:  2020-05-15 to 2020-05-22, 2020-10-16 to 2020-10-23, 2020-11-20 to 2020-11-27.
 DailyCases(ECdata, "Eau Claire") 
 DailybyAge(ECdata, "Eau Claire")
-DailyOutcomes(ECdata, "Eau Claire") 
+#DailyOutcomes(ECdata, "Eau Claire") 
 #DailyTesting(ECdata, "Eau Claire")
 ```   
 
@@ -497,8 +484,6 @@ DailyOutcomes(ECdata, "Eau Claire")
 ```{r,fig.height=3,fig.width=6}
 DailyCases(CFdata, "Chippewa") 
 DailybyAge(CFdata, "Chippewa")
-DailyOutcomes(CFdata, "Chippewa") 
-#DailyTesting(CFdata, "Chippewa")
 
 ```   
 
@@ -507,8 +492,6 @@ DailyOutcomes(CFdata, "Chippewa")
 ```{r,fig.height=3,fig.width=6}
 DailyCases(BAdata, "Barron") 
 DailybyAge(BAdata, "Barron")
-DailyOutcomes(BAdata, "Barron") 
-#DailyTesting(BAdata, "Barron") 
 
 ```   
 
@@ -517,8 +500,6 @@ DailyOutcomes(BAdata, "Barron")
 ```{r,fig.height=3,fig.width=6}
 DailyCases(LCdata, "La Crosse") 
 DailybyAge(LCdata, "La Crosse")
-DailyOutcomes(LCdata, "La Crosse") 
-#DailyTesting(LCdata, "La Crosse") 
 
 ```   
 
@@ -527,8 +508,6 @@ DailyOutcomes(LCdata, "La Crosse")
 ```{r,fig.height=3,fig.width=6}
 DailyCases(DAdata, "Dane") 
 DailybyAge(DAdata, "Dane")
-DailyOutcomes(DAdata, "Dane") 
-#DailyTesting(DAdata, "Dane") 
 
 ```   
 
@@ -537,8 +516,6 @@ DailyOutcomes(DAdata, "Dane")
 ```{r,fig.height=3,fig.width=6}
 DailyCases(WIdata, "Wisconsin") 
 DailybyAge(WIdata, "Wisconsin")
-DailyOutcomes(WIdata, "Wisconsin") 
-#DailyTesting(WIdata, "Wisconsin") 
 
 ```   
 
@@ -546,32 +523,29 @@ DailyOutcomes(WIdata, "Wisconsin")
 
 Column {.tabset}
 -------------------------------------
-**Estimated Active**, split by Age group:  Estimated recovery time from health experts varies between 10-20 days, with a nontrivial proportion of cases being [long-term / on-going](https://www.theatlantic.com/health/archive/2020/08/long-haulers-covid-19-recognition-support-groups-symptoms/615382/). 
 
-   * First plot is conservative (10-day total) estimate
-* Second plot is 14-day total used in MN Safe-Learning plan
 
 ### Eau Claire
 
 ```{r,fig.height=3}
-ActiveSumbyAge(ECdata, "Eau Claire", 10)
 ActiveCases(ECdata, "Eau Claire",F) 
+ActiveSumbyAge(ECdata, "Eau Claire", 10)
 
 ```   
 
 ### Chippewa
 
 ```{r,fig.height=3}
-ActiveSumbyAge(CFdata, "Chippewa", 10) 
 ActiveCases(CFdata, "Chippewa",F) 
+ActiveSumbyAge(CFdata, "Chippewa", 10) 
 
 ```   
 
 ### Barron
 
 ```{r,fig.height=3}
-ActiveSumbyAge(BAdata, "Barron",10) 
 ActiveCases(BAdata, "Barron",F) 
+ActiveSumbyAge(BAdata, "Barron",10) 
 
 ```   
 
@@ -579,16 +553,16 @@ ActiveCases(BAdata, "Barron",F)
 ### La Crosse
 
 ```{r,fig.height=3}
-ActiveSumbyAge(LCdata, "La Crosse",10) 
 ActiveCases(LCdata, "La Crosse",F) 
+ActiveSumbyAge(LCdata, "La Crosse",10) 
 
 ```   
 
 ### Dane
 
 ```{r,fig.height=3}
-ActiveSumbyAge(DAdata, "Dane",10) 
 ActiveCases(DAdata, "Dane",F) 
+ActiveSumbyAge(DAdata, "Dane",10) 
 
 ```   
 
@@ -596,8 +570,8 @@ ActiveCases(DAdata, "Dane",F)
 ### Wisconsin
 
 ```{r,fig.height=3}
-ActiveSumbyAge(WIdata, "Wisconsin",10)
 ActiveCases(WIdata, "Wisconsin",F) 
+ActiveSumbyAge(WIdata, "Wisconsin",10)
 
 
 ```
@@ -611,62 +585,21 @@ Column {data-width=200}{.tabset}
 ### Eau Claire
 
 ```{r,fig.height=3}
-CumulativeOutcomes(ECdata, "Eau Claire") 
 CumulativeLines(ECdata,"Eau Claire")
-```   
-
-### Chippewa
-
-```{r,fig.height=3}
-CumulativeOutcomes(CFdata, "Chippewa") 
-CumulativeLines(CFdata, "Chippewa") 
-```   
-
-### Barron
-
-```{r,fig.height=3}
-CumulativeOutcomes(BAdata, "Barron") 
-CumulativeLines(BAdata, "Barron") 
-```   
-
-
-### La Crosse
-
-```{r,fig.height=3}
-CumulativeOutcomes(LCdata, "La Crosse") 
-CumulativeLines(LCdata, "La Crosse") 
-```   
-
-### Dane
-
-```{r,fig.height=3}
-CumulativeOutcomes(DAdata, "Dane") 
-CumulativeLines(DAdata, "Dane") 
-```   
-
-### Wisconsin
-
-```{r,fig.height=3}
-CumulativeOutcomes(WIdata, "Wisconsin") 
-CumulativeLines(WIdata, "Wisconsin") 
-```   
-
-
-### Eau Claire
-
-```{r,fig.height=3}
 CumulativebyAge(ECdata,"Eau Claire")
 ```   
 
 ### Chippewa
 
-```{r,fig.height=3}
+```{r,fig.height=3} 
+CumulativeLines(CFdata, "Chippewa") 
 CumulativebyAge(CFdata, "Chippewa")
 ```   
 
 ### Barron
 
 ```{r,fig.height=3}
+CumulativeLines(BAdata, "Barron") 
 CumulativebyAge(BAdata, "Barron") 
 ```   
 
@@ -674,20 +607,25 @@ CumulativebyAge(BAdata, "Barron")
 ### La Crosse
 
 ```{r,fig.height=3}
+CumulativeLines(LCdata, "La Crosse") 
 CumulativebyAge(LCdata, "La Crosse") 
 ```   
 
 ### Dane
 
 ```{r,fig.height=3}
+CumulativeLines(DAdata, "Dane") 
 CumulativebyAge(DAdata, "Dane") 
 ```   
 
 ### Wisconsin
 
 ```{r,fig.height=3}
+CumulativeLines(WIdata, "Wisconsin") 
 CumulativebyAge(WIdata, "Wisconsin")
 ```   
+
+
 
 
 

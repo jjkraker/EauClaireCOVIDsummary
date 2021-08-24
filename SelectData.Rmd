@@ -1,0 +1,296 @@
+---
+title: "Eau Claire COVID"
+#author:  "by ____"
+date:  "as of `r format(Sys.time()-0*86400, '%B %d, %Y')`"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    social: menu
+    source_code:  https://github.com/jjkraker/EauClaireCOVIDsummary
+    theme: spacelab
+runtime: shiny
+---
+
+```{r global, include=FALSE}
+library(flexdashboard)
+library(knitr)
+library(dplyr)
+library(ggplot2)
+library(ggformula)
+library(kableExtra)
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(zoo)
+library(formattable)
+library(gridExtra)
+library(ggpubr)
+library(mgcv)
+
+source("PlottingFunctions.R")
+
+# ALLdata = read_csv("StateCountydata.csv")
+# ORIGdata = read_csv("StateCountydata.csv")
+CountyNewdata = read_csv("CountyNewdata.csv")
+#CountyNewdata <- CountyNewdata %>% 
+#  filter(DATE > "2020/10/08 19:00:00+00")
+StateNewdata = read_csv("StateNewdata.csv")
+#StateNewdata <- StateNewdata %>% 
+#  filter(DATE > "2020/10/08 19:00:00+00")
+ALLdata = bind_rows(StateNewdata,CountyNewdata)
+
+ECdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Eau Claire"),DATE))
+DAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dane"),DATE))
+LCdata <- CaseCheck(arrange(filter(ALLdata,NAME=="La Crosse"),DATE))
+CFdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Chippewa"),DATE))
+DUdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dunn"),DATE))
+BAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Barron"),DATE))
+POdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Portage"),DATE))
+WIdata <- CaseCheck(arrange(filter(ALLdata,NAME=="WI"),DATE))
+
+#estimates of populations from https://www.census.gov/quickfacts, unless otherwise noted
+ECpop = 104646 
+EC20pop = 20930 # about 20% of 104,646 = 20,930 as number in 20s, with students, https://censusreporter.org/profiles/05000US55035-eau-claire-county-wi/
+ECprops = c(0.11,0.13,0.20,0.13,0.10,0.12,0.11,0.10)
+DApop = 546695
+DAprops = c(0.11,0.13,0.19,0.14,0.12,0.12,0.10,0.09)
+DA20pop = round(.19*DApop)
+DUpop = 45368
+DUprops = c(0.11,0.15,0.19,0.11,0.11,0.12,0.11,0.10)
+LCpop = 118230
+LCprops = c(0.10,0.14,0.18,0.115,0.115,0.12,0.12,0.11)
+LC20pop = round(LCprops[3]*LCpop)
+CFpop = 64658 
+CFprops = c(0.12,0.13,0.11,0.13,0.12,0.15,0.13,0.11)
+BApop = 45244 
+BAprops = c(0.12,0.12,0.10,0.12,0.11,0.15,0.14,0.14)
+WIpop = 5822434 
+WIprops = c(0.11,0.13,0.13,0.13,0.12,0.14,0.13,0.11)
+WI20pop = 768561 # about 13.2% of 5,822,434 as number in 20s
+POpop = 70772
+
+#<h2 style="color:Tomato;">From [WI DHS](https://www.dhs.wisconsin.gov/covid-19/data.htm):  "As of May 27, 2021, the visualizations are using an updated data file that allows corrections due to quality assurance to be counted on the date when a case or death was first reported, rather than affecting the current daily count of cases or deaths." New cases will include both confirmed and probable.</h2>
+
+#UniversityDates = c("2020-08-31","2020-09-14","2020-09-28", "2021-01-31","2021-02-14","2021-02-28")
+#UniversityDates = c("2020-05-15","2020-05-22","2020-10-16", "2020-10-23","2020-11-20","2020-11-27")
+UniversityDates = c("2020-07-04","2021-07-04")
+# fix Date markings
+# adjust Date range?
+MaskingDates = c("2021-05-13","2021-05-18", "2021-07-27", "2021-07-30")
+startDate = "January 01 2021"; startrow = (1:length(WIdata$DATE))[WIdata$DATE == startDate]
+endDate = "August 17 2021"; endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
+#endDate = today()-3; endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
+
+ECdata2021 <- ECdata[startrow:endrow,]
+DAdata2021 <- DAdata[startrow:endrow,]
+LCdata2021 <- LCdata[startrow:endrow,]
+CFdata2021 <- CFdata[startrow:endrow,]
+DUdata2021 <- DUdata[startrow:endrow,]
+BAdata2021 <- BAdata[startrow:endrow,]
+POdata2021 <- POdata[startrow:endrow,]
+WIdata2021 <- WIdata[startrow:endrow,]
+
+locations <- c("Eau Claire county", "Chippewa county", "Barron county", 
+               "La Crosse county", "Dane county", "state of Wisconsin")
+alldataFull <- list(ECdata,CFdata,BAdata,LCdata,DAdata,WIdata)
+alldata2021 <- list(ECdata2021,CFdata2021,BAdata2021,LCdata2021,DAdata2021,WIdata2021)
+
+DataUsed <- ECdata2021
+LocName <- "Eau Claire county"
+```
+
+Daily+Active  {data-orientation=columns}
+=====================================  
+
+
+
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+# add slider for date?
+
+selectInput('len', 'Length', c("full", "2021only"))
+selectInput('loc', 'Location', locations)
+
+
+```
+
+    
+Daily  {data-width=400}
+-----------------------------------------------------------------------
+
+**Important dates**: 
+
+   * Blue dashed lines:  delineating mask mandate / advice changes from CDC and local health departments:  
+
+   * Purple lines:  denoting July 4 holiday
+ 
+
+```{r}
+
+isEC <- function() (input$loc == "Eau Claire county")
+isCF <- function() (input$loc == "Chippewa county")
+isBA <- function() (input$loc == "Barron county")
+isLC <- function() (input$loc == "La Crosse county")
+isDA <- function() (input$loc == "Dane county")
+isWI <- function() (input$loc == "state of Wisconsin")
+
+whichLoc <- function() (input$loc == locations)
+typeData <- function() (input$len == "full")
+
+DataUsed <- reactive({
+  if (typeData()) {
+    if (isEC()) {
+      ECdata 
+    } else if (isCF()) {
+      CFdata
+    } else if (isBA()) {
+      BAdata
+    } else if (isLC()) {
+      LCdata
+    } else if (isDA()) {
+      DAdata
+    } else {
+      WIdata
+    }
+    # add other locations
+  } else {
+    if (isEC()) {
+      ECdata2021 
+    } else if (isCF()) {
+      CFdata2021
+    } else if (isBA()) {
+      BAdata2021
+    } else if (isLC()) {
+      LCdata2021
+    } else if (isDA()) {
+      DAdata2021
+    } else {
+      WIdata2021
+    }
+  }
+})
+
+# fix with nested ifs
+LocName <- renderText({
+    if (isEC()) {
+      "Eau Claire county" 
+    } else if (isCF()) {
+      "Chippewa county"
+    } else if (isBA()) {
+      "Barron county"
+    } else if (isLC()) {
+      "La Crosse county"
+    } else if (isDA()) {
+      "Dane county"
+    } else {
+      "state of Wisconsin"
+    }
+})
+
+```
+
+
+
+
+```{r,fig.width=3,fig.height=2}
+
+  renderPlot({
+    d <- DailyCases(DataUsed(), LocName())
+    print(d)
+  })
+ 
+```
+
+***
+
+```{r}
+  renderPlot({
+    d <- DailybyAge(DataUsed(), LocName())
+    print(d)
+  })
+ 
+```
+
+Spacer {data-width=40}
+-------------------------------------
+
+
+Active Trends {data-width=400}
+-------------------------------------
+
+**Estimated Active**, split by Age group:  Estimated recovery time from health experts varies between 10-20 days, with a nontrivial proportion of cases being [long-term / on-going](https://www.theatlantic.com/health/archive/2020/08/long-haulers-covid-19-recognition-support-groups-symptoms/615382/). 
+
+```{r}
+
+  renderPlot({
+    d <- ActiveSumbyAge(DataUsed(), LocName(),10)
+    print(d)
+  })
+ 
+```
+
+***
+```{r}
+
+  renderTable({
+    d <- PartialTotalTable(DataUsed(), LocName())
+    print(d)
+  })
+ 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Trends {data-orientation=columns}
+=====================================     
+
+
+Overall Daily Trends {data-width=400}
+-------------------------------------
+
+
+**Various 7-day average trends**:   Wisconsin tends to have cyclical patterns in testing results, with low spots typically on Mondays (this may be due to lower testing on weekends)
+
+
+   * Comparing the 7-day averages of Testing and New-Positives can better show rates.
+   * Visualizing 7-day averages of Hospitalizations can show lagged effects of diagnosed cases.
+
+
+```{r}
+  renderPlot({
+    d <- Daily7day(DataUsed(), LocName())
+    print(d)
+  })
+ 
+```
+
+***
+
+```{r}
+  renderPlot({
+    d <- Daily7Hosp(DataUsed(), LocName())
+    print(d)
+  })
+ 
+```
+
+Spacer {data-width=40}
+-------------------------------------
+
