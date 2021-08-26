@@ -218,7 +218,7 @@ Column {data-width=400} {.tabset}
 
 Estimated recovery time from health experts varies between 10-20 days, with a nontrivial proportion of cases being [long-term / on-going](https://www.theatlantic.com/health/archive/2020/08/long-haulers-covid-19-recognition-support-groups-symptoms/615382/):
 
-   * First plot shows both conservative (10-day total) estimate and  14-day total used in MN Safe-Learning plan
+   * First plot shows both conservative (10-day total) estimate and  14-day total used in MN Safe-Learning plan 
    * Second plot is (conservative) **Estimated Active**, split by Age group
    
    
