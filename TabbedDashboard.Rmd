@@ -70,7 +70,7 @@ WI20pop = 768561 # about 13.2% of 5,822,434 as number in 20s
 POpop = 70772
 
 startDate = "January 01 2021"; startrow = (1:length(WIdata$DATE))[WIdata$DATE == startDate]
-endDate = "August 17 2021"; endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
+endDate = today(); endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
 #endDate = today()-3; endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
 
 ECdata2021 <- ECdata[startrow:endrow,]
