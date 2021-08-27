@@ -71,7 +71,7 @@ POpop = 70772
 
 startDate = "January 01 2021"; startrow = (1:length(WIdata$DATE))[WIdata$DATE == startDate]
 endDate = today(); endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
-#endDate = today()-3; endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
+
 
 ECdata2021 <- ECdata[startrow:endrow,]
 DAdata2021 <- DAdata[startrow:endrow,]
