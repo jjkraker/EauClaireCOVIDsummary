@@ -1,6 +1,6 @@
-UniversityDates = c("2020-07-04","2021-07-04")
+UniversityDates = c("2020-08-31","2021-09-01")
 # adjust Date range?
-MaskingDates = c("2021-05-13","2021-05-18", "2021-07-27", "2021-07-30")
+MaskingDates = c()
 
 ###############################################
 ###########INITIAL DATA computations###########

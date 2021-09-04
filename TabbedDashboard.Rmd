@@ -96,9 +96,7 @@ Column {data-width=400} {.tabset}
 -------------------------------------
 **Important dates**: 
 
-   * (blue dashed lines)  delineating mask mandate / advice changes 
-   * (purple lines)  denoting July 4 holiday
- 
+   * (purple dashed lines)  approximate start of school year
 
 
    
