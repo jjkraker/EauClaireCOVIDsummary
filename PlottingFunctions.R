@@ -432,7 +432,6 @@ TablebyAge <- function(usabledata,location,usableprops,usablepop) {
   
   AgeTable <-  kable(DecisionTable) %>%
     kable_styling(full_width = F) %>%
-    column_spec(1, bold = T, border_right = T, border_left = T,include_thead = T) %>%
     row_spec(1,background = "#FF6347") %>%
     row_spec(2,background = "#DAA520",color="black") %>%
     row_spec(3,background = "#6B8E23",color = "black") %>%
@@ -502,12 +501,12 @@ SafetyCheckTablecollege = function(usabledata, loc, usablepop,usablepop10s, usab
   
   safetytable <-  Current %>%
     kable(escape = F) %>%
-    column_spec(1, bold = T, border_left = T, border_right = T,include_thead = T) %>%
-    column_spec(2, bold = T, border_right = T,include_thead = T) %>%
-    column_spec(3, bold = T, border_right = T,include_thead = T) %>%
-    column_spec(4, bold = T, border_right = T,include_thead = T) %>%
-    column_spec(5, bold = T, border_right = T,include_thead = T) %>%
-    column_spec(6, bold = T, border_right = T,include_thead = T) %>%
+#    column_spec(1, bold = T, border_left = T, border_right = T,include_thead = T) %>%
+#    column_spec(2, bold = T, border_right = T,include_thead = T) %>%
+#    column_spec(3, bold = T, border_right = T,include_thead = T) %>%
+#    column_spec(4, bold = T, border_right = T,include_thead = T) %>%
+#    column_spec(5, bold = T, border_right = T,include_thead = T) %>%
+#    column_spec(6, bold = T, border_right = T,include_thead = T) %>%
     kable_styling(full_width = F, position = "center") %>%
     row_spec(1,background=backcurrent,color=colcurrent) %>%
     row_spec(0, color="black",background="#D3D3D3") 

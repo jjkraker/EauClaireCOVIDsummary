@@ -102,8 +102,8 @@ Column {data-width=400} {.tabset}
 
 ```{r,fig.height=3,fig.width=6}
 #   * (purple dashed lines)  delineating Friday summaries on:  2020-05-15 to 2020-05-22, 2020-10-16 to 2020-10-23, 2020-11-20 to 2020-11-27.
-DailyCases(ECdata2021, "Eau Claire") 
 DailybyAge(ECdata2021, "Eau Claire")
+DailyCases(ECdata2021, "Eau Claire") 
 #DailyOutcomes(ECdata, "Eau Claire") 
 #DailyTesting(ECdata, "Eau Claire")
 ```   
@@ -157,10 +157,10 @@ Column {data-width=600} {.tabset}
 
 ### Eau Claire
 ```{r}
-PartialTotalTable(ECdata, "Eau Claire")
 
 TablebyAge(ECdata, "Eau Claire", ECprops,ECpop)
 
+PartialTotalTable(ECdata, "Eau Claire")
 
 ```
 
@@ -221,8 +221,9 @@ Estimated recovery time from health experts varies between 10-20 days, with a no
 ### Eau Claire
 
 ```{r,fig.height=3}
-ActiveCases(ECdata2021, "Eau Claire",F) 
 ActiveSumbyAge(ECdata2021, "Eau Claire", 10) 
+
+ActiveCases(ECdata2021, "Eau Claire",F) 
 
 ```   
 
@@ -375,10 +376,10 @@ DecisionTable <- tibble(Criteria_2wk=criteria2wk,
 
 kable(DecisionTable) %>%
   kable_styling(full_width = F) %>%
-  column_spec(1, bold = T, border_right = T, border_left = T,include_thead = T) %>%
-  column_spec(2, bold = T, border_right = T,include_thead = T) %>%
-  column_spec(3, bold = T, border_right = T,include_thead = T) %>%
-  column_spec(4, width = "40em" ,include_thead = T) %>%
+#  column_spec(1, bold = T, border_right = T, border_left = T,include_thead = T) %>%
+#  column_spec(2, bold = T, border_right = T,include_thead = T) %>%
+#  column_spec(3, bold = T, border_right = T,include_thead = T) %>%
+#  column_spec(4, width = "40em" ,include_thead = T) %>%
   row_spec(1,background = "darkslateblue",color="white") %>%
   row_spec(2,background = "purple",color="white") %>%
   row_spec(3,background = "#d100d1",color = "white") %>%
@@ -395,7 +396,7 @@ kable(DecisionTable) %>%
 
 
 ```{r}
-SafetyCheckTablecollege(ECdata, "Eau Claire", ECpop,ECpop*ECprops[2],ECpop*ECprops[3],14) 
+#SafetyCheckTablecollege(ECdata, "Eau Claire", ECpop,ECpop*ECprops[2],ECpop*ECprops[3],14) 
 #The first table corresponds to the Minnesota plan, applied to Eau Claire county, while the second table uses a more conservative estimate of the number of active cases.
 
 #SafetyCheckTable20s(ECdata, "Eau Claire", ECpop,EC20pop,10)
@@ -412,20 +413,20 @@ SafetyCheckTablecollege(ECdata, "Eau Claire", ECpop,ECpop*ECprops[2],ECpop*ECpro
 ### Chippewa
 
 ```{r,fig.height=3}
-SafetyCheckTable(CFdata, "Chippewa", CFpop)
+#SafetyCheckTable(CFdata, "Chippewa", CFpop)
 ```   
 
 ### Barron
 
 ```{r,fig.height=3}
-SafetyCheckTable(BAdata, "Barron", BApop)
+#SafetyCheckTable(BAdata, "Barron", BApop)
 
 ```   
 
 ### La Crosse
 
 ```{r,fig.height=3}
-SafetyCheckTablecollege(LCdata, "La Crosse", LCpop,LCpop*LCprops[2],LCpop*LCprops[3],14) 
+#SafetyCheckTablecollege(LCdata, "La Crosse", LCpop,LCpop*LCprops[2],LCpop*LCprops[3],14) 
 
 
 ``` 
@@ -433,7 +434,7 @@ SafetyCheckTablecollege(LCdata, "La Crosse", LCpop,LCpop*LCprops[2],LCpop*LCprop
 ### Dane
 
 ```{r,fig.height=3}
-SafetyCheckTablecollege(DAdata, "Dane", DApop,DApop*DAprops[2],DApop*DAprops[3],14) 
+#SafetyCheckTablecollege(DAdata, "Dane", DApop,DApop*DAprops[2],DApop*DAprops[3],14) 
 
 
 ``` 
@@ -444,7 +445,7 @@ SafetyCheckTablecollege(DAdata, "Dane", DApop,DApop*DAprops[2],DApop*DAprops[3],
 
 
 ```{r}
-SafetyCheckTablecollege(WIdata, "Wisconsin", WIpop,WIpop*WIprops[2],WIpop*WIprops[3],14) 
+#SafetyCheckTablecollege(WIdata, "Wisconsin", WIpop,WIpop*WIprops[2],WIpop*WIprops[3],14) 
 #The first table corresponds to the Minnesota plan, applied to all of Wisconsin, while the second table uses a more conservative estimate of the number of active cases.
 ```
 
