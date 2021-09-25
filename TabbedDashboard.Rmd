@@ -1,7 +1,7 @@
 ---
 title: "Eau Claire COVID"
 #author:  "by ____"
-date:  "as of `r format(Sys.time()-0*86400, '%B %d, %Y')`"
+date:  "as of `r format(Sys.time()-1*86400, '%B %d, %Y')`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -70,7 +70,7 @@ WI20pop = 768561 # about 13.2% of 5,822,434 as number in 20s
 POpop = 70772
 
 startDate = "January 01 2021"
-endDate = today()-0
+endDate = today()-1
 startrow = (1:length(WIdata$DATE))[WIdata$DATE == startDate]
 endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
 
