@@ -90,7 +90,7 @@ WIdata2021 <- WIdata[startrow:endrow,]
 2021 Summaries  {data-orientation=columns}
 =====================================  
 
-<h2 style="color:Tomato;"> This page shows information from January 1, 2021, and forward.  Go to the "Longitudinal" page to see the full-pandemic-length records. </h2>
+<h2 style="color:Tomato;"> This page shows information from January 1, 2021, and forward; updated typically Wed. and Sat. </h2>
     
 Column {data-width=400} {.tabset}
 -------------------------------------
