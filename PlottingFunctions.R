@@ -22,6 +22,7 @@ CaseCheck = function(usabledata) {
                              TRUE ~ DTH_NEW
                              )
   ) %>%
+  mutate(POS_NEW = c(NA,POSITIVE[2:length(POSITIVE)]-POSITIVE[1:(length(POSITIVE)-1)])) %>%   #  NEWLY ADDED LINE
   mutate(POS_NEW = as.numeric(POS_NEW))  %>%
   mutate(POS_NEW = case_when(is.na(POS_NEW) ~ 0,
                              POS_NEW <0 ~ 0,   
