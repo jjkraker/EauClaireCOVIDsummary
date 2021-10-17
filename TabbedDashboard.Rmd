@@ -1,7 +1,7 @@
 ---
 title: "Eau Claire COVID"
 #author:  "by ____"
-date:  "as of `r format(Sys.time()-1*86400, '%B %d, %Y')`"
+date:  "as of `r format(Sys.time()-2*86400, '%B %d, %Y')`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -70,7 +70,7 @@ WI20pop = 768561 # about 13.2% of 5,822,434 as number in 20s
 POpop = 70772
 
 startDate = "January 01 2021"
-endDate = today()-1
+endDate = today()-2
 startrow = (1:length(WIdata$DATE))[WIdata$DATE == startDate]
 endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
 
@@ -762,37 +762,37 @@ Column {data-width=600}{.tabset}
 #points(DAdata$TOTAL_10Days/DApop,col="red",type="l")
 #points(POdata$TOTAL_10Days/POpop,col="gray",type="l")
 
-PopAdjActive = data.frame(LCActive = LCdata$TOTAL_10Days/LCpop,
-                         ECActive = ECdata$TOTAL_10Days/ECpop,
-                         CFActive = CFdata$TOTAL_10Days/CFpop,
-                         DAActive = DAdata$TOTAL_10Days/DApop,
-                         POActive = POdata$TOTAL_10Days/POpop,
-                         WIActive = WIdata$TOTAL_10Days/WIpop,
-                         DATE = ECdata$DATE)
+#PopAdjActive = data.frame(LCActive = LCdata$TOTAL_10Days/LCpop,
+#                         ECActive = ECdata$TOTAL_10Days/ECpop,
+#                         CFActive = CFdata$TOTAL_10Days/CFpop,
+#                         DAActive = DAdata$TOTAL_10Days/DApop,
+#                         POActive = POdata$TOTAL_10Days/POpop,
+#                         WIActive = WIdata$TOTAL_10Days/WIpop,
+#                         DATE = ECdata$DATE)
 
-LinePlotActive <- ggplot(PopAdjActive, aes(y=LCActive, x=as.Date(DATE,"%B %d %Y"))) + 
-    geom_line(aes(color="La Crosse"))+
-    geom_line(aes(y=ECActive, color="Eau Claire")) +
-    geom_line(aes(y=CFActive, color="Chippewa")) +
-    geom_line(aes(y=DAActive, color="Dane"))+
-    geom_line(aes(y=POActive, color="Portage"))+
-    geom_line(aes(y=WIActive, color="state of WI"))+
-    scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("14 days"))+
-    ggtitle(label = "Active cases (conservative), percent of population")+
-    theme_minimal()+
-    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
-          axis.text.x = element_text(angle=90))+
-    ylab("Percent active cases in county population")+
-    xlab("Date") +
-    scale_colour_manual(name='', values=c('La Crosse'='red',
-                                          'Eau Claire'='blue',
-                                          'Dane' = 'green',
-                                          'Portage'='gray50',
-                                          'Chippewa' = 'purple',
-                                          'state of WI' = 'orange3')) +
-    scale_y_continuous(labels = scales::percent)
+#LinePlotActive <- ggplot(PopAdjActive, aes(y=LCActive, x=as.Date(DATE,"%B %d %Y"))) + 
+#    geom_line(aes(color="La Crosse"))+
+#    geom_line(aes(y=ECActive, color="Eau Claire")) +
+#    geom_line(aes(y=CFActive, color="Chippewa")) +
+#    geom_line(aes(y=DAActive, color="Dane"))+
+#    geom_line(aes(y=POActive, color="Portage"))+
+#    geom_line(aes(y=WIActive, color="state of WI"))+
+#    scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("14 days"))+
+#    ggtitle(label = "Active cases (conservative), percent of population")+
+#    theme_minimal()+
+#    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+#          axis.text.x = element_text(angle=90))+
+#    ylab("Percent active cases in county population")+
+#    xlab("Date") +
+#    scale_colour_manual(name='', values=c('La Crosse'='red',
+#                                          'Eau Claire'='blue',
+#                                          'Dane' = 'green',
+#                                          'Portage'='gray50',
+#                                          'Chippewa' = 'purple',
+#                                          'state of WI' = 'orange3')) +
+#    scale_y_continuous(labels = scales::percent)
   
-  LinePlotActive 
+#  LinePlotActive 
 
 
 
