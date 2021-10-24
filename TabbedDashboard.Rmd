@@ -26,6 +26,8 @@ library(formattable)
 library(gridExtra)
 library(ggpubr)
 
+
+MissingDates = read_csv("MissedDate.csv")
 # ALLdata = read_csv("StateCountydata.csv")
 # ORIGdata = read_csv("StateCountydata.csv")
 CountyNewdata = read_csv("CountyNewdata.csv")
@@ -34,7 +36,7 @@ CountyNewdata = read_csv("CountyNewdata.csv")
 StateNewdata = read_csv("StateNewdata.csv")
 #StateNewdata <- StateNewdata %>% 
 #  filter(DATE > "2020/10/08 19:00:00+00")
-ALLdata = bind_rows(StateNewdata,CountyNewdata)
+ALLdata = bind_rows(StateNewdata,CountyNewdata,MissingDates)
 
 source("PlottingFunctions.R")
 
