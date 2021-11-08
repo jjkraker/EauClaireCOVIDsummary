@@ -27,27 +27,59 @@ library(gridExtra)
 library(ggpubr)
 
 
-MissingDates = read_csv("MissedDate.csv")
+#MissingDates = read_csv("MissedDate.csv")
 # ALLdata = read_csv("StateCountydata.csv")
 # ORIGdata = read_csv("StateCountydata.csv")
-CountyNewdata = read_csv("CountyNewdata.csv")
+CountyNewdata = read_csv("CountyDataV2.csv")
 #CountyNewdata <- CountyNewdata %>% 
 #  filter(DATE > "2020/10/08 19:00:00+00")
-StateNewdata = read_csv("StateNewdata.csv")
+StateNewdata = read_csv("StateDataV2.csv")
+#StateNewdata = read_csv("StateNewdata.csv")
 #StateNewdata <- StateNewdata %>% 
 #  filter(DATE > "2020/10/08 19:00:00+00")
-ALLdata = bind_rows(StateNewdata,CountyNewdata,MissingDates)
+ALLnewdata = bind_rows(StateNewdata,CountyNewdata)
+#ALLdata = bind_rows(StateNewdata,CountyNewdata,MissingDates)
 
 source("PlottingFunctions.R")
 
-ECdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Eau Claire"),DATE))
-DAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dane"),DATE))
-LCdata <- CaseCheck(arrange(filter(ALLdata,NAME=="La Crosse"),DATE))
-CFdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Chippewa"),DATE))
-DUdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Dunn"),DATE))
-BAdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Barron"),DATE))
-POdata <- CaseCheck(arrange(filter(ALLdata,NAME=="Portage"),DATE))
-WIdata <- CaseCheck(arrange(filter(ALLdata,NAME=="WI"),DATE))
+ALLdata <- ALLnewdata %>%
+  rename(POSITIVE = POS_CUM_CP,
+         POSITIVE_CONF = POS_CUM_CONF,
+         NEGATIVE=NEG_CUM,
+         POS_NEW=POS_NEW_CP,
+         POS_7DAYAVG=POS_7DAYAVG_CP,
+         TEST_7DAYAVG=TESTS_7DAYAVG,
+#         POS_NEW_CONF=POS_NEW_CONF,
+         TEST_NEW=TESTS_NEW,
+         DTH_NEW=DTH_NEW_CP,
+#         DTH_NEW_CONF=DTH_NEW_CONF,
+         DEATHS=DTH_CUM_CP,
+         DEATHS_CONF=DTH_CUM_CONF,
+         HOSP_YES = HOSP_YES_CP,
+         DATE=RptDt,
+         POS_0_9=POS_0_9_CP,
+         POS_10_19=POS_10_19_CP,
+         POS_20_29 = POS_20_29_CP,
+         POS_30_39 = POS_30_39_CP,
+         POS_40_49 = POS_40_49_CP,
+         POS_50_59 = POS_50_59_CP,
+         POS_60_69 = POS_60_69_CP,
+         POS_70_79 = POS_70_79_CP,
+         POS_80_89 = POS_80_89_CP,
+         POS_90 = POS_90_CP
+)
+
+#temp <- filter(ALLdata,GEOName=="WI")
+#temp <- arrange(distinct(temp),DATE)
+
+ECdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Eau Claire"),DATE))
+DAdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Dane"),DATE))
+LCdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="La Crosse"),DATE))
+CFdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Chippewa"),DATE))
+DUdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Dunn"),DATE))
+BAdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Barron"),DATE))
+POdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Portage"),DATE))
+WIdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="WI"),DATE))
 
 
 #estimates of populations from https://www.census.gov/quickfacts, unless otherwise noted
@@ -92,7 +124,7 @@ WIdata2021 <- WIdata[startrow:endrow,]
 2021 Summaries  {data-orientation=columns}
 =====================================  
 
-<h2 style="color:Tomato;"> This page shows information from January 1, 2021, and forward; updated typically Wed. and Sat. </h2>
+<h3 style="color:Tomato;"> This page shows information from January 1, 2021, and forward; updated typically Wed. and Sat.  Showing confirmed+probable daily cases, as per [documented by DHS](https://www.dhs.wisconsin.gov/publications/p02677a.pdf).</h3>
     
 Column {data-width=400} {.tabset}
 -------------------------------------
@@ -764,37 +796,37 @@ Column {data-width=600}{.tabset}
 #points(DAdata$TOTAL_10Days/DApop,col="red",type="l")
 #points(POdata$TOTAL_10Days/POpop,col="gray",type="l")
 
-#PopAdjActive = data.frame(LCActive = LCdata$TOTAL_10Days/LCpop,
-#                         ECActive = ECdata$TOTAL_10Days/ECpop,
-#                         CFActive = CFdata$TOTAL_10Days/CFpop,
-#                         DAActive = DAdata$TOTAL_10Days/DApop,
-#                         POActive = POdata$TOTAL_10Days/POpop,
-#                         WIActive = WIdata$TOTAL_10Days/WIpop,
-#                         DATE = ECdata$DATE)
+PopAdjActive = data.frame(LCActive = LCdata$TOTAL_10Days/LCpop,
+                         ECActive = ECdata$TOTAL_10Days/ECpop,
+                         CFActive = CFdata$TOTAL_10Days/CFpop,
+                         DAActive = DAdata$TOTAL_10Days/DApop,
+                         POActive = POdata$TOTAL_10Days/POpop,
+                         WIActive = WIdata$TOTAL_10Days/WIpop,
+                         DATE = ECdata$DATE)
 
-#LinePlotActive <- ggplot(PopAdjActive, aes(y=LCActive, x=as.Date(DATE,"%B %d %Y"))) + 
-#    geom_line(aes(color="La Crosse"))+
-#    geom_line(aes(y=ECActive, color="Eau Claire")) +
-#    geom_line(aes(y=CFActive, color="Chippewa")) +
-#    geom_line(aes(y=DAActive, color="Dane"))+
-#    geom_line(aes(y=POActive, color="Portage"))+
-#    geom_line(aes(y=WIActive, color="state of WI"))+
-#    scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("14 days"))+
-#    ggtitle(label = "Active cases (conservative), percent of population")+
-#    theme_minimal()+
-#    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
-#          axis.text.x = element_text(angle=90))+
-#    ylab("Percent active cases in county population")+
-#    xlab("Date") +
-#    scale_colour_manual(name='', values=c('La Crosse'='red',
-#                                          'Eau Claire'='blue',
-#                                          'Dane' = 'green',
-#                                          'Portage'='gray50',
-#                                          'Chippewa' = 'purple',
-#                                          'state of WI' = 'orange3')) +
-#    scale_y_continuous(labels = scales::percent)
+LinePlotActive <- ggplot(PopAdjActive, aes(y=LCActive, x=as.Date(DATE,"%B %d %Y"))) + 
+    geom_line(aes(color="La Crosse"))+
+    geom_line(aes(y=ECActive, color="Eau Claire")) +
+    geom_line(aes(y=CFActive, color="Chippewa")) +
+    geom_line(aes(y=DAActive, color="Dane"))+
+    geom_line(aes(y=POActive, color="Portage"))+
+    geom_line(aes(y=WIActive, color="state of WI"))+
+    scale_x_date(date_minor_breaks = "1 week", breaks = date_breaks("14 days"))+
+    ggtitle(label = "Active cases (conservative), percent of population")+
+    theme_minimal()+
+    theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+          axis.text.x = element_text(angle=90))+
+    ylab("Percent active cases in county population")+
+    xlab("Date") +
+    scale_colour_manual(name='', values=c('La Crosse'='red',
+                                          'Eau Claire'='blue',
+                                          'Dane' = 'green',
+                                          'Portage'='gray50',
+                                          'Chippewa' = 'purple',
+                                          'state of WI' = 'orange3')) +
+    scale_y_continuous(labels = scales::percent)
   
-#  LinePlotActive 
+  LinePlotActive 
 
 
 

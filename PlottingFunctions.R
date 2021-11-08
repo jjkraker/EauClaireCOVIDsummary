@@ -36,6 +36,7 @@ CaseCheck = function(usabledata) {
   mutate(HOSP_14DAY_AVG = rollmean(HOSP_NEW, 14, na.pad=TRUE)) %>%
   mutate(DTH_7DAY_AVG = rollmean(DTH_NEW, 7, na.pad=TRUE)) %>%
   mutate(DTH_14DAY_AVG = rollmean(DTH_NEW, 14, na.pad=TRUE)) %>%
+  mutate(TEST_7DAY_AVG = rollmean(TEST_NEW, 7, na.pad=TRUE)) %>%
   mutate(POS_0_9 = ifelse(POS_0_9 < 0, NA, POS_0_9)) %>%
   mutate(POS_10_19 = ifelse(POS_10_19 < 0, NA, POS_10_19)) %>%
   mutate(POS_20_29 = ifelse(POS_20_29 < 0, NA, POS_20_29)) %>%
@@ -74,7 +75,7 @@ DailyCases = function(usabledata, location) {
   geom_line(aes(y=rollmean(POS_NEW, 7, na.pad=TRUE), color="7-day avg")) +
 #  geom_smooth(method = 'loess',aes(color="Loess smooth"))+
   scale_x_date(breaks = date_breaks("28 days"))+
-  ggtitle(label = paste(location, "Daily new COVID cases"))+
+  ggtitle(label = paste(location, "Daily new COVID cases, confirmed+probable"))+
   theme_minimal()+
   theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
         axis.text.x = element_text(angle=90))+
@@ -119,7 +120,7 @@ DailybyAge <- function(usabledata, location,sumlag=1) {
     geom_line(aes(y=rollmean(POS_NEW_30_49, 7, na.pad=TRUE), color="ages 30-49")) +
     geom_line(aes(y=rollmean(POS_NEW_50plus, 7, na.pad=TRUE), color="ages 50+")) +
     scale_x_date(breaks = date_breaks("28 days"))+
-    ggtitle(label = paste(location, "Daily new cases (7-day average) by Ages"))+
+    ggtitle(label = paste(location, "Daily new cases (7-day avg) by Ages, confirmed+probable"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
           axis.text.x = element_text(angle=90))+
@@ -166,7 +167,7 @@ DailyOutcomes <- function(usabledata, location) {
   # Grouped
   OutPlot <- ggplot(stackdata, aes(fill=stackOUTCOMES, y=stackCOUNTS, x=as.Date(stackDATE,"%B %d %Y"))) + 
     geom_bar(position="stack", stat="identity") +
-    ggtitle(label = paste(location, "Daily NEW Negative and Positive Tests"))+
+    ggtitle(label = paste(location, "Daily NEW Negative and Positive Tests, confirmed+probable"))+
     scale_x_date(breaks = date_breaks("28 days"))+
     theme_minimal()+
     theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"), 
