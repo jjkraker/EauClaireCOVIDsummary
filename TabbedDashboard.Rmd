@@ -1,7 +1,7 @@
 ---
 title: "Eau Claire COVID"
 #author:  "by ____"
-date:  "as of `r format(Sys.time()-3*86400, '%B %d, %Y')`"
+date:  "as of `r format(Sys.time()-0*86400, '%B %d, %Y')`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -43,9 +43,9 @@ ALLnewdata = bind_rows(StateNewdata,CountyNewdata)
 source("PlottingFunctions.R")
 
 ALLdata <- ALLnewdata %>%
-  rename(POSITIVE = POS_CUM_CP,
-         POSITIVE_CONF = POS_CUM_CONF,
-         NEGATIVE=NEG_CUM,
+  rename(POSITIVE = POS_CP,
+         POSITIVE_CONF = POS_CONF,
+         NEGATIVE=NEG,
          POS_NEW=POS_NEW_CP,
          POS_7DAYAVG=POS_7DAYAVG_CP,
          TEST_7DAYAVG=TESTS_7DAYAVG,
@@ -104,7 +104,7 @@ WI20pop = 768561 # about 13.2% of 5,822,434 as number in 20s
 POpop = 70772
 
 startDate = "January 01 2021"
-endDate = today()-3
+endDate = today()-0
 startrow = (1:length(WIdata$DATE))[WIdata$DATE == startDate]
 endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
 
