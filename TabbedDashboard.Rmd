@@ -117,6 +117,15 @@ DUdata2021 <- DUdata[startrow:endrow,]
 BAdata2021 <- BAdata[startrow:endrow,]
 POdata2021 <- POdata[startrow:endrow,]
 WIdata2021 <- WIdata[startrow:endrow,]
+
+ECdata <- ECdata[1:endrow,]
+DAdata <- DAdata[1:endrow,]
+LCdata <- LCdata[1:endrow,]
+CFdata <- CFdata[1:endrow,]
+DUdata <- DUdata[1:endrow,]
+BAdata <- BAdata[1:endrow,]
+POdata <- POdata[1:endrow,]
+WIdata <- WIdata[1:endrow,]
 ```
 
 
