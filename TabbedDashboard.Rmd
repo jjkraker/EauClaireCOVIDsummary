@@ -1,7 +1,7 @@
 ---
 title: "Eau Claire COVID"
 #author:  "by ____"
-date:  "as of `r format(Sys.time()-3*86400, '%B %d, %Y')`"
+date:  "as of `r format(Sys.time()-2*86400, '%B %d, %Y')`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -104,7 +104,7 @@ WI20pop = 768561 # about 13.2% of 5,822,434 as number in 20s
 POpop = 70772
 
 startDate = "January 01 2021"
-endDate = today()-3
+endDate = today()-2
 startrow = (1:length(WIdata$DATE))[WIdata$DATE == startDate]
 endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
 
@@ -133,7 +133,7 @@ WIdata <- WIdata[1:endrow,]
 2021 Summaries  {data-orientation=columns}
 =====================================  
 
-<h3 style="color:Tomato;"> This page shows information from January 1, 2021, and forward; updated typically Wed. and Sat.  Showing confirmed+probable daily cases, as per [documented by DHS](https://www.dhs.wisconsin.gov/publications/p02677a.pdf).</h3>
+<h3 style="color:Tomato;"> This page shows information from January 1, 2021, and forward; updated typically Wed. and Sat.  Showing confirmed+probable daily cases, as per [documented by DHS](https://www.dhs.wisconsin.gov/publications/p02677a.pdf).  Reported "Date" is when "data was last updated".</h3>
     
 Column {data-width=400} {.tabset}
 -------------------------------------
