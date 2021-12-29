@@ -1,7 +1,7 @@
 ---
 title: "Eau Claire COVID"
 #author:  "by ____"
-date:  "as of `r format(Sys.time()-2*86400, '%B %d, %Y')`"
+date:  "as of `r format(Sys.time()-1*86400, '%B %d, %Y')`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -43,9 +43,9 @@ ALLnewdata = bind_rows(StateNewdata,CountyNewdata)
 source("PlottingFunctions.R")
 
 ALLdata <- ALLnewdata %>%
-  rename(POSITIVE = POS_CUM_CP,
-         POSITIVE_CONF = POS_CUM_CONF,
-         NEGATIVE=NEG_CUM,
+  rename(POSITIVE = POS_CP,
+         POSITIVE_CONF = POS_CONF,
+         NEGATIVE=NEG,
          POS_NEW=POS_NEW_CP,
          POS_7DAYAVG=POS_7DAYAVG_CP,
          TEST_7DAYAVG=TESTS_7DAYAVG,
@@ -69,17 +69,17 @@ ALLdata <- ALLnewdata %>%
          POS_90 = POS_90_CP
 )
 
-#temp <- filter(ALLdata,GEOName=="WI")
-#temp <- arrange(distinct(temp),DATE)
 
-ECdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Eau Claire"),DATE))
-DAdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Dane"),DATE))
-LCdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="La Crosse"),DATE))
-CFdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Chippewa"),DATE))
-DUdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Dunn"),DATE))
-BAdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Barron"),DATE))
-POdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Portage"),DATE))
-WIdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="WI"),DATE))
+#ECdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Eau Claire"),DATE))
+ECdata <- CaseCheck(filter(ALLdata,GEOName=="Eau Claire"))
+DAdata <- CaseCheck(filter(ALLdata,GEOName=="Dane"))
+LCdata <- CaseCheck(filter(ALLdata,GEOName=="La Crosse"))
+CFdata <- CaseCheck(filter(ALLdata,GEOName=="Chippewa"))
+DUdata <- CaseCheck(filter(ALLdata,GEOName=="Dunn"))
+BAdata <- CaseCheck(filter(ALLdata,GEOName=="Barron"))
+POdata <- CaseCheck(filter(ALLdata,GEOName=="Portage"))
+#WIdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="WI"),DATE))
+WIdata <- CaseCheck(filter(ALLdata,GEOName=="WI"))
 
 
 #estimates of populations from https://www.census.gov/quickfacts, unless otherwise noted
@@ -104,7 +104,7 @@ WI20pop = 768561 # about 13.2% of 5,822,434 as number in 20s
 POpop = 70772
 
 startDate = "January 01 2021"
-endDate = today()-2
+endDate = today()-1
 startrow = (1:length(WIdata$DATE))[WIdata$DATE == startDate]
 endrow = (1:length(WIdata$DATE))[WIdata$DATE == format(endDate, format="%B %d %Y")]
 
