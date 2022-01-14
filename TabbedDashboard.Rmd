@@ -43,9 +43,9 @@ ALLnewdata = bind_rows(StateNewdata,CountyNewdata)
 source("PlottingFunctions.R")
 
 ALLdata <- ALLnewdata %>%
-  rename(POSITIVE = POS_CP,
-         POSITIVE_CONF = POS_CONF,
-         NEGATIVE=NEG,
+  rename(POSITIVE = POS_CUM_CP,
+         POSITIVE_CONF = POS_CUM_CONF,
+         NEGATIVE=NEG_CUM,
          POS_NEW=POS_NEW_CP,
          POS_7DAYAVG=POS_7DAYAVG_CP,
          TEST_7DAYAVG=TESTS_7DAYAVG,
@@ -68,18 +68,19 @@ ALLdata <- ALLnewdata %>%
          POS_80_89 = POS_80_89_CP,
          POS_90 = POS_90_CP
 )
+ALLdata$DATE <- sapply(strsplit(ALLdata$DATE," "), `[`, 1)
 
 
-#ECdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Eau Claire"),DATE))
-ECdata <- CaseCheck(filter(ALLdata,GEOName=="Eau Claire"))
-DAdata <- CaseCheck(filter(ALLdata,GEOName=="Dane"))
-LCdata <- CaseCheck(filter(ALLdata,GEOName=="La Crosse"))
-CFdata <- CaseCheck(filter(ALLdata,GEOName=="Chippewa"))
-DUdata <- CaseCheck(filter(ALLdata,GEOName=="Dunn"))
-BAdata <- CaseCheck(filter(ALLdata,GEOName=="Barron"))
-POdata <- CaseCheck(filter(ALLdata,GEOName=="Portage"))
+ECdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Eau Claire"),DATE))
+#ECdata <- CaseCheck(filter(ALLdata,GEOName=="Eau Claire"))
+DAdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Dane"),DATE))
+LCdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="La Crosse"),DATE))
+CFdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Chippewa"),DATE))
+DUdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Dunn"),DATE))
+BAdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Barron"),DATE))
+POdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Portage"),DATE))
 #WIdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="WI"),DATE))
-WIdata <- CaseCheck(filter(ALLdata,GEOName=="WI"))
+WIdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="WI"),DATE))
 
 
 #estimates of populations from https://www.census.gov/quickfacts, unless otherwise noted

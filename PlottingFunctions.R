@@ -14,8 +14,9 @@ CaseCheck = function(usabledata) {
     mutate(log10POSITIVE = log10(POSITIVE))%>% 
     mutate(log10DEATHS = log10(DEATHS)) %>%
     mutate(log10DEATHS = ifelse(log10DEATHS < -10^10,NA, log10DEATHS)) %>% 
-    mutate(DATE = format(mdy(DATE), format = "%B %d %Y")) %>%   
+#    mutate(DATE = format(mdy(DATE), format = "%B %d %Y")) %>%   
 #    mutate(DATE = format(DATE, format = "%B %d %Y")) %>%   
+    mutate(DATE = format(as_date(DATE), format = "%B %d %Y")) %>%   
     mutate(DTH_NEW = as.numeric(DTH_NEW))  %>%
   mutate(DTH_NEW = case_when(is.na(DTH_NEW) ~ 0,
                              DTH_NEW <0 ~ 0,   
