@@ -46,7 +46,6 @@ source("PlottingFunctions.R")
 ALLdata <- ALLnewdata %>%
   rename(POSITIVE = POS_CUM_CP,
          POSITIVE_CONF = POS_CUM_CONF,
-         NEGATIVE=NEG_CUM,
          POS_NEW=POS_NEW_CP,
          POS_7DAYAVG=POS_7DAYAVG_CP,
          TEST_7DAYAVG=TESTS_7DAYAVG,
@@ -68,7 +67,7 @@ ALLdata <- ALLnewdata %>%
          POS_70_79 = POS_70_79_CP,
          POS_80_89 = POS_80_89_CP,
          POS_90 = POS_90_CP
-)
+) %>% mutate(NEGATIVE=(TESTS_CUM - POSITIVE))
 ALLdata$DATE <- sapply(strsplit(ALLdata$DATE," "), `[`, 1)
 
 
