@@ -1,63 +1,82 @@
 ############### estimating changepoints ######################3
-
+daily_data = WIdata
 # 193, 286, 301, 331, 356, 521, 551, 708
-WIdata$DATE[c(193, 286, 301, 331, 356, 521, 551, 708)] 
+# WIdata$DATE[c(193, 286, 301, 331, 356, 521, 551, 708)] 
 PatternChangePoints = c("August 01 2020",
                         "November 02 2020",
                         "November 17 2020",
+                        "December 1 2020",
                         "December 17 2020",
                         "January 11 2021",
+                        "January 19 2021",
+                        "February 10 2021",
                         "June 25 2021",
                         "July 25 2021",
-                        "December 29 2021")
+                        "August 05 2021",
+                        "September 30 2021",
+                        "October 31 2021",
+                        "December 29 2021",
+                        "January 20 2021",
+                        "February 01 2021")
 PatternStages = c("P0", 
-                 "P1",
+                 "T1",
                  "P2",
-                 "P3",
-                 "P4")
+                 "T3",
+                 "P4",
+                 "P5",
+                 "P6",
+                 "P7",
+                 "P8",
+                 "P9",
+                 "P10",
+                 "P11",
+                 "P12",
+                 "P13",
+                 "P14")
 
 whichChangeDATES = WIdata$DATE %in% PatternChangePoints
-daily_data$DATE[whichVaxDATES]
+daily_data$DATE[whichChangeDATES]
 
 n_daily = dim(daily_data)[1]
-whereVaxChangePoints = (1:n_daily)[whichVaxDATES]
+wherePatternChangePoints = (1:n_daily)[whichChangeDATES]
 daily_data$Stage = rep(NA, n_daily)
-for (i in 1:length(whereVaxChangePoints)) {
-  daily_data$Stage[(whereVaxChangePoints[i]):n_daily] = VaxStages[i]
+for (i in 1:length(wherePatternChangePoints)) {
+  daily_data$Stage[(wherePatternChangePoints[i]):n_daily] = PatternStages[i]
 }
 daily_data$Stage  # NA are BEFORE we had regularly-available testing
 
-# fix to go back to August 1
-patternA = (-47:45)+240
-patternB = (46:60)+240
-patternC = (61:90)+240
-patternD = (91:116)+240
-patternE = (116:280)+240
-patternF = (281:310)+240
-patternG = (311:467)+240
-firstday <- min(patternA)
-lastday <- max(patternG)
-  
-hosplag=7
 
-
-colused[patternA]="red" 
-colused[patternB]="orange" 
-colused[patternC]="yellow" 
-colused[patternD]="green" 
-colused[patternE]="turquoise" 
-colused[patternF]="blue" 
-colused[patternG] = "purple"
-
+hosplag=10
 
 maxn = length(WIdata$DATE)
 newpattern = (708:(maxn-hosplag))
 WIdata$DATE[newpattern] 
 
+firstday <- min(wherePatternChangePoints)
+lastday <- maxn-hosplag # 707
 
-plot(WIdata$POS_7DAYAVG[firstday:lastday],WIdata$HOSP_7DAY_AVG[(firstday:lastday)+hosplag], xlim=c(0,25000))
+colused = rep("white",maxn)
+PatternColors = rainbow(length(PatternStages))
+for (i in 1:length(PatternStages))  colused[daily_data$Stage == PatternStages[i]] <- PatternColors[i] 
+
+
+plot(WIdata$POS_7DAYAVG[1:lastday],WIdata$HOSP_7DAY_AVG[(1:lastday)+hosplag], xlim=c(0,25000))
 points(WIdata$POS_7DAYAVG[1:lastday],WIdata$HOSP_7DAY_AVG[(1:lastday)+hosplag],col=colused,pch=20)
 points(WIdata$POS_7DAYAVG[((lastday+1):(maxn-hosplag))],WIdata$HOSP_7DAY_AVG[((lastday+1+hosplag):maxn)],col="violet",pch=20)
+
+abline(0,.15)
+abline(0,.075)
+abline(0,.035)
+abline(0,.01)
+
+
+
+
+
+
+
+
+
 
 
 ## hospitalization capacity
