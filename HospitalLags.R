@@ -16,8 +16,8 @@ PatternChangePoints = c("August 01 2020",
                         "September 30 2021",
                         "October 31 2021",
                         "December 29 2021",
-                        "January 20 2021",
-                        "February 01 2021")
+                        "January 20 2022",
+                        "February 01 2022")
 PatternStages = c("P0", 
                  "T1",
                  "P2",
@@ -32,7 +32,8 @@ PatternStages = c("P0",
                  "P11",
                  "P12",
                  "P13",
-                 "P14")
+                 "P14",
+                 "P15")
 
 whichChangeDATES = WIdata$DATE %in% PatternChangePoints
 daily_data$DATE[whichChangeDATES]
@@ -46,7 +47,7 @@ for (i in 1:length(wherePatternChangePoints)) {
 daily_data$Stage  # NA are BEFORE we had regularly-available testing
 
 
-hosplag=10
+hosplag=10  # 7-10 days
 
 maxn = length(WIdata$DATE)
 newpattern = (708:(maxn-hosplag))
@@ -57,6 +58,7 @@ lastday <- maxn-hosplag # 707
 
 colused = rep("white",maxn)
 PatternColors = rainbow(length(PatternStages))
+PatternColors[length(PatternStages)] = "blue1"
 for (i in 1:length(PatternStages))  colused[daily_data$Stage == PatternStages[i]] <- PatternColors[i] 
 
 
@@ -67,8 +69,9 @@ points(WIdata$POS_7DAYAVG[((lastday+1):(maxn-hosplag))],WIdata$HOSP_7DAY_AVG[((l
 abline(0,.15)
 abline(0,.075)
 abline(0,.035)
-abline(0,.01)
 
+abline(0,.015)
+abline(0,.008)
 
 
 
