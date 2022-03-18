@@ -10,14 +10,14 @@ PatternChangePoints = c("August 01 2020",
                         "January 11 2021",
                         "January 19 2021",
                         "February 10 2021",
-                        "June 25 2021",
+                        "April 05 2021",                        "June 25 2021",
                         "July 25 2021",
-                        "August 05 2021",
                         "September 30 2021",
                         "October 31 2021",
                         "December 29 2021",
-                        "January 20 2022",
-                        "February 01 2022")
+                        "January 19 2022")
+#,
+#                        "February 01 2022")
 PatternStages = c("P0", 
                  "T1",
                  "P2",
@@ -33,7 +33,8 @@ PatternStages = c("P0",
                  "P12",
                  "P13",
                  "P14",
-                 "P15")
+                 "P15",
+                 "P16")
 
 whichChangeDATES = WIdata$DATE %in% PatternChangePoints
 daily_data$DATE[whichChangeDATES]
@@ -66,17 +67,21 @@ plot(WIdata$POS_7DAYAVG[1:lastday],WIdata$HOSP_7DAY_AVG[(1:lastday)+hosplag], xl
 points(WIdata$POS_7DAYAVG[1:lastday],WIdata$HOSP_7DAY_AVG[(1:lastday)+hosplag],col=colused,pch=20)
 points(WIdata$POS_7DAYAVG[((lastday+1):(maxn-hosplag))],WIdata$HOSP_7DAY_AVG[((lastday+1+hosplag):maxn)],col="violet",pch=20)
 
+
+
+oneChgLogic = WIdata$DATE %in% c("April 05 2021",
+                                 "June 25 2021",
+                                 "July 25 2021")
+oneChgLoc = (1:maxn)[oneChgLogic]
+points(WIdata$POS_7DAYAVG[oneChgLoc], WIdata$HOSP_7DAY_AVG[oneChgLoc+hosplag],pch=8,cex=2,lwd=2)
+
+
 abline(0,.15)
 abline(0,.075)
 abline(0,.035)
 
 abline(0,.015)
 abline(0,.008)
-
-
-
-
-
 
 
 
@@ -137,7 +142,6 @@ lagdeath = 15; multdeath =250
 #sixties
 laghosp = 4; multhosp =12
 lagdeath = 15; multdeath =60
-
 
 
 #
