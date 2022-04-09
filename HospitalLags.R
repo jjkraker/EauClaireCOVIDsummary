@@ -1,4 +1,6 @@
 ############### estimating changepoints ######################3
+library(viridis)
+
 daily_data = WIdata
 # 193, 286, 301, 331, 356, 521, 551, 708
 # WIdata$DATE[c(193, 286, 301, 331, 356, 521, 551, 708)] 
@@ -64,7 +66,10 @@ PatternColors[length(PatternStages)] = "blue1"
 for (i in 1:length(PatternStages))  colused[daily_data$Stage == PatternStages[i]] <- PatternColors[i] 
 
 
-plot(WIdata$POS_7DAYAVG[1:lastday],WIdata$HOSP_7DAY_AVG[(1:lastday)+hosplag], xlim=c(0,25000))
+plot(WIdata$POS_7DAYAVG[firstday:lastday],WIdata$HOSP_7DAY_AVG[(firstday:lastday)+hosplag], 
+     xlim=c(0,25000),
+     xlab="Positives:  7-day Centered Average",
+     ylab="Hospitalization:  7-day Centered Average")
 points(WIdata$POS_7DAYAVG[1:lastday],WIdata$HOSP_7DAY_AVG[(1:lastday)+hosplag],col=colused,pch=20)
 points(WIdata$POS_7DAYAVG[((lastday+1):(maxn-hosplag))],WIdata$HOSP_7DAY_AVG[((lastday+1+hosplag):maxn)],col="violet",pch=20)
 

@@ -1,7 +1,7 @@
 ---
 title: "Eau Claire COVID"
 #author:  "by ____"
-date:  "as of `r format(Sys.time()-3*86400, '%B %d, %Y')`"
+date:  "as of `r format(Sys.time()-2*86400, '%B %d, %Y')`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -12,7 +12,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-datalag=3
+datalag=2
 library(flexdashboard)
 library(knitr)
 library(dplyr)
