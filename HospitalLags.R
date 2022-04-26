@@ -2,19 +2,19 @@
 
 ############### estimating lag ######################3
 
-POS_daily <- WIdata$POSITIVE - lag(WIdata$POS_20_29)
-HOSP_daily <- WIdata$IP_Y_20_29_CP - lag(WIdata$IP_Y_20_29_CP)
-DTH_daily <- WIdata$DTHS_20_29_CP - lag(WIdata$DTHS_20_29_CP)
+#POS_daily <- WIdata$POSITIVE - lag(WIdata$POS_20_29)
+#HOSP_daily <- WIdata$IP_Y_20_29_CP - lag(WIdata$IP_Y_20_29_CP)
+#DTH_daily <- WIdata$DTHS_20_29_CP - lag(WIdata$DTHS_20_29_CP)
 
-POS_daily_14dayAVG = rollmean(POS_daily, 14, na.pad=TRUE)
+POS_daily_14dayAVG = rollmean(WIdata$POS_NEW, 14, na.pad=TRUE)
 POS_daily_14dayAVG
-HOSP_daily_14dayAVG = rollmean(HOSP_daily, 14, na.pad=TRUE)
+HOSP_daily_14dayAVG = rollmean(WIdata$HOSP_NEW, 14, na.pad=TRUE)
 HOSP_daily_14dayAVG
-DTH_daily_14dayAVG = rollmean(DTH_daily, 14, na.pad=TRUE)
+DTH_daily_14dayAVG = rollmean(WIdata$DTH_NEW, 14, na.pad=TRUE)
 DTH_daily_14dayAVG
 
-laghosp = 5; multhosp =60
-lagdeath = 21; multdeath =1000
+laghosp = 3; multhosp =20
+lagdeath = 16; multdeath =100
 plot(POS_daily_14dayAVG,type="l",lwd=2)
 points((1:length(HOSP_daily_14dayAVG))-laghosp,HOSP_daily_14dayAVG*multhosp,col="blue",type="l")
 points((1:length(DTH_daily_14dayAVG))-lagdeath,DTH_daily_14dayAVG*multdeath,col="red",type="l")
