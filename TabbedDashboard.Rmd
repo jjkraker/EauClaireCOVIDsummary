@@ -1,7 +1,7 @@
 ---
 title: "Eau Claire COVID"
 #author:  "by ____"
-date:  "as of `r format(Sys.time()-1*86400, '%B %d, %Y')`"
+date:  "as of `r format(Sys.time()-2*86400, '%B %d, %Y')`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -44,8 +44,8 @@ ALLnewdata = bind_rows(StateNewdata,CountyNewdata)
 source("PlottingFunctions.R")
 
 ALLdata <- ALLnewdata %>%
-  rename(POSITIVE = POS_CUM_CP,
-         POSITIVE_CONF = POS_CUM_CONF,
+  rename(POSITIVE = POS_CP,
+         POSITIVE_CONF = POS_CONF,
          POS_NEW=POS_NEW_CP,
          POS_7DAYAVG=POS_7DAYAVG_CP,
          TEST_7DAYAVG=TESTS_7DAYAVG,
@@ -67,8 +67,9 @@ ALLdata <- ALLnewdata %>%
          POS_70_79 = POS_70_79_CP,
          POS_80_89 = POS_80_89_CP,
          POS_90 = POS_90_CP
-) %>% mutate(NEGATIVE=(TESTS_CUM - POSITIVE))
-ALLdata$DATE <- sapply(strsplit(ALLdata$DATE," "), `[`, 1)
+) %>% mutate(NEGATIVE=(TESTS - POSITIVE),DATE=mdy(DATE)) 
+
+#ALLdata$DATE <- sapply(strsplit(ALLdata$DATE," "), `[`, 1)
 
 
 ECdata <- CaseCheck(arrange(filter(ALLdata,GEOName=="Eau Claire"),DATE))
@@ -134,7 +135,7 @@ WIdata <- WIdata[1:endrow,]
 2021 Summaries  {data-orientation=columns}
 =====================================  
 
-<h3 style="color:Tomato;"> This page shows information from January 1, 2021, and forward; updated typically Wed. and Sat.  Showing confirmed+probable daily cases, as per [documented by DHS](https://www.dhs.wisconsin.gov/publications/p02677a.pdf).  Reported "Date" is when "data was last updated".</h3>
+<h3 style="color:Tomato;"> This page shows information from January 1, 2021, and forward; newly updated 9-19-22.  Showing confirmed+probable daily cases, as per [documented by DHS](https://www.dhs.wisconsin.gov/publications/p02677a.pdf). </h3>
     
 Column {data-width=400} {.tabset}
 -------------------------------------
@@ -749,31 +750,31 @@ Column {data-width=600}{.tabset}
    * Starting with late May, after daily tests regularly above 6000
 
 ```{r,fig.width=4,fig.height=4}
-n=dim(WIdata)[1]; start = 61 # after daily tests regularly > 6000
-k=21; 
-base=10
+#n=dim(WIdata)[1]; start = 61 # after daily tests regularly > 6000
+#k=21; 
+#base=10
 
-Lagdata <- data.frame(POStok=(WIdata$POSITIVE[start:(n-k)]),
-                      DTHlag=(WIdata$DEATHS[(k+start):n]),
-                      logPOStok=log(WIdata$POSITIVE[start:(n-k)],base),
-                      logDTHlag=log(WIdata$DEATHS[(k+start):n],base))
+#Lagdata <- data.frame(POStok=(WIdata$POSITIVE[start:(n-k)]),
+#                      DTHlag=(WIdata$DEATHS[(k+start):n]),
+#                      logPOStok=log(WIdata$POSITIVE[start:(n-k)],base),
+#                      logDTHlag=log(WIdata$DEATHS[(k+start):n],base))
 
-Model1plot <- ggplot(Lagdata, aes(x=POStok, y=DTHlag))+
-  geom_line(aes(color="correspondence"))+
-  scale_colour_manual(name=F, values=c('correspondence'='purple','Loess smooth'='grey','7-day moving avg'='navy')) + 
-  ggtitle(label = paste("Log",base,"-transformed plot", sep=""))+
-  theme_minimal()+
-  theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
-        legend.position = "none",
-        axis.text.x = element_text(angle=90))+
-  ylab(paste("Log",base," Deaths at lag ", k, sep=""))+
-  xlab(paste("Log",base," Cumulative Cases", sep="")) +
-  scale_x_continuous(trans = 'log10') +
-    scale_y_continuous(trans = 'log10',labels = format_format(big.mark = " ", scientific = FALSE))
+#Model1plot <- ggplot(Lagdata, aes(x=POStok, y=DTHlag))+
+#  geom_line(aes(color="correspondence"))+
+#  scale_colour_manual(name=F, values=c('correspondence'='purple','Loess smooth'='grey','7-day moving avg'='navy')) + 
+#  ggtitle(label = paste("Log",base,"-transformed plot", sep=""))+
+#  theme_minimal()+
+#  theme(plot.title = element_text(hjust=0.5, lineheight = .8, face = "bold"),
+#        legend.position = "none",
+#        axis.text.x = element_text(angle=90))+
+#  ylab(paste("Log",base," Deaths at lag ", k, sep=""))+
+#  xlab(paste("Log",base," Cumulative Cases", sep="")) +
+#  scale_x_continuous(trans = 'log10') +
+#    scale_y_continuous(trans = 'log10',labels = format_format(big.mark = " ", scientific = FALSE))
 
-coef = lm(logDTHlag~logPOStok,data=Lagdata)$coef
-print(paste("The number of  cumulative deaths, at a lag of", k, "days, are approximately", round(as.numeric(base^(coef[1])),1), "times number of cumulative cases to the", round(as.numeric(coef[2]),2), "power."))
-print(paste("We thus predict that on", today()+k, "the cumulative number of deaths in WI will be", round(base^(coef[1])*(max(WIdata$POSITIVE))^coef[2])))
+#coef = lm(logDTHlag~logPOStok,data=Lagdata)$coef
+#print(paste("The number of  cumulative deaths, at a lag of", k, "days, are approximately", round(as.numeric(base^(coef[1])),1), "times number of cumulative cases to the", round(as.numeric(coef[2]),2), "power."))
+#print(paste("We thus predict that on", today()+k, "the cumulative number of deaths in WI will be", round(base^(coef[1])*(max(WIdata$POSITIVE))^coef[2])))
 
 #plot(Lagdata$logPOStok, Lagdata$logDTHlag); abline(coef[1],coef[2])
 #Modeling – log deaths (blue) and transformed-log cases (red or green).
@@ -783,7 +784,7 @@ print(paste("We thus predict that on", today()+k, "the cumulative number of deat
 
 ```{r,fig.height=3.5,fig.width=3.5}
 #ggarrange(Model1plot, Model2plot, widths = c(3.5,5))
-Model1plot
+#Model1plot
 ```
 
 

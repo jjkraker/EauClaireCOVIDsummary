@@ -1,4 +1,4 @@
-UniversityDates = c("2020-08-31","2021-09-01")
+UniversityDates = c("2020-08-31","2021-09-01","2022-09-02")
 # adjust Date range?
 MaskingDates = c()
 
@@ -16,7 +16,8 @@ CaseCheck = function(usabledata) {
     mutate(log10DEATHS = ifelse(log10DEATHS < -10^10,NA, log10DEATHS)) %>% 
 #    mutate(DATE = format(mdy(DATE), format = "%B %d %Y")) %>%   
 #    mutate(DATE = format(DATE, format = "%B %d %Y")) %>%   
-    mutate(DATE = format(as_date(DATE), format = "%B %d %Y")) %>%   
+#    mutate(DATE = format(mdy(DATE), format = "%B %d %Y")) %>%   
+    mutate(DATE = format(DATE, format = "%B %d %Y")) %>%   
     mutate(DTH_NEW = as.numeric(DTH_NEW))  %>%
   mutate(DTH_NEW = case_when(is.na(DTH_NEW) ~ 0,
                              DTH_NEW <0 ~ 0,   
